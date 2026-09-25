@@ -24,10 +24,21 @@ jobs:
       - name: Tests
         run: node --test scraper/test/*.test.mjs test/*.test.mjs
       - name: Scrape
+        # One semester failing (the university site is sometimes unreachable) keeps
+        # yesterday's data for it and doesn't stop the others. The run only fails
+        # when nothing could be downloaded, which usually means the site changed.
         run: |
-          grep -v '^#' scraper/semesters.txt | while read -r year sem mode; do
-            [ -n "$year" ] && node scraper/scrape.mjs --year "$year" --sem "$sem" ${mode:+--$mode}
-          done
+          ok=0; failed=0
+          while read -r year sem mode; do
+            [ -z "$year" ] && continue
+            if node scraper/scrape.mjs --year "$year" --sem "$sem" ${mode:+--$mode}; then
+              ok=$((ok + 1))
+            else
+              failed=$((failed + 1)); echo "::warning::$year-$sem could not be updated"
+            fi
+          done < <(grep -v '^#' scraper/semesters.txt)
+          echo "updated: $ok, failed: $failed"
+          [ "$ok" -gt 0 ]
       - name: Commit changes
         run: |
           git config user.name "catalogue-bot"

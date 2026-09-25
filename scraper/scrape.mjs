@@ -41,7 +41,8 @@ const SEARCH_FORM = {
   oc_start_time: '', oc_end_time: '', on_campus: '',
 };
 
-async function post(form, tries = 6) {
+// The university server drops connections now and then; wait it out for a few minutes.
+async function post(form, tries = 8) {
   for (let i = 1; ; i++) {
     try {
       const res = await fetch(URL_ANN, {
@@ -54,7 +55,7 @@ async function post(form, tries = 6) {
       return decoder.decode(await res.arrayBuffer());
     } catch (e) {
       if (i >= tries) throw e;
-      await sleep(1500 * i);
+      await sleep(Math.min(5000 * i, 30_000));
     }
   }
 }
