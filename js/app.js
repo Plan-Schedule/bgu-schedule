@@ -49,8 +49,22 @@ const hueOf = (id) => {
 const myCourses = () => sem().order.map((id) => ui.courses.get(id)).filter(Boolean);
 const fmtMeet = (m) => `<span class="nw">${DAYS[m.day]} ${range(m.start, m.end)}</span>`;
 const hours = (n) => (Number.isInteger(n) ? n : n.toFixed(1));
-const starOf = (name) => {
-  const r = rating(S().ratings, name);
+/** Ratings of one course; the first time a course is seen, it starts from the old app-wide ratings. */
+function ratingsOf(id) {
+  const cs = sem().courses[id];
+  if (!cs) return S().ratings;
+  if (!cs.ratings) {
+    if (S().seen.perCourseRatings) return (cs.ratings = {});
+    const c = ui.courses.get(id);
+    if (!c) return S().ratings;
+    const names = new Set(c.groups.flatMap((g) => [g, ...(g.subs || [])]).map((g) => g.lecturer).filter(Boolean));
+    cs.ratings = Object.fromEntries(Object.entries(S().ratings).filter(([n]) => names.has(n)));
+  }
+  return cs.ratings;
+}
+
+const starOf = (name, id) => {
+  const r = rating(ratingsOf(id), name);
   return r === RATE.REC ? '<span class="star">⭐</span>' : r === RATE.OK ? '<span>👌</span>' : r === RATE.AVOID ? '<span class="avoid">🚫</span>' : '';
 };
 
@@ -59,7 +73,7 @@ async function shareUrl(url, title, text) {
   if (navigator.share) {
     try { await navigator.share({ title, text, url }); return true; } catch (e) { if (e.name === 'AbortError') return false; }
   }
-  try { await navigator.clipboard.writeText(url); toast('הקישור הועתק'); return true; } catch { prompt('העתיקו את הקישור:', url); return true; }
+  try { await navigator.clipboard.writeText(url); toast('הקישור הועתק'); return true; } catch { await ask({ title: 'העתיקו את הקישור', copy: url, yes: 'סגירה' }); return true; }
 }
 
 function toast(msg) {
@@ -125,7 +139,7 @@ function renderCourses() {
     </div>
     ${list.length ? `
       <p class="legend">
-        <span>דירוג: ⭐ מומלץ · 👌 בסדר · 🚫 להימנע (לחיצה נוספת מבטלת)</span>
+        <span>דירוג: ⭐ מומלץ · 👌 בסדר · 🚫 להימנע, לכל קורס בנפרד (לחיצה נוספת מבטלת)</span>
         <span>📌 חייב את הקבוצה הזו</span><span>⛔ לא מתאים לי</span><span>🎥 מוקלט (היברידי)</span>
       </p>` : ''}
     <div class="courses">
@@ -137,7 +151,10 @@ function renderCourses() {
         <p><b>עוד לא הוספת קורסים.</b><br>חפשו למעלה לפי שם או מספר קורס.</p>
       </div>` : `
       <div class="row" style="justify-content:center;margin-top:14px"><button class="btn sm" data-action="list-share">🔗 שיתוף רשימת הקורסים (למשל לכל המחזור)</button></div>
-      <div class="sticky-bar"><button class="btn primary" data-action="tab" data-tab="results">✨ לבנות לי מערכות</button></div>`}
+      <div class="sticky-bar"><div class="bar-pair">
+        <button class="btn" data-action="tab" data-tab="constraints">🗓️ לאילוצים</button>
+        <button class="btn primary" data-action="build" data-free="1">✨ בנה לי מערכת בלי אילוצים</button>
+      </div></div>`}
     ${dataNote()}
   `;
 }
@@ -167,10 +184,10 @@ function renderSearch() {
 
 const RATE_OPTS = [[RATE.REC, '⭐', 'מומלץ'], [RATE.OK, '👌', 'בסדר'], [RATE.AVOID, '🚫', 'להימנע']];
 
-function rateControl(name) {
-  const r = rating(S().ratings, name);
+function rateControl(name, id) {
+  const r = rating(ratingsOf(id), name);
   return `<span class="person" data-r="${r}"><span class="nm">${esc(name)}</span><span class="rate-seg" role="group" aria-label="דירוג ${esc(name)}">${RATE_OPTS.map(([v, ico, label]) =>
-    `<button data-action="rate" data-name="${esc(name)}" data-v="${v}" aria-pressed="${r === v}" title="${label}" aria-label="${label}">${ico}</button>`).join('')}</span></span>`;
+    `<button data-action="rate" data-id="${id}" data-name="${esc(name)}" data-v="${v}" aria-pressed="${r === v}" title="${label}" aria-label="${label}">${ico}</button>`).join('')}</span></span>`;
 }
 
 function courseCard(id) {
@@ -196,7 +213,7 @@ function courseCard(id) {
       <div class="gnum">${g.n}<small>${esc(typeLabel(g.type))}</small></div>
       <div>
         ${g.lecturer
-          ? rateControl(g.lecturer)
+          ? rateControl(g.lecturer, id)
           : `<span class="person none">ללא מרצה מוגדר</span>`}
         <div class="times">${g.meetings.length ? g.meetings.map((m) => `${fmtMeet(m)}${m.hybrid ? ' <span class="rec" title="מוקלט">🎥</span>' : ''}`).join(' · ') : 'ללא שעות'}</div>
       </div>
@@ -263,7 +280,8 @@ function renderConstraints() {
         ${slider('soft', 'משבצות "עדיף שלא"', 'כמה להתחשב במשבצות הצהובות')}
         <p class="muted small">את החשיבות של מרצים ומתרגלים קובעים לכל קורס בלשונית "קורסים".</p>
       </div>
-    </div>`;
+    </div>
+    <div class="sticky-bar"><button class="btn primary" data-action="build">✨ בנה לי מערכת</button></div>`;
 }
 
 function wireConstraintGrid() {
@@ -304,13 +322,15 @@ function wireConstraintGrid() {
 // ---------- results tab ----------
 function computeResults() {
   const courses = myCourses();
-  const key = JSON.stringify([S().semester, sem().order, sem().courses, S().ratings, S().constraints, courses.length]);
+  const key = JSON.stringify([S().semester, sem().order, sem().courses, S().ratings, S().constraints, courses.length, !!ui.ignoreConstraints]);
   if (key === ui.resultsKey && ui.results) return ui.results;
   ui.resultsKey = key;
   ui.shown = {};
   ui.compare = [];
   ui.limit = 10;
-  ui.results = courses.length ? solve(courses, store.solverState()) : null;
+  const st = store.solverState();
+  if (ui.ignoreConstraints) st.constraints = { cells: {}, weights: {} };
+  ui.results = courses.length ? solve(courses, st) : null;
   return ui.results;
 }
 
@@ -327,7 +347,7 @@ function statChips(st) {
 }
 
 function pickLine(course, picks) {
-  return picks.map(({ g }) => `<span class="pick">${esc(typeLabel(g.type))} ${g.n}${g.lecturer ? ` · ${starOf(g.lecturer)}${esc(g.lecturer)}` : ''}</span>`).join('<span class="muted"> | </span>');
+  return picks.map(({ g }) => `<span class="pick">${esc(typeLabel(g.type))} ${g.n}${g.lecturer ? ` · ${starOf(g.lecturer, course.id)}${esc(g.lecturer)}` : ''}</span>`).join('<span class="muted"> | </span>');
 }
 
 function renderResults() {
@@ -337,7 +357,11 @@ function renderResults() {
   const r = computeResults();
   const head = `<div class="section-head"><div><h2>המערכות הכי טובות בשבילך</h2>
     <p class="lead">${r.results.length ? `נבדקו ${r.leaves.toLocaleString('he')} מערכות שאפשר להירשם אליהן. אלה המובילות לפי הדירוגים והאילוצים שלך.` : ''}${r.truncated ? ' (החיפוש נעצר מוקדם כי יש הרבה אפשרויות. כדאי לנעול 📌 כמה קבוצות.)' : ''}</p></div></div>`;
-  const issues = r.issues.map((i) => {
+  const hasConstraints = Object.keys(S().constraints.cells).length || Object.keys(S().constraints.weights).length;
+  const freeNote = ui.ignoreConstraints && hasConstraints
+    ? `<div class="notice">המערכות האלה נבנו <b>בלי להתחשב באילוצים שלך</b>. <button class="btn sm" data-action="build">להתחשב באילוצים</button></div>`
+    : '';
+  const issues = freeNote + r.issues.map((i) => {
     if (i.reason === 'pins') return `<div class="notice warn">ב<b>${esc(i.course.name)}</b> לא נשארה אף קבוצה שאפשר להירשם אליה אחרי הנעילות (📌/⛔). כדאי לשחרר חלק מהן.</div>`;
     if (i.reason === 'constraints') return `<div class="notice warn">ב<b>${esc(i.course.name)}</b> כל הקבוצות נופלות על משבצות "לא יכול". אפשר לסמן שלא הולכים לחלק מהשיעורים, או לשחרר אילוצים.</div>`;
     return `<div class="notice warn">אין צירוף של הקבוצות שלא מתנגש בשעות. כדאי לשחרר נעילות או להוריד קורס.</div>`;
@@ -430,7 +454,7 @@ function renderPlans() {
         ${ui.shared ? '' : `<div class="row">
           <button class="btn sm ghost" data-action="plan-rename">שינוי שם</button>
           <button class="btn sm ghost" data-action="plan-dup">שכפול</button>
-          <button class="btn sm ghost" data-action="plan-del">מחיקה</button></div>`}
+          <button class="btn sm ghost danger-ghost" data-action="plan-del">🗑️ מחיקה</button></div>`}
       </div>
       <div class="stats">${statChips(st)}</div>
       ${weekHtml(bl, { view: ui.planView, hueOf, tap: !ui.shared })}
@@ -464,13 +488,41 @@ function backupNudge() {
 }
 
 // ---------- sheets ----------
+/**
+ * Asks inside the page. window.confirm/prompt are silently blocked in the browsers
+ * WhatsApp and Instagram open links in, so nothing would happen there.
+ */
+function ask({ title, text = '', value = null, yes = 'אישור', danger = false, copy = null }) {
+  return new Promise((resolve) => {
+    ui.askResolve?.(null);
+    ui.askResolve = resolve;
+    openSheet(`
+      <h3>${esc(title)}</h3>
+      ${text ? `<p class="muted">${esc(text)}</p>` : ''}
+      ${value !== null ? `<label class="field"><input id="ask-input" maxlength="60" value="${esc(value)}"></label>` : ''}
+      ${copy !== null ? `<textarea id="ask-copy" class="copybox" readonly rows="4">${esc(copy)}</textarea>` : ''}
+      <div class="row" style="justify-content:flex-end;margin-top:12px">
+        ${copy !== null ? '' : '<button class="btn" data-action="close-sheet">ביטול</button>'}
+        <button class="btn ${danger ? 'danger' : 'primary'}" data-action="ask-yes">${esc(yes)}</button>
+      </div>`);
+    const input = $('#ask-input') || $('#ask-copy');
+    if (input) { input.focus(); input.select(); }
+    input?.addEventListener('keydown', (e) => { if (e.key === 'Enter' && input.id === 'ask-input') actions['ask-yes'](); });
+  });
+}
+
 function openSheet(html) {
   const s = $('#sheet');
   $('.sheet-card', s).innerHTML = html;
   s.hidden = false;
   $('.sheet-card button, .sheet-card input', s)?.focus();
 }
-const closeSheet = () => { $('#sheet').hidden = true; };
+const closeSheet = () => {
+  $('#sheet').hidden = true;
+  const r = ui.askResolve;
+  ui.askResolve = null;
+  r?.(null);
+};
 
 function blockSheet(bi) {
   const plan = currentPlan();
@@ -492,15 +544,15 @@ function blockSheet(bi) {
   });
   openSheet(`
     <h3>${esc(course.name)}</h3>
-    <p class="muted small">${esc(typeLabel(reg.type))} ${reg.n}${reg.lecturer ? ' · ' + starOf(reg.lecturer) + esc(reg.lecturer) : ''} · ${reg.meetings.map(fmtMeet).join(' · ')}${hybrid ? ' · 🎥 מוקלט' : ''}</p>
+    <p class="muted small">${esc(typeLabel(reg.type))} ${reg.n}${reg.lecturer ? ' · ' + starOf(reg.lecturer, course.id) + esc(reg.lecturer) : ''} · ${reg.meetings.map(fmtMeet).join(' · ')}${hybrid ? ' · 🎥 מוקלט' : ''}</p>
     <div class="opt-list">
       ${opt('go', '🙋', 'אלך')}
       ${opt('rec', '🎥', 'אראה בהקלטה', hybrid ? '' : 'השיעור הזה לא מסומן כהיברידי', !hybrid)}
       ${opt('skip', '✕', 'לא אלך')}
-      ${alts.map((a) => opt(`alt:${a.n}`, '↩', `אלך במקום זה לקבוצה ${a.n}`, `${a.lecturer ? starOf(a.lecturer) + esc(a.lecturer) + ' · ' : ''}${a.meetings.map(fmtMeet).join(' · ')}`)).join('')}
+      ${alts.map((a) => opt(`alt:${a.n}`, '↩', `אלך במקום זה לקבוצה ${a.n}`, `${a.lecturer ? starOf(a.lecturer, course.id) + esc(a.lecturer) + ' · ' : ''}${a.meetings.map(fmtMeet).join(' · ')}`)).join('')}
     </div>
     ${swaps.length ? `<details><summary><b>החלפת קבוצה ברישום</b> <span class="muted small">(${swaps.length} אפשרויות בלי התנגשות)</span></summary>
-      <div class="opt-list">${swaps.map((o) => `<button class="opt" data-action="swap" data-cid="${course.id}" data-nums="${o.picks.map((p) => p.g.n).join(',')}"><span class="ico">⇄</span><span class="grow">${o.picks.map(({ g }) => `<b>${esc(typeLabel(g.type))} ${g.n}</b> ${g.lecturer ? starOf(g.lecturer) + esc(g.lecturer) : ''} <span class="muted small">${g.meetings.map(fmtMeet).join(' · ')}</span>`).join('<br>')}</span></button>`).join('')}</div>
+      <div class="opt-list">${swaps.map((o) => `<button class="opt" data-action="swap" data-cid="${course.id}" data-nums="${o.picks.map((p) => p.g.n).join(',')}"><span class="ico">⇄</span><span class="grow">${o.picks.map(({ g }) => `<b>${esc(typeLabel(g.type))} ${g.n}</b> ${g.lecturer ? starOf(g.lecturer, course.id) + esc(g.lecturer) : ''} <span class="muted small">${g.meetings.map(fmtMeet).join(' · ')}</span>`).join('<br>')}</span></button>`).join('')}</div>
     </details>` : ''}
     <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" data-action="close-sheet">סגירה</button></div>`);
 }
@@ -629,10 +681,11 @@ const actions = {
   },
   toggle(el) { ui.open[el.dataset.id] = !ui.open[el.dataset.id]; render(); },
   rate(el) {
-    const n = el.dataset.name;
-    store.update((s) => {
-      const v = +el.dataset.v;
-      if (s.ratings[n] === v) delete s.ratings[n]; else s.ratings[n] = v;
+    const { name: n, id } = el.dataset;
+    const v = +el.dataset.v;
+    store.update(() => {
+      const r = ratingsOf(id);
+      if (r[n] === v) delete r[n]; else r[n] = v;
     });
   },
   pin(el) {
@@ -650,6 +703,10 @@ const actions = {
     });
   },
   brush(el) { ui.brush = +el.dataset.v; render(); },
+  build(el) {
+    ui.ignoreConstraints = !!el.dataset.free;
+    setTab('results');
+  },
   'clear-cells': () => store.update((s) => { s.constraints.cells = {}; }),
   more() { ui.limit += 10; render(); },
   show(el) { ui.shown[el.dataset.i] = !ui.shown[el.dataset.i]; render(); },
@@ -675,10 +732,17 @@ const actions = {
   },
   plan(el) { ui.plan = el.dataset.id; render(); },
   'plan-view'(el) { ui.planView = el.dataset.v; render(); },
-  'plan-rename'() {
+  'ask-yes'() {
+    const r = ui.askResolve;
+    ui.askResolve = null;
+    const v = $('#ask-input')?.value ?? true;
+    $('#sheet').hidden = true;
+    r?.(v);
+  },
+  async 'plan-rename'() {
     const p = currentPlan();
-    const name = prompt('שם למערכת', p.name);
-    if (name?.trim()) store.update(() => { p.name = name.trim(); });
+    const name = await ask({ title: 'שם למערכת', value: p.name, yes: 'שמירה' });
+    if (name?.trim()) store.update(() => { p.name = name.trim().slice(0, 60); });
   },
   'plan-dup'() {
     const p = currentPlan();
@@ -687,10 +751,12 @@ const actions = {
     ui.plan = copy.id;
     render();
   },
-  'plan-del'() {
+  async 'plan-del'() {
     const p = currentPlan();
-    if (!confirm(`למחוק את "${p.name}"?`)) return;
+    if (!(await ask({ title: `למחוק את "${p.name}"?`, text: 'אי אפשר לבטל את המחיקה.', yes: 'מחיקה', danger: true }))) return;
     store.update(() => { sem().plans = sem().plans.filter((x) => x !== p); });
+    ui.plan = sem().plans[0]?.id || null;
+    toast('המערכת נמחקה');
   },
   attend(el) {
     const { cid, n, v } = el.dataset;
@@ -715,7 +781,7 @@ const actions = {
   async 'copy-reg'() {
     const p = currentPlan();
     const text = registrationText(registrationRows([...ui.courses.values()], p), `${p.name} · ${currentSemLabel()}`);
-    try { await navigator.clipboard.writeText(text); toast('הרשימה הועתקה'); } catch { prompt('העתיקו מכאן:', text); }
+    try { await navigator.clipboard.writeText(text); toast('הרשימה הועתקה'); } catch { await ask({ title: 'העתיקו מכאן', copy: text, yes: 'סגירה' }); }
   },
   async 'share-link'() {
     const p = currentPlan();
@@ -808,8 +874,8 @@ const actions = {
     store.markBackup();
     download(new Blob([JSON.stringify(S(), null, 1)], { type: 'application/json' }), 'bgu-schedule-backup.json');
   },
-  reset() {
-    if (!confirm('למחוק את כל הקורסים, הדירוגים והמערכות ששמרת?')) return;
+  async reset() {
+    if (!(await ask({ title: 'למחוק את כל הנתונים שלך?', text: 'כל הקורסים, הדירוגים, האילוצים והמערכות ששמרת יימחקו מהדפדפן הזה.', yes: 'מחיקת הכול', danger: true }))) return;
     const semester = S().semester;
     store.replaceAll({ semester, seen: { intro: true } });
     closeSheet();
@@ -858,6 +924,12 @@ async function loadSemester() {
   }
   const need = new Set([...sem().order, ...sem().plans.flatMap((p) => Object.keys(p.picks))]);
   await Promise.all([...need].map(ensureCourse));
+  // One-time move from app-wide ratings to per-course ones; courses added later start unrated.
+  if (!S().seen.perCourseRatings && sem().order.every((id) => ui.courses.has(id))) {
+    sem().order.forEach(ratingsOf);
+    S().seen.perCourseRatings = true;
+    store.save();
+  }
   render();
 }
 

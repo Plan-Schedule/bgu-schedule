@@ -135,3 +135,12 @@ test('security: restore links and course lists keep only well-formed data', asyn
   assert.deepEqual(l.ids, ['212-1-0201']);
   assert.equal(l.name.length, 80);
 });
+
+test('ratings are per course, falling back to old app-wide ratings', () => {
+  const name = 'ד"ר י. מייזל'; // teaches logic (groups 2,3) and algebra (group 5)
+  const state = { ratings: { [name]: 2 }, courses: { [algebra.id]: { ratings: { [name]: -2 } } }, constraints: {} };
+  const lg = solve([logic], state).results[0].courses[0].picks[0].g;
+  assert.equal(lg.lecturer, name); // logic has no own ratings yet → old global: recommended
+  const al = solve([algebra], state).results[0].courses[0].picks[0].g;
+  assert.notEqual(al.lecturer, name); // algebra: avoid
+});

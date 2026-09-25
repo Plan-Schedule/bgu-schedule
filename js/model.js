@@ -117,7 +117,10 @@ export function alternatives(course, n) {
 
 // מומלץ / בסדר / להימנע. Someone not rated yet counts as 0: below a known "בסדר", above "להימנע".
 export const RATE = { REC: 2, OK: 1, AVOID: -2 };
-export const rating = (ratings, name) => (name && ratings[name]) || 0;
+export const rating = (ratings, name) => (name && ratings?.[name]) || 0;
+
+/** Ratings are per course (a great lecturer in one course may not be in another). Old saves had one global list. */
+export const courseRatings = (state, course) => state.courses?.[course.id]?.ratings || state.ratings || {};
 
 const hourCells = (m) => {
   const out = [];
@@ -200,7 +203,6 @@ export function weekStats(blockList) {
 export function solve(courseList, state, { limit = 40, maxLeaves = 300000 } = {}) {
   const cells = state.constraints?.cells || {};
   const w = { ...DEFAULT_WEIGHTS, ...(state.constraints?.weights || {}) };
-  const ratings = state.ratings || {};
   const issues = [];
 
   const perCourse = [];
@@ -217,6 +219,7 @@ export function solve(courseList, state, { limit = 40, maxLeaves = 300000 } = {}
       const bl = blocks(course, o.picks, prefs);
       if (bl.some((b) => b.attended && hourCells(b.m).some((c) => cells[c] === 2))) continue;
       let person = 0;
+      const ratings = courseRatings(state, course);
       for (const { g, role } of o.picks) {
         const p = prefs[compKey(g, role)] || DEFAULT_PREFS;
         const plan = p.plan || 'go';
@@ -301,7 +304,7 @@ export function solve(courseList, state, { limit = 40, maxLeaves = 300000 } = {}
 
 /** What a result gives up: recommended people who teach that component but are not in it. */
 export function missedStars(course, picks, state) {
-  const ratings = state.ratings || {};
+  const ratings = courseRatings(state, course);
   const prefs = state.courses?.[course.id]?.prefs || {};
   const out = [];
   for (const comp of components(course)) {

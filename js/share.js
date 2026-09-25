@@ -76,11 +76,7 @@ export async function decodeCourseList(str) {
  */
 export function sanitizeState(o) {
   if (!isObj(o) || (o.v !== 1 && o.v !== 2)) throw new Error('not a backup');
-  const r = o.v === 1 ? { 1: 2, [-1]: -2 } : { 2: 2, 1: 1, [-2]: -2 };
-  const ratings = {};
-  for (const [name, v] of Object.entries(isObj(o.ratings) ? o.ratings : {}).slice(0, 2000)) {
-    if (r[v] !== undefined && name.length <= 80) ratings[text(name, 80)] = r[v];
-  }
+  const ratings = cleanRatings(o.ratings, o.v === 1 ? { 1: 2, [-1]: -2 } : { 2: 2, 1: 1, [-2]: -2 });
   const cells = {};
   for (const [k, v] of Object.entries(isObj(o.constraints?.cells) ? o.constraints.cells : {})) {
     if (/^[1-7]-([0-9]|1[0-9]|2[0-3])$/.test(k) && (v === 1 || v === 2)) cells[k] = v;
@@ -104,6 +100,7 @@ export function sanitizeState(o) {
       const pins = {};
       for (const [n, v] of Object.entries(isObj(c.pins) ? c.pins : {})) if (/^\d{1,4}$/.test(n) && (v === 'must' || v === 'never')) pins[n] = v;
       courses[id] = { prefs, pins };
+      if (isObj(c.ratings)) courses[id].ratings = cleanRatings(c.ratings, { 2: 2, 1: 1, [-2]: -2 });
     }
     const plans = [];
     for (const p of (Array.isArray(sv.plans) ? sv.plans : []).slice(0, 30)) {
@@ -120,8 +117,16 @@ export function sanitizeState(o) {
     ratings,
     constraints: { cells, weights },
     sems,
-    seen: { intro: true },
+    seen: { intro: true, perCourseRatings: o.seen?.perCourseRatings === true },
   };
+}
+
+function cleanRatings(o, map) {
+  const out = {};
+  for (const [name, v] of Object.entries(isObj(o) ? o : {}).slice(0, 2000)) {
+    if (map[v] !== undefined && name.length <= 80) out[text(name, 80)] = map[v];
+  }
+  return out;
 }
 
 /** Lines for typing into the registration system. */

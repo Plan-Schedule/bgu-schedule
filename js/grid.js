@@ -67,8 +67,8 @@ export function weekHtml(blocks, { view = 'att', hueOf, tap = false } = {}) {
         title="${esc(`${b.course.name} · ${typeLabel(b.g.type)} ${b.g.n} · ${range(b.m.start, b.m.end)}${b.g.lecturer ? ' · ' + b.g.lecturer : ''}`)}">
         ${tag ? `<span class="tag">${tag}</span>` : ''}
         <b>${esc(shortName(b.course.name))}</b>
-        <span class="t">${esc(typeLabel(b.g.type))} ${b.g.n}</span>
-        ${e - s >= 90 ? `<span class="p">${esc(b.g.lecturer || '')}</span>` : ''}
+        <span class="t"><span class="full">${esc(typeLabel(b.g.type))}</span><span class="abbr">${esc(typeLabel(b.g.type).slice(0, 3))}׳</span> ${b.g.n}</span>
+        ${b.g.lecturer ? `<span class="p">${esc(shortPerson(b.g.lecturer))}</span>` : ''}
       </button>`;
     }
     html += `</div>`;
@@ -77,6 +77,9 @@ export function weekHtml(blocks, { view = 'att', hueOf, tap = false } = {}) {
 }
 
 /** "מבוא ללוגיקה ולתורת הקבוצות…" → "לוגיקה": most first-year courses start with "מבוא", which says nothing in a small block. */
+/** "ד\"ר י. מייזל" → "י. מייזל": the title takes room a small block doesn't have. */
+export const shortPerson = (name) => (name || '').replace(/^(ד"ר|פרופ['׳]|מר|גב['׳]|הרב|עו"ד)\s+/, '').replace(/\. /g, '.\u00a0');
+
 export function shortName(name) {
   let s = name.replace(/^מבוא\s+(ל|ל-)?/, '').replace(/ למדעי המחשב והנדסת תכנה| להנדסה$/, '');
   const words = s.split(' ');
@@ -135,11 +138,11 @@ export async function weekPng(blocks, { view = 'att', hueOf, title = '' }) {
     x.fillStyle = `hsl(${hue} 55% 42%)`; x.fillRect(bx + bw - 5, by, 5, bh);
     x.fillStyle = `hsl(${hue} 60% 20%)`; x.textAlign = 'right';
     const tx = bx + bw - 12;
-    x.font = font(600, 15); x.fillText(clip(x, shortName(b.course.name), bw - 20), tx, by + 20);
-    x.font = font(400, 13);
+    x.font = font(600, 14); x.fillText(clip(x, shortName(b.course.name), bw - 20), tx, by + 17);
+    x.font = font(400, 12);
     const tag = view === 'att' && MODE_TAG[mode] ? ` ${MODE_TAG[mode]}` : '';
-    x.fillText(clip(x, `${typeLabel(b.g.type)} ${b.g.n} · ${range(b.m.start, b.m.end)}${tag}`, bw - 20), tx, by + 38);
-    if (bh > 70 && b.g.lecturer) x.fillText(clip(x, b.g.lecturer, bw - 20), tx, by + 56);
+    x.fillText(clip(x, `${typeLabel(b.g.type)} ${b.g.n} · ${range(b.m.start, b.m.end)}${tag}`, bw - 20), tx, by + 34);
+    if (b.g.lecturer) x.fillText(clip(x, shortPerson(b.g.lecturer), bw - 20), tx, by + 50);
     x.globalAlpha = 1;
   }
   return new Promise((r) => c.toBlob(r, 'image/png'));
