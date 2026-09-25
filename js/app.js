@@ -2,7 +2,7 @@ import * as store from './store.js';
 import * as data from './data.js';
 import {
   components, courseOptions, blocks as makeBlocks, solve, missedStars, weekStats, findGroup, alternatives,
-  typeLabel, DAYS, DAY_FULL, DEFAULT_PREFS, DEFAULT_WEIGHTS, rating, overlaps, fmtTime,
+  typeLabel, range, DAYS, DAY_FULL, DEFAULT_PREFS, DEFAULT_WEIGHTS, rating, RATE, overlaps, fmtTime,
 } from './model.js';
 import { weekHtml, weekPng, esc, shortName } from './grid.js';
 import { encodePlan, decodePlan, registrationRows, registrationText, ics, download } from './share.js';
@@ -43,11 +43,11 @@ const hueOf = (id) => {
   return h;
 };
 const myCourses = () => sem().order.map((id) => ui.courses.get(id)).filter(Boolean);
-const fmtMeet = (m) => `${DAYS[m.day]} ${m.start}–${m.end}`;
+const fmtMeet = (m) => `<span class="nw">${DAYS[m.day]} ${range(m.start, m.end)}</span>`;
 const hours = (n) => (Number.isInteger(n) ? n : n.toFixed(1));
 const starOf = (name) => {
   const r = rating(S().ratings, name);
-  return r > 0 ? '<span class="star">⭐</span>' : r < 0 ? '<span class="avoid">🚫</span>' : '';
+  return r === RATE.REC ? '<span class="star">⭐</span>' : r === RATE.OK ? '<span>👌</span>' : r === RATE.AVOID ? '<span class="avoid">🚫</span>' : '';
 };
 
 function toast(msg) {
@@ -113,7 +113,7 @@ function renderCourses() {
     </div>
     ${list.length ? `
       <p class="legend">
-        <span>לחיצה על שם: ⭐ מומלץ ← 🚫 להימנע ← בלי דירוג</span>
+        <span>דירוג: ⭐ מומלץ · 👌 בסדר · 🚫 להימנע (לחיצה נוספת מבטלת)</span>
         <span>📌 חייב את הקבוצה הזו</span><span>⛔ לא מתאים לי</span><span>🎥 מוקלט (היברידי)</span>
       </p>` : ''}
     <div class="courses">
@@ -144,6 +144,14 @@ function renderSearch() {
   }).join('') : `<div class="pad muted">לא נמצא קורס כזה בסמסטר ${esc(currentSemLabel())}.</div>`}</div>`;
 }
 
+const RATE_OPTS = [[RATE.REC, '⭐', 'מומלץ'], [RATE.OK, '👌', 'בסדר'], [RATE.AVOID, '🚫', 'להימנע']];
+
+function rateControl(name) {
+  const r = rating(S().ratings, name);
+  return `<span class="person" data-r="${r}"><span class="nm">${esc(name)}</span><span class="rate-seg" role="group" aria-label="דירוג ${esc(name)}">${RATE_OPTS.map(([v, ico, label]) =>
+    `<button data-action="rate" data-name="${esc(name)}" data-v="${v}" aria-pressed="${r === v}" title="${label}" aria-label="${label}">${ico}</button>`).join('')}</span></span>`;
+}
+
 function courseCard(id) {
   const c = ui.courses.get(id);
   const meta = ui.index.find((x) => x.id === id);
@@ -167,7 +175,7 @@ function courseCard(id) {
       <div class="gnum">${g.n}<small>${esc(typeLabel(g.type))}</small></div>
       <div>
         ${g.lecturer
-          ? `<button class="person" data-action="rate" data-name="${esc(g.lecturer)}" data-r="${rating(S().ratings, g.lecturer)}">${rating(S().ratings, g.lecturer) > 0 ? '⭐ ' : rating(S().ratings, g.lecturer) < 0 ? '🚫 ' : ''}${esc(g.lecturer)}</button>`
+          ? rateControl(g.lecturer)
           : `<span class="person none">ללא מרצה מוגדר</span>`}
         <div class="times">${g.meetings.length ? g.meetings.map((m) => `${fmtMeet(m)}${m.hybrid ? ' <span class="rec" title="מוקלט">🎥</span>' : ''}`).join(' · ') : 'ללא שעות'}</div>
       </div>
@@ -291,7 +299,7 @@ function statChips(st) {
   if (st.freeDays.length) chips.push(`<span class="chip good">🌴 פנוי: ${st.freeDays.map((d) => DAYS[d]).join(' ')}</span>`);
   chips.push(`<span class="chip ${st.gapHours >= 3 ? 'warn' : ''}">⏳ חלונות: ${hours(st.gapHours)} ש׳</span>`);
   chips.push(`<span class="chip">⏱ ${hours(st.hours)} ש׳ בכיתה</span>`);
-  if (st.first != null) chips.push(`<span class="chip">${fmtTime(st.first)}–${fmtTime(st.last)}</span>`);
+  if (st.first != null) chips.push(`<span class="chip">${range(fmtTime(st.first), fmtTime(st.last))}</span>`);
   if (st.softHours) chips.push(`<span class="chip warn">${st.softHours} ש׳ ב"עדיף שלא"</span>`);
   if (st.clashes) chips.push(`<span class="chip warn">⚠ ${st.clashes} חפיפות בנוכחות</span>`);
   return chips.join('');
@@ -478,7 +486,7 @@ function settingsSheet() {
   $('#restore').addEventListener('change', async (e) => {
     try {
       const obj = JSON.parse(await e.target.files[0].text());
-      if (obj?.v !== 1) throw new Error();
+      if (obj?.v !== 1 && obj?.v !== 2) throw new Error();
       store.replaceAll(obj);
       closeSheet();
       toast('הגיבוי נטען');
@@ -525,9 +533,8 @@ const actions = {
   rate(el) {
     const n = el.dataset.name;
     store.update((s) => {
-      const r = s.ratings[n] || 0;
-      const next = r === 0 ? 1 : r === 1 ? -1 : 0;
-      if (next) s.ratings[n] = next; else delete s.ratings[n];
+      const v = +el.dataset.v;
+      if (s.ratings[n] === v) delete s.ratings[n]; else s.ratings[n] = v;
     });
   },
   pin(el) {

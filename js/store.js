@@ -4,7 +4,7 @@
 const KEY = 'bgu-schedule:v1';
 
 const fresh = () => ({
-  v: 1,
+  v: 2,
   semester: null,
   ratings: {},
   constraints: { cells: {}, weights: {} },
@@ -18,9 +18,18 @@ let timer = null;
 function load() {
   try {
     const s = JSON.parse(localStorage.getItem(KEY));
-    if (s && s.v === 1) return { ...fresh(), ...s };
+    if (s && (s.v === 1 || s.v === 2)) return migrate(s);
   } catch { /* private mode or broken data: start clean */ }
   return fresh();
+}
+
+// v1 had two ratings (1 = מומלץ, -1 = להימנע); v2 adds "בסדר" in between.
+export function migrate(s) {
+  if (s.v === 1) {
+    s.ratings = Object.fromEntries(Object.entries(s.ratings || {}).map(([k, r]) => [k, r > 0 ? 2 : -2]));
+    s.v = 2;
+  }
+  return { ...fresh(), ...s };
 }
 
 export function save() {
@@ -48,7 +57,7 @@ export function update(fn) {
 export const subscribe = (fn) => listeners.add(fn);
 
 export function replaceAll(next) {
-  state = { ...fresh(), ...next };
+  state = migrate({ ...fresh(), ...next });
   save();
   for (const l of listeners) l();
 }

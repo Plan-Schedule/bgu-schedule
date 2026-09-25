@@ -25,7 +25,7 @@ test('pins: must and never', () => {
 });
 
 test('solve: no registered clashes', () => {
-  const state = { ratings: { 'ד"ר י. מייזל': 1, 'מר ע. שמרת': 1 }, courses: {}, constraints: {} };
+  const state = { ratings: { 'ד"ר י. מייזל': 2, 'מר ע. שמרת': 2 }, courses: {}, constraints: {} };
   const r = solve([logic, algebra, cs, data], state);
   assert.ok(r.results.length > 5);
   for (const res of r.results) {
@@ -39,7 +39,7 @@ test('solve: no registered clashes', () => {
 });
 
 test('solve: stars win within a course', () => {
-  const state = { ratings: { 'ד"ר י. מייזל': 1, 'מר ע. שמרת': 1 }, courses: {}, constraints: {} };
+  const state = { ratings: { 'ד"ר י. מייזל': 2, 'מר ע. שמרת': 2 }, courses: {}, constraints: {} };
   const best = solve([logic], state).results[0].courses[0].picks;
   assert.equal(best[0].g.lecturer, 'ד"ר י. מייזל');
   assert.equal(best[1].g.lecturer, 'מר ע. שמרת');
@@ -66,7 +66,24 @@ test('attendance: go to another group\'s lecture', () => {
 });
 
 test('missed stars are reported', () => {
-  const state = { ratings: { 'פרופ\' ג. וייס': 1 }, courses: {} };
+  const state = { ratings: { 'פרופ\' ג. וייס': 2 }, courses: {} };
   const m = missedStars(logic, [{ g: logic.groups[0], role: 'primary' }, { g: logic.groups[0].subs[0], role: 'sub' }], state);
   assert.equal(m[0].name, 'פרופ\' ג. וייס');
+});
+
+test('rating: מומלץ > בסדר > not rated > להימנע', () => {
+  // groups 1-4 of logic: prefer the "בסדר" lecturer over unrated ones, and never pick the avoided one if avoidable
+  const state = { ratings: { 'ד"ר א. שקופ שמאמא': 1, 'ד"ר י. מייזל': -2 }, courses: {}, constraints: {} };
+  const best = solve([logic], state).results[0].courses[0].picks[0].g;
+  assert.equal(best.lecturer, 'ד"ר א. שקופ שמאמא');
+  const r = solve([logic], state).results;
+  assert.ok(r.findIndex((x) => x.courses[0].picks[0].g.lecturer === 'ד"ר י. מייזל') > r.findIndex((x) => x.courses[0].picks[0].g.lecturer === "פרופ' ג. וייס"));
+});
+
+test('store: v1 ratings migrate to the three-level scale', async () => {
+  globalThis.localStorage = { getItem: () => null, setItem() {} };
+  const { migrate } = await import('../js/store.js');
+  const s = migrate({ v: 1, ratings: { a: 1, b: -1 } });
+  assert.deepEqual(s.ratings, { a: 2, b: -2 });
+  assert.equal(s.v, 2);
 });

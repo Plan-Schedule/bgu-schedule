@@ -16,6 +16,8 @@ export const mins = (t) => {
   const [h, m] = t.split(':').map(Number);
   return h * 60 + m;
 };
+// Time ranges are isolated left-to-right; inside Hebrew text "08:00–10:00" would otherwise render as "10:00–08:00".
+export const range = (a, b) => `\u2066${a}–${b}\u2069`;
 export const fmtTime = (m) => `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
 
 export const DEFAULT_PREFS = { plan: 'go', weight: 2 };
@@ -113,6 +115,8 @@ export function alternatives(course, n) {
   return course.groups.flatMap((g) => g.subs || []).filter((s) => s.type === f.g.type && s.n !== n && s.meetings.length);
 }
 
+// מומלץ / בסדר / להימנע. Someone not rated yet counts as 0: below a known "בסדר", above "להימנע".
+export const RATE = { REC: 2, OK: 1, AVOID: -2 };
 export const rating = (ratings, name) => (name && ratings[name]) || 0;
 
 const hourCells = (m) => {
@@ -304,7 +308,7 @@ export function missedStars(course, picks, state) {
       ? course.groups.filter((g) => g.type === comp.type)
       : course.groups.flatMap((g) => g.subs || []).filter((s) => s.type === comp.type);
     const chosen = picks.filter((x) => compKey(x.g, x.role) === comp.key).map((x) => x.g.lecturer);
-    const stars = [...new Set(pool.map((g) => g.lecturer).filter((n) => n && ratings[n] > 0))];
+    const stars = [...new Set(pool.map((g) => g.lecturer).filter((n) => n && ratings[n] === RATE.REC))];
     for (const s of stars) if (!chosen.includes(s)) out.push({ name: s, comp });
   }
   return out;

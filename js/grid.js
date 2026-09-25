@@ -1,5 +1,5 @@
 // Weekly grid: HTML for the screen, canvas for the image export.
-import { DAYS, mins, fmtTime, typeLabel } from './model.js';
+import { DAYS, mins, fmtTime, typeLabel, range } from './model.js';
 
 export const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
@@ -64,7 +64,7 @@ export function weekHtml(blocks, { view = 'att', hueOf, tap = false } = {}) {
       const tag = view === 'att' ? MODE_TAG[mode] || '' : '';
       html += `<button class="blk m-${mode}" data-bi="${blocks.indexOf(b)}" ${tap ? '' : 'tabindex="-1"'}
         style="--h:${hueOf(b.course.id)};top:${hourPct(s)}%;height:calc(${((e - s) / total) * 100}% - 2px);right:calc(${lane * w}% + 2px);width:calc(${w}% - 4px)"
-        title="${esc(`${b.course.name} · ${typeLabel(b.g.type)} ${b.g.n} · ${b.m.start}–${b.m.end}${b.g.lecturer ? ' · ' + b.g.lecturer : ''}`)}">
+        title="${esc(`${b.course.name} · ${typeLabel(b.g.type)} ${b.g.n} · ${range(b.m.start, b.m.end)}${b.g.lecturer ? ' · ' + b.g.lecturer : ''}`)}">
         ${tag ? `<span class="tag">${tag}</span>` : ''}
         <b>${esc(shortName(b.course.name))}</b>
         <span class="t">${esc(typeLabel(b.g.type))} ${b.g.n}</span>
@@ -138,7 +138,7 @@ export async function weekPng(blocks, { view = 'att', hueOf, title = '' }) {
     x.font = font(600, 15); x.fillText(clip(x, shortName(b.course.name), bw - 20), tx, by + 20);
     x.font = font(400, 13);
     const tag = view === 'att' && MODE_TAG[mode] ? ` ${MODE_TAG[mode]}` : '';
-    x.fillText(clip(x, `${typeLabel(b.g.type)} ${b.g.n} · ${b.m.start}–${b.m.end}${tag}`, bw - 20), tx, by + 38);
+    x.fillText(clip(x, `${typeLabel(b.g.type)} ${b.g.n} · ${range(b.m.start, b.m.end)}${tag}`, bw - 20), tx, by + 38);
     if (bh > 70 && b.g.lecturer) x.fillText(clip(x, b.g.lecturer, bw - 20), tx, by + 56);
     x.globalAlpha = 1;
   }
