@@ -1,0 +1,76 @@
+{
+ "id": "151-1-1001",
+ "name": "הכרת הספריה",
+ "credits": 0,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "קורס מקוון",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 2,
+       "start": "13:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "מקוון",
+       "hybrid": true
+      }
+     ]
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 4,
+       "start": "13:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "מקוון",
+       "hybrid": true
+      }
+     ]
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 1,
+       "start": "13:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "מקוון",
+       "hybrid": true
+      }
+     ]
+    },
+    {
+     "n": 14,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 5,
+       "start": "09:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "מקוון",
+       "hybrid": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

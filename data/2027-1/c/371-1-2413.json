@@ -1,0 +1,24 @@
+{
+ "id": "371-1-2413",
+ "name": "מעבדת מבוא לרשתות מחשבים",
+ "credits": 2,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "מעבדה",
+   "lecturer": null,
+   "meetings": [
+    {
+     "day": 4,
+     "start": "16:00",
+     "end": "20:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

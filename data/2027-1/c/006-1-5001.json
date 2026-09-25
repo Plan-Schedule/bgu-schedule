@@ -1,0 +1,40 @@
+{
+ "id": "006-1-5001",
+ "name": "Introduction to environmental geology",
+ "credits": 3,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור וסיור\n(אנגלית)",
+   "lecturer": "פרופ' ש. ארנון",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "11:00",
+     "end": "13:00",
+     "place": "בניין מים [14] חדר 15",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל\n(אנגלית)",
+     "lecturer": "פרופ' ש. ארנון",
+     "meetings": [
+      {
+       "day": 1,
+       "start": "14:00",
+       "end": "15:00",
+       "place": "בניין מים [14] חדר 15",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,40 @@
+{
+ "id": "006-1-5000",
+ "name": "Introduction to Scientific Computing with Python",
+ "credits": 3,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור\n(אנגלית)",
+   "lecturer": "ד\"ר ס. הנסן כאלב",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "15:00",
+     "end": "17:00",
+     "place": "בנין ביה\"ס [47] חדר 1",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל\n(אנגלית)",
+     "lecturer": "פרופ' ס. הנסן",
+     "meetings": [
+      {
+       "day": 3,
+       "start": "15:00",
+       "end": "17:00",
+       "place": "בנין ביה\"ס [47] חדר 1",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

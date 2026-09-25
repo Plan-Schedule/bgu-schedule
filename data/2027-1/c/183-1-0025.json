@@ -1,0 +1,64 @@
+{
+ "id": "183-1-0025",
+ "name": "מחקר מודרך",
+ "credits": 1.5,
+ "hours": 1.5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "התנסות",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "התנסות",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "התנסות",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 4,
+   "type": "התנסות",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 5,
+   "type": "התנסות",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 6,
+   "type": "התנסות",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 7,
+   "type": "התנסות",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 8,
+   "type": "התנסות",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

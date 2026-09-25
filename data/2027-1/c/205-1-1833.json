@@ -1,0 +1,104 @@
+{
+ "id": "205-1-1833",
+ "name": "מעבדה בחסרי חוליות",
+ "credits": 0.5,
+ "hours": 1,
+ "groups": [
+  {
+   "n": 1,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר ט. גורדון",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "12:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר ט. גורדון",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "12:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר ט. גורדון",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "16:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 4,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר ט. גורדון",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "16:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 5,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר ט. גורדון",
+   "meetings": [
+    {
+     "day": 2,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 6,
+   "type": "מעבדה",
+   "lecturer": null,
+   "meetings": [
+    {
+     "day": 2,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

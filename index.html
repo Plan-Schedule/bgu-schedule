@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>מתכנן מערכת שעות</title>
+  <meta name="description" content="בונים מערכת שעות בבן-גוריון: מחפשים קורסים, מדרגים מרצים ומתרגלים, ומקבלים את המערכות הכי טובות.">
+  <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14171c" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e8730c'/%3E%3Cpath d='M8 10h16M8 16h10M8 22h13' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+  <header class="top">
+    <div class="top-inner">
+      <div class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <div>
+          <h1>מתכנן מערכת שעות</h1>
+          <p class="sub">אוניברסיטת בן-גוריון · <select id="semester" aria-label="סמסטר"></select></p>
+        </div>
+      </div>
+      <button class="icon-btn" data-action="settings" aria-label="הגדרות וגיבוי">⚙︎</button>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="courses"><span class="tab-ico">📚</span><span>קורסים</span></button>
+      <button role="tab" data-tab="constraints"><span class="tab-ico">🗓️</span><span>אילוצים</span></button>
+      <button role="tab" data-tab="results"><span class="tab-ico">✨</span><span>הצעות</span></button>
+      <button role="tab" data-tab="plans"><span class="tab-ico">⭐</span><span>המערכות שלי</span></button>
+    </nav>
+  </header>
+
+  <main id="view" tabindex="-1"></main>
+
+  <div id="sheet" class="sheet" hidden>
+    <div class="sheet-backdrop" data-action="close-sheet"></div>
+    <div class="sheet-card" role="dialog" aria-modal="true"></div>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

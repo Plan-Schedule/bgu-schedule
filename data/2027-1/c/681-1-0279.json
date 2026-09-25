@@ -1,0 +1,57 @@
+{
+ "id": "681-1-0279",
+ "name": "יישומי מחשב א'",
+ "credits": 0.5,
+ "hours": 1.5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "סדנה",
+   "lecturer": "ד\"ר ל. מימוני",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "סדנה",
+   "lecturer": "ד\"ר ל. מימוני",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "סדנה",
+   "lecturer": "ד\"ר ל. מימוני",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 4,
+   "type": "סדנה",
+   "lecturer": "ד\"ר ל. מימוני",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 5,
+   "type": "סדנה",
+   "lecturer": "ד\"ר ל. מימוני",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 6,
+   "type": "סדנה",
+   "lecturer": "ד\"ר ל. מימוני",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 8,
+   "type": "סדנה",
+   "lecturer": "ד\"ר ל. מימוני",
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

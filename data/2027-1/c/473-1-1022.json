@@ -1,0 +1,49 @@
+{
+ "id": "473-1-1022",
+ "name": "אנטומיה כללית",
+ "credits": 3,
+ "hours": 3.23,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' ש. כנפו",
+   "meetings": [
+    {
+     "day": 3,
+     "start": "16:00",
+     "end": "19:00",
+     "place": "בנין דייכמן למקצועות הבריאות [M8] חדר 208",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
+   "subs": [
+    {
+     "n": 2,
+     "type": "תרגיל",
+     "lecturer": "גב' נ. הרמתי",
+     "meetings": []
+    },
+    {
+     "n": 3,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 4,
+     "type": "תרגיל",
+     "lecturer": "גב' ח. גלון",
+     "meetings": []
+    },
+    {
+     "n": 5,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

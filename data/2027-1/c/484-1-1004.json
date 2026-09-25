@@ -1,0 +1,15 @@
+{
+ "id": "484-1-1004",
+ "name": "הדרכה בספריה",
+ "credits": 0,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "מפגש חד-פעמי",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

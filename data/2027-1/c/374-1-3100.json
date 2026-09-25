@@ -1,0 +1,43 @@
+{
+ "id": "374-1-3100",
+ "name": "מעבדה הנדסית",
+ "credits": 1,
+ "hours": 2,
+ "groups": [
+  {
+   "n": 1,
+   "type": "מעבדה",
+   "lecturer": "מר כ. מזרחי",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "מעבדה",
+   "lecturer": "מר ד. ג'בארין",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר א. ברודסקי",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 4,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר א. ברודסקי",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 5,
+   "type": "מעבדה",
+   "lecturer": "גב' מ. רזנושיק",
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

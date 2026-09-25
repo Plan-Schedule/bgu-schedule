@@ -1,0 +1,22 @@
+{
+ "id": "138-1-0144",
+ "name": "אוריינות וכתיבה אקדמית",
+ "credits": 2,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 6,
+   "type": "שעור",
+   "lecturer": "ד\"ר ד. ארד",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 7,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

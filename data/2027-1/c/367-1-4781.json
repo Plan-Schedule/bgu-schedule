@@ -1,0 +1,15 @@
+{
+ "id": "367-1-4781",
+ "name": "השלמה לסמינריון",
+ "credits": 1,
+ "hours": 1,
+ "groups": [
+  {
+   "n": 1,
+   "type": "סמינריון",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

@@ -1,0 +1,24 @@
+{
+ "id": "006-1-3001",
+ "name": "Cell and its environment",
+ "credits": 3,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור\n(אנגלית)",
+   "lecturer": "ד\"ר נ. קמנאיה",
+   "meetings": [
+    {
+     "day": 3,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "בניין ביולוגיה [25] חדר 136",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

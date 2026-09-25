@@ -1,0 +1,737 @@
+import * as store from './store.js';
+import * as data from './data.js';
+import {
+  components, courseOptions, blocks as makeBlocks, solve, missedStars, weekStats, findGroup, alternatives,
+  typeLabel, DAYS, DAY_FULL, DEFAULT_PREFS, DEFAULT_WEIGHTS, rating, overlaps, fmtTime,
+} from './model.js';
+import { weekHtml, weekPng, esc, shortName } from './grid.js';
+import { encodePlan, decodePlan, registrationRows, registrationText, ics, download } from './share.js';
+
+const $ = (s, el = document) => el.querySelector(s);
+const view = $('#view');
+const HUES = [212, 24, 150, 280, 345, 188, 45, 100, 255, 5];
+
+const ui = {
+  tab: 'courses',
+  index: [],
+  courses: new Map(), // id → course data for the current semester
+  loading: new Set(),
+  open: {},
+  brush: 2,
+  results: null,
+  resultsKey: '',
+  shown: {},
+  limit: 10,
+  compare: [],
+  plan: null,
+  planView: 'att',
+  shared: null,
+  error: null,
+};
+
+// ---------- helpers ----------
+const S = () => store.get();
+const sem = () => store.sem();
+const cprefs = (id) => sem().courses[id] || (sem().courses[id] = { prefs: {}, pins: {} });
+const hueOf = (id) => {
+  const i = sem().order.indexOf(id);
+  if (i >= 0) return HUES[i % HUES.length];
+  const j = ui.shared ? Object.keys(ui.shared.plan.picks).indexOf(id) : -1;
+  if (j >= 0) return HUES[j % HUES.length];
+  let h = 0;
+  for (const ch of id) h = (h * 31 + ch.charCodeAt(0)) % 360;
+  return h;
+};
+const myCourses = () => sem().order.map((id) => ui.courses.get(id)).filter(Boolean);
+const fmtMeet = (m) => `${DAYS[m.day]} ${m.start}–${m.end}`;
+const hours = (n) => (Number.isInteger(n) ? n : n.toFixed(1));
+const starOf = (name) => {
+  const r = rating(S().ratings, name);
+  return r > 0 ? '<span class="star">⭐</span>' : r < 0 ? '<span class="avoid">🚫</span>' : '';
+};
+
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toast.t);
+  toast.t = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+async function ensureCourse(id) {
+  if (ui.courses.has(id) || ui.loading.has(id)) return;
+  ui.loading.add(id);
+  try {
+    ui.courses.set(id, await data.course(S().semester, id));
+  } catch {
+    ui.error = `לא הצלחתי לטעון את הקורס ${data.displayId(id)}`;
+  }
+  ui.loading.delete(id);
+  render();
+}
+
+// ---------- tabs ----------
+function setTab(tab) {
+  ui.tab = tab;
+  history.replaceState(null, '', tab === 'courses' ? location.pathname : `#${tab}`);
+  render();
+  window.scrollTo({ top: 0 });
+}
+
+function render() {
+  for (const b of document.querySelectorAll('.tabs [data-tab]')) b.setAttribute('aria-selected', String(b.dataset.tab === ui.tab));
+  const fn = { courses: renderCourses, constraints: renderConstraints, results: renderResults, plans: renderPlans }[ui.tab];
+  const focusQ = document.activeElement?.id === 'q';
+  view.innerHTML = (ui.error ? `<div class="notice warn">${esc(ui.error)}</div>` : '') + fn();
+  if (ui.tab === 'constraints') wireConstraintGrid();
+  if (ui.tab === 'courses') {
+    const q = $('#q');
+    q.value = ui.q || '';
+    if (focusQ) q.focus();
+    renderSearch();
+  }
+}
+
+// ---------- courses tab ----------
+function renderCourses() {
+  const list = myCourses();
+  const credits = list.reduce((s, c) => s + (c.credits || 0), 0);
+  return `
+    <div class="section-head">
+      <div>
+        <h2>הקורסים שלי</h2>
+        <p class="lead">מחפשים קורס ומוסיפים אותו. אחרי זה מדרגים מרצים ומתרגלים ומחליטים לאן הולכים.</p>
+      </div>
+      ${list.length ? `<span class="chip">${list.length} קורסים · ${hours(credits)} נק״ז</span>` : ''}
+    </div>
+    <div class="search">
+      <div class="search-field">
+        <input id="q" type="search" autocomplete="off" placeholder="חיפוש לפי שם או מספר קורס, למשל ״לוגיקה״ או 212.1.0201" aria-label="חיפוש קורס">
+        <span class="kbd" aria-hidden="true">🔍</span>
+      </div>
+      <div id="qres"></div>
+    </div>
+    ${list.length ? `
+      <p class="legend">
+        <span>לחיצה על שם: ⭐ מומלץ ← 🚫 להימנע ← בלי דירוג</span>
+        <span>📌 חייב את הקבוצה הזו</span><span>⛔ לא מתאים לי</span><span>🎥 מוקלט (היברידי)</span>
+      </p>` : ''}
+    <div class="courses">
+      ${sem().order.map((id) => courseCard(id)).join('')}
+    </div>
+    ${!sem().order.length ? `
+      <div class="empty card">
+        <div class="big">📚</div>
+        <p><b>עוד לא הוספת קורסים.</b><br>חפשו למעלה לפי שם או מספר קורס.</p>
+      </div>` : `
+      <div class="sticky-bar"><button class="btn primary" data-action="tab" data-tab="results">✨ לבנות לי מערכות</button></div>`}
+  `;
+}
+
+function renderSearch() {
+  const box = $('#qres');
+  if (!box) return;
+  const q = ui.q || '';
+  if (!q.trim()) { box.innerHTML = ''; return; }
+  if (!ui.index.length) { box.innerHTML = `<div class="card pad muted small">טוען את רשימת הקורסים…</div>`; return; }
+  const hits = data.search(ui.index, q);
+  box.innerHTML = `<div class="card results-list">${hits.length ? hits.map((c) => {
+    const added = sem().order.includes(c.id);
+    return `<div class="result-row">
+      <div class="grow"><div>${esc(c.name)}</div><div class="num">${data.displayId(c.id)}${c.credits != null ? ` · ${c.credits} נק״ז` : ''}${c.g === 0 ? ' · אין קבוצות בסמסטר הזה' : ''}</div></div>
+      <button class="btn sm ${added ? '' : 'primary'}" data-action="${added ? 'noop' : 'add'}" data-id="${c.id}" ${added ? 'disabled' : ''}>${added ? '✓ נוסף' : '+ הוספה'}</button>
+    </div>`;
+  }).join('') : `<div class="pad muted">לא נמצא קורס כזה בסמסטר ${esc(currentSemLabel())}.</div>`}</div>`;
+}
+
+function courseCard(id) {
+  const c = ui.courses.get(id);
+  const meta = ui.index.find((x) => x.id === id);
+  const name = c?.name || meta?.name || data.displayId(id);
+  const open = ui.open[id];
+  const head = `
+    <div class="course-head" data-action="toggle" data-id="${id}" role="button" aria-expanded="${!!open}">
+      <span class="swatch" style="--h:${hueOf(id)}"></span>
+      <div class="grow">
+        <div class="course-title">${esc(name)}</div>
+        <div class="course-meta"><span dir="ltr">${data.displayId(id)}</span>${c?.credits != null ? ` · ${c.credits} נק״ז` : ''}${c ? ` · ${c.groups.length} קבוצות` : ' · טוען…'}</div>
+      </div>
+      <span class="muted" aria-hidden="true">${open ? '▴' : '▾'}</span>
+    </div>`;
+  if (!open || !c) return `<article class="card course">${head}</article>`;
+  const cp = cprefs(id);
+  const comps = components(c);
+  const pinBtn = (n, v, ico, t) => `<button class="pin" data-action="pin" data-id="${id}" data-n="${n}" data-v="${v}" aria-pressed="${cp.pins[n] === v}" title="${t}" aria-label="${t}">${ico}</button>`;
+  const grp = (g, sub) => `
+    <div class="grp ${sub ? 'sub' : ''} ${cp.pins[g.n] || ''}">
+      <div class="gnum">${g.n}<small>${esc(typeLabel(g.type))}</small></div>
+      <div>
+        ${g.lecturer
+          ? `<button class="person" data-action="rate" data-name="${esc(g.lecturer)}" data-r="${rating(S().ratings, g.lecturer)}">${rating(S().ratings, g.lecturer) > 0 ? '⭐ ' : rating(S().ratings, g.lecturer) < 0 ? '🚫 ' : ''}${esc(g.lecturer)}</button>`
+          : `<span class="person none">ללא מרצה מוגדר</span>`}
+        <div class="times">${g.meetings.length ? g.meetings.map((m) => `${fmtMeet(m)}${m.hybrid ? ' <span class="rec" title="מוקלט">🎥</span>' : ''}`).join(' · ') : 'ללא שעות'}</div>
+      </div>
+      <div class="pins">${pinBtn(g.n, 'must', '📌', 'חייב את הקבוצה הזו')}${pinBtn(g.n, 'never', '⛔', 'לא מתאים לי')}</div>
+    </div>`;
+  return `
+    <article class="card course">${head}
+      <div class="course-body">
+        ${comps.map((k) => {
+          const p = { ...DEFAULT_PREFS, ...(cp.prefs[k.key] || {}) };
+          const seg = (field, opts) => `<div class="seg" role="group">${opts.map(([v, l]) => `<button data-action="pref" data-id="${id}" data-key="${esc(k.key)}" data-field="${field}" data-v="${v}" aria-pressed="${String(p[field]) === String(v)}">${l}</button>`).join('')}</div>`;
+          return `<div class="comp">
+            <div class="comp-label">${esc(k.label)}</div>
+            <div class="row" style="gap:14px">
+              <div><div class="lbl">אני מתכוון…</div>${seg('plan', [['go', 'ללכת'], ['rec', 'לראות הקלטות'], ['skip', 'לא ללכת']])}</div>
+              <div><div class="lbl">כמה חשוב לי מי מלמד?</div>${seg('weight', [[0, 'לא משנה'], [1, 'קצת'], [2, 'חשוב'], [3, 'מאוד']])}</div>
+            </div>
+          </div>`;
+        }).join('')}
+        ${c.groups.length ? `<div class="groups">${c.groups.map((g) => grp(g, false) + (g.subs || []).map((s) => grp(s, true)).join('')).join('')}</div>`
+          : `<div class="notice">לקורס הזה אין קבוצות בסמסטר ${esc(currentSemLabel())}.</div>`}
+        <div class="row" style="justify-content:space-between">
+          <a class="small muted" href="https://bgu4u.bgu.ac.il/pls/scwp/!app.gate?app=ann" target="_blank" rel="noopener">לקובץ הקורסים באתר האוניברסיטה ↗</a>
+          <button class="btn sm ghost" data-action="remove" data-id="${id}">הסרת הקורס</button>
+        </div>
+      </div>
+    </article>`;
+}
+
+// ---------- constraints tab ----------
+function renderConstraints() {
+  const cells = S().constraints.cells;
+  const w = { ...DEFAULT_WEIGHTS, ...S().constraints.weights };
+  let grid = `<div></div>`;
+  for (let d = 1; d <= 6; d++) grid += `<div class="dh" data-day="${d}" title="סימון כל היום">${DAYS[d]}</div>`;
+  for (let h = 8; h < 22; h++) {
+    grid += `<div class="hh" data-hour="${h}" title="סימון השעה בכל הימים">${h}:00</div>`;
+    for (let d = 1; d <= 6; d++) grid += `<div class="cell" data-cell="${d}-${h}" data-v="${cells[`${d}-${h}`] || 0}"></div>`;
+  }
+  const brush = (v, color, label) => `<button class="brush" data-action="brush" data-v="${v}" aria-pressed="${ui.brush === v}"><i style="background:${color}"></i>${label}</button>`;
+  const slider = (k, label, hint) => `
+    <label class="weight"><span><b>${label}</b> <span class="muted small">${['לא משנה', 'קצת', 'חשוב', 'מאוד'][w[k]]}</span></span>
+      <input type="range" min="0" max="3" step="1" value="${w[k]}" data-weight="${k}">
+      <span class="muted small">${hint}</span></label>`;
+  return `
+    <div class="section-head"><div>
+      <h2>מתי אני לא יכול או לא רוצה</h2>
+      <p class="lead">צובעים משבצות בלוח (אפשר לגרור). לחיצה על יום או על שעה צובעת את כל השורה או העמודה.<br>האילוצים חלים רק על שיעורים שבחרת ללכת אליהם, כך שלהירשם לשיעור ששמת עליו "לא ללכת" עדיין אפשר.</p>
+    </div></div>
+    <div class="two-col">
+      <div class="card pad">
+        <div class="brushes">
+          ${brush(2, 'var(--block-hard)', 'לא יכול')}
+          ${brush(1, 'var(--block-soft)', 'עדיף שלא')}
+          ${brush(0, 'var(--surface-2)', 'מחיקה')}
+          <button class="btn sm ghost" data-action="clear-cells">ניקוי הלוח</button>
+        </div>
+        <div class="cgrid" id="cgrid">${grid}</div>
+      </div>
+      <div class="card pad weights">
+        <h3>מה חשוב לי במערכת</h3>
+        ${slider('free', 'ימים חופשיים', 'כמה להעדיף מערכות עם יום בלי שיעורים')}
+        ${slider('gaps', 'בלי חלונות', 'כמה להימנע משעות ריקות בין שיעורים')}
+        ${slider('soft', 'משבצות "עדיף שלא"', 'כמה להתחשב במשבצות הצהובות')}
+        <p class="muted small">את החשיבות של מרצים ומתרגלים קובעים לכל קורס בלשונית "קורסים".</p>
+      </div>
+    </div>`;
+}
+
+function wireConstraintGrid() {
+  const grid = $('#cgrid');
+  let painting = null;
+  const cells = S().constraints.cells;
+  const setCell = (el, v) => {
+    const k = el.dataset.cell;
+    if (v) cells[k] = v; else delete cells[k];
+    el.dataset.v = v;
+  };
+  const cellsWhere = (sel) => [...grid.querySelectorAll(sel)];
+  const fill = (els) => {
+    const all = els.every((e) => +e.dataset.v === ui.brush);
+    for (const e of els) setCell(e, all ? 0 : ui.brush);
+    store.save();
+  };
+  grid.addEventListener('pointerdown', (ev) => {
+    const t = ev.target;
+    if (t.dataset.day) return fill(cellsWhere(`[data-cell^="${t.dataset.day}-"]`));
+    if (t.dataset.hour) return fill(cellsWhere(`[data-cell$="-${t.dataset.hour}"]`));
+    if (!t.dataset.cell) return;
+    ev.preventDefault();
+    painting = +t.dataset.v === ui.brush ? 0 : ui.brush;
+    setCell(t, painting);
+    grid.setPointerCapture?.(ev.pointerId);
+  });
+  grid.addEventListener('pointermove', (ev) => {
+    if (painting === null) return;
+    const el = document.elementFromPoint(ev.clientX, ev.clientY);
+    if (el?.dataset?.cell && +el.dataset.v !== painting) setCell(el, painting);
+  });
+  const stop = () => { if (painting !== null) { painting = null; store.save(); } };
+  grid.addEventListener('pointerup', stop);
+  grid.addEventListener('pointercancel', stop);
+}
+
+// ---------- results tab ----------
+function computeResults() {
+  const courses = myCourses();
+  const key = JSON.stringify([S().semester, sem().order, sem().courses, S().ratings, S().constraints, courses.length]);
+  if (key === ui.resultsKey && ui.results) return ui.results;
+  ui.resultsKey = key;
+  ui.shown = {};
+  ui.compare = [];
+  ui.limit = 10;
+  ui.results = courses.length ? solve(courses, store.solverState()) : null;
+  return ui.results;
+}
+
+function statChips(st) {
+  const chips = [];
+  chips.push(`<span class="chip">🏫 ${st.days.length} ימים: ${st.days.map((d) => DAYS[d]).join(' ')}</span>`);
+  if (st.freeDays.length) chips.push(`<span class="chip good">🌴 פנוי: ${st.freeDays.map((d) => DAYS[d]).join(' ')}</span>`);
+  chips.push(`<span class="chip ${st.gapHours >= 3 ? 'warn' : ''}">⏳ חלונות: ${hours(st.gapHours)} ש׳</span>`);
+  chips.push(`<span class="chip">⏱ ${hours(st.hours)} ש׳ בכיתה</span>`);
+  if (st.first != null) chips.push(`<span class="chip">${fmtTime(st.first)}–${fmtTime(st.last)}</span>`);
+  if (st.softHours) chips.push(`<span class="chip warn">${st.softHours} ש׳ ב"עדיף שלא"</span>`);
+  if (st.clashes) chips.push(`<span class="chip warn">⚠ ${st.clashes} חפיפות בנוכחות</span>`);
+  return chips.join('');
+}
+
+function pickLine(course, picks) {
+  return picks.map(({ g }) => `<span class="pick">${esc(typeLabel(g.type))} ${g.n}${g.lecturer ? ` · ${starOf(g.lecturer)}${esc(g.lecturer)}` : ''}</span>`).join('<span class="muted"> | </span>');
+}
+
+function renderResults() {
+  const courses = myCourses();
+  if (!sem().order.length) return `<div class="empty card"><div class="big">✨</div><p>קודם מוסיפים קורסים בלשונית "קורסים".</p><button class="btn primary" data-action="tab" data-tab="courses">לחיפוש קורסים</button></div>`;
+  if (courses.length < sem().order.length) return `<div class="empty card">טוען קורסים…</div>`;
+  const r = computeResults();
+  const head = `<div class="section-head"><div><h2>המערכות הכי טובות בשבילך</h2>
+    <p class="lead">${r.results.length ? `נבדקו ${r.leaves.toLocaleString('he')} מערכות שאפשר להירשם אליהן. אלה המובילות לפי הדירוגים והאילוצים שלך.` : ''}${r.truncated ? ' (החיפוש נעצר מוקדם כי יש הרבה אפשרויות. כדאי לנעול 📌 כמה קבוצות.)' : ''}</p></div></div>`;
+  const issues = r.issues.map((i) => {
+    if (i.reason === 'pins') return `<div class="notice warn">ב<b>${esc(i.course.name)}</b> לא נשארה אף קבוצה שאפשר להירשם אליה אחרי הנעילות (📌/⛔). כדאי לשחרר חלק מהן.</div>`;
+    if (i.reason === 'constraints') return `<div class="notice warn">ב<b>${esc(i.course.name)}</b> כל הקבוצות נופלות על משבצות "לא יכול". אפשר לסמן שלא הולכים לחלק מהשיעורים, או לשחרר אילוצים.</div>`;
+    return `<div class="notice warn">אין צירוף של הקבוצות שלא מתנגש בשעות. כדאי לשחרר נעילות או להוריד קורס.</div>`;
+  }).join('');
+  let compare = '';
+  if (ui.compare.length === 2) {
+    const [a, b] = ui.compare.map((i) => r.results[i]);
+    compare = `<section class="card pad" style="margin-bottom:14px">
+      <div class="row" style="justify-content:space-between"><h3>השוואה: מערכת ${ui.compare[0] + 1} מול מערכת ${ui.compare[1] + 1}</h3><button class="btn sm ghost" data-action="compare-clear">סגירה</button></div>
+      <div class="compare" style="margin-top:10px">
+        ${[a, b].map((x, j) => `<div><div class="stats">${statChips(x.stats)}</div>${weekHtml(x.blocks, { hueOf })}<ul class="res-lines">${diffLines(x, j === 0 ? b : a)}</ul></div>`).join('')}
+      </div></section>`;
+  }
+  const cards = r.results.slice(0, ui.limit).map((res, i) => {
+    const lost = res.courses.flatMap(({ course, picks }) => missedStars(course, picks, store.solverState()).map((m) => ({ ...m, course })));
+    return `<article class="card res">
+      <div class="res-top">
+        <div class="row"><span class="rank">${i + 1}</span><div class="stats" style="margin:0">${statChips(res.stats)}</div></div>
+        <div class="row">
+          <button class="btn sm" data-action="show" data-i="${i}">${ui.shown[i] ? 'הסתרה' : 'הצגת המערכת'}</button>
+          <button class="btn sm" data-action="compare" data-i="${i}" aria-pressed="${ui.compare.includes(i)}">${ui.compare.includes(i) ? '✓ בהשוואה' : 'השוואה'}</button>
+          <button class="btn sm primary" data-action="save-result" data-i="${i}">שמירה</button>
+        </div>
+      </div>
+      <ul class="res-lines">${res.courses.map(({ course, picks }) => `<li><span class="dot" style="--h:${hueOf(course.id)}"></span><span class="cn">${esc(shortName(course.name))}</span>${pickLine(course, picks)}</li>`).join('')}</ul>
+      ${lost.length ? `<div class="lost">ויתרת על: ${lost.map((l) => `<b>⭐ ${esc(l.name)}</b> (${esc(shortName(l.course.name))}, ${esc(l.comp.label)})`).join(' · ')}</div>` : ''}
+      ${ui.shown[i] ? weekHtml(res.blocks, { hueOf }) : ''}
+    </article>`;
+  }).join('');
+  const more = r.results.length > ui.limit ? `<div class="row" style="justify-content:center;margin-top:12px"><button class="btn" data-action="more">עוד מערכות (${r.results.length - ui.limit})</button></div>` : '';
+  return head + issues + compare + `<div class="res-list">${cards}</div>` + more +
+    (ui.compare.length === 1 ? `<div class="sticky-bar"><span class="chip" style="background:var(--text);color:var(--bg);padding:8px 14px">בחרו עוד מערכת אחת להשוואה</span></div>` : '');
+}
+
+function diffLines(x, other) {
+  return x.courses.map(({ course, picks }) => {
+    const o = other.courses.find((c) => c.course.id === course.id);
+    const same = o && o.picks.map((p) => p.g.n).join() === picks.map((p) => p.g.n).join();
+    return `<li style="${same ? 'opacity:.5' : ''}"><span class="dot" style="--h:${hueOf(course.id)}"></span><span class="cn">${esc(shortName(course.name))}</span>${pickLine(course, picks)}</li>`;
+  }).join('');
+}
+
+// ---------- plans tab ----------
+function planBlocks(plan, courseMap = ui.courses) {
+  const out = [];
+  for (const [cid, nums] of Object.entries(plan.picks)) {
+    const course = courseMap.get(cid);
+    if (!course) continue;
+    const picks = nums.map((n) => findGroup(course, n)).filter(Boolean).map((f) => ({ g: f.g, role: f.role }));
+    out.push(...makeBlocks(course, picks, sem().courses[cid]?.prefs || {}, plan.attend?.[cid] || {}));
+  }
+  return out;
+}
+
+function currentPlan() {
+  if (ui.shared) return ui.shared.plan;
+  const plans = sem().plans;
+  return plans.find((p) => p.id === ui.plan) || plans[0] || null;
+}
+
+function renderPlans() {
+  const plans = sem().plans;
+  const plan = currentPlan();
+  let top = '';
+  if (ui.shared) {
+    const missing = Object.keys(ui.shared.plan.picks).filter((id) => !ui.courses.has(id));
+    missing.forEach(ensureCourse);
+    top = `<div class="notice"><b>מערכת ששותפה איתך: ${esc(ui.shared.plan.name || '')}</b>
+      <div class="row" style="margin-top:8px"><button class="btn sm primary" data-action="shared-save">שמירה אצלי</button><button class="btn sm" data-action="shared-close">סגירה</button></div></div>`;
+  }
+  if (!plan) {
+    return `<div class="section-head"><div><h2>המערכות שלי</h2></div></div>
+      <div class="empty card"><div class="big">⭐</div><p>עוד לא שמרת מערכת.<br>בלשונית "הצעות" לוחצים "שמירה" על מערכת שמוצאת חן בעיניך.</p>
+      <button class="btn primary" data-action="tab" data-tab="results">להצעות</button></div>`;
+  }
+  const bl = planBlocks(plan);
+  const st = weekStats(bl);
+  const rows = registrationRows([...ui.courses.values()], plan);
+  const credits = rows.reduce((s, r) => s + (r.course.credits || 0), 0);
+  return `
+    ${top}
+    ${ui.shared ? '' : `<div class="section-head"><div><h2>המערכות שלי</h2><p class="lead">לחיצה על שיעור: להחליט אם הולכים, רואים הקלטה, הולכים לקבוצה אחרת, או מחליפים קבוצה ברישום.</p></div></div>
+    <div class="plan-tabs">${plans.map((p) => `<button class="plan-tab" data-action="plan" data-id="${p.id}" aria-pressed="${p === plan}">${esc(p.name)}</button>`).join('')}</div>`}
+    <div class="card pad">
+      <div class="row" style="justify-content:space-between">
+        <div class="seg" role="group">
+          <button data-action="plan-view" data-v="att" aria-pressed="${ui.planView === 'att'}">לאן אני הולך בפועל</button>
+          <button data-action="plan-view" data-v="reg" aria-pressed="${ui.planView === 'reg'}">למה אני רשום</button>
+        </div>
+        ${ui.shared ? '' : `<div class="row">
+          <button class="btn sm ghost" data-action="plan-rename">שינוי שם</button>
+          <button class="btn sm ghost" data-action="plan-dup">שכפול</button>
+          <button class="btn sm ghost" data-action="plan-del">מחיקה</button></div>`}
+      </div>
+      <div class="stats">${statChips(st)}</div>
+      ${weekHtml(bl, { view: ui.planView, hueOf, tap: !ui.shared })}
+      <p class="legend" style="margin-top:8px"><span>🎥 הקלטה</span><span>✕ לא הולך</span><span>↩ הולך לקבוצה אחרת</span><span>↪ רשום אבל לא שם</span></p>
+      <h3 style="margin-top:14px">מה מקלידים במערכת הרישום</h3>
+      <table class="reg-table"><thead><tr><th>מספר קורס</th><th>קורס</th><th>קבוצות</th></tr></thead><tbody>
+        ${rows.map((r) => `<tr><td class="num">${data.displayId(r.course.id)}</td><td>${esc(r.course.name)}</td><td>${r.groups.map((g) => `${esc(g.label)} <b>${g.n}</b>`).join(' · ')}</td></tr>`).join('')}
+        <tr><td></td><td class="muted">סה״כ</td><td class="muted">${hours(credits)} נק״ז</td></tr>
+      </tbody></table>
+      <div class="exports">
+        <button class="btn" data-action="copy-reg">📋 העתקת רשימה לרישום</button>
+        <button class="btn" data-action="share-link">🔗 קישור לשיתוף</button>
+        <button class="btn" data-action="png">🖼️ שמירה כתמונה</button>
+        <button class="btn" data-action="ics">📅 הוספה ליומן</button>
+      </div>
+    </div>`;
+}
+
+// ---------- sheets ----------
+function openSheet(html) {
+  const s = $('#sheet');
+  $('.sheet-card', s).innerHTML = html;
+  s.hidden = false;
+  $('.sheet-card button, .sheet-card input', s)?.focus();
+}
+const closeSheet = () => { $('#sheet').hidden = true; };
+
+function blockSheet(bi) {
+  const plan = currentPlan();
+  const bl = planBlocks(plan);
+  const b = bl[bi];
+  if (!b) return;
+  const reg = b.mode === 'alt' ? b.regGroup : b.g;
+  const course = b.course;
+  const cur = plan.attend?.[course.id]?.[reg.n] || sem().courses[course.id]?.prefs?.[b.key]?.plan || 'go';
+  const hybrid = reg.meetings.some((m) => m.hybrid);
+  const opt = (v, ico, label, sub = '', dis = false) => `<button class="opt" data-action="attend" data-cid="${course.id}" data-n="${reg.n}" data-v="${v}" aria-pressed="${cur === v}" ${dis ? 'disabled' : ''}><span class="ico">${ico}</span><span class="grow"><b>${label}</b>${sub ? `<br><span class="muted small">${sub}</span>` : ''}</span></button>`;
+  const alts = alternatives(course, reg.n);
+  // other registrations for this course that don't clash with the rest of the plan
+  const others = bl.filter((x) => x.course.id !== course.id && (x.registered || x.mode === 'moved')).map((x) => x.m);
+  const swaps = courseOptions(course).filter((o) => {
+    const nums = o.picks.map((p) => p.g.n).join();
+    if (nums === plan.picks[course.id].join()) return false;
+    return !o.picks.flatMap((p) => p.g.meetings).some((m) => others.some((x) => overlaps(m, x)));
+  });
+  openSheet(`
+    <h3>${esc(course.name)}</h3>
+    <p class="muted small">${esc(typeLabel(reg.type))} ${reg.n}${reg.lecturer ? ' · ' + starOf(reg.lecturer) + esc(reg.lecturer) : ''} · ${reg.meetings.map(fmtMeet).join(' · ')}${hybrid ? ' · 🎥 מוקלט' : ''}</p>
+    <div class="opt-list">
+      ${opt('go', '🙋', 'אלך')}
+      ${opt('rec', '🎥', 'אראה בהקלטה', hybrid ? '' : 'השיעור הזה לא מסומן כהיברידי', !hybrid)}
+      ${opt('skip', '✕', 'לא אלך')}
+      ${alts.map((a) => opt(`alt:${a.n}`, '↩', `אלך במקום זה לקבוצה ${a.n}`, `${a.lecturer ? starOf(a.lecturer) + esc(a.lecturer) + ' · ' : ''}${a.meetings.map(fmtMeet).join(' · ')}`)).join('')}
+    </div>
+    ${swaps.length ? `<details><summary><b>החלפת קבוצה ברישום</b> <span class="muted small">(${swaps.length} אפשרויות בלי התנגשות)</span></summary>
+      <div class="opt-list">${swaps.map((o) => `<button class="opt" data-action="swap" data-cid="${course.id}" data-nums="${o.picks.map((p) => p.g.n).join(',')}"><span class="ico">⇄</span><span class="grow">${o.picks.map(({ g }) => `<b>${esc(typeLabel(g.type))} ${g.n}</b> ${g.lecturer ? starOf(g.lecturer) + esc(g.lecturer) : ''} <span class="muted small">${g.meetings.map(fmtMeet).join(' · ')}</span>`).join('<br>')}</span></button>`).join('')}</div>
+    </details>` : ''}
+    <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" data-action="close-sheet">סגירה</button></div>`);
+}
+
+function settingsSheet() {
+  const sems = ui.semesters || [];
+  const cur = sems.find((s) => s.id === S().semester);
+  openSheet(`
+    <h3>הגדרות וגיבוי</h3>
+    <p class="muted small">כל מה שבחרת נשמר רק בדפדפן הזה. כדי לעבור בין טלפון למחשב מורידים קובץ גיבוי וטוענים אותו במכשיר השני.</p>
+    <div class="opt-list">
+      <button class="opt" data-action="backup"><span class="ico">⬇️</span><span class="grow"><b>הורדת קובץ גיבוי</b></span></button>
+      <label class="opt"><span class="ico">⬆️</span><span class="grow"><b>טעינת קובץ גיבוי</b></span><input type="file" accept="application/json" id="restore" hidden></label>
+      <button class="opt" data-action="reset"><span class="ico">🗑️</span><span class="grow"><b>מחיקת כל הנתונים שלי</b></span></button>
+    </div>
+    <p class="muted small">הנתונים על הקורסים נלקחים מקובץ הקורסים של האוניברסיטה ומתעדכנים אוטומטית פעם ביום${cur?.updated ? ` (עדכון אחרון: ${cur.updated})` : ''}. לפני הרישום כדאי לבדוק את השעות גם באתר של האוניברסיטה.</p>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-sheet">סגירה</button></div>`);
+  $('#restore').addEventListener('change', async (e) => {
+    try {
+      const obj = JSON.parse(await e.target.files[0].text());
+      if (obj?.v !== 1) throw new Error();
+      store.replaceAll(obj);
+      closeSheet();
+      toast('הגיבוי נטען');
+      loadSemester();
+    } catch { toast('הקובץ לא נראה כמו גיבוי של המתכנן'); }
+  });
+}
+
+function icsSheet() {
+  const d = new Date();
+  d.setDate(d.getDate() + ((7 - d.getDay()) % 7 || 7));
+  const iso = (x) => x.toISOString().slice(0, 10);
+  const end = new Date(d); end.setDate(end.getDate() + 7 * 13 - 2);
+  openSheet(`
+    <h3>הוספה ליומן</h3>
+    <p class="muted small">נוצר קובץ יומן עם אירוע שבועי חוזר לכל שיעור שבחרת ללכת אליו או לראות בהקלטה. פותחים אותו בטלפון או מייבאים ל-Google Calendar.</p>
+    <label class="field"><span>תחילת הסמסטר</span><input type="date" id="ics-start" value="${iso(d)}"></label>
+    <label class="field"><span>סוף הסמסטר</span><input type="date" id="ics-end" value="${iso(end)}"></label>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-sheet">ביטול</button><button class="btn primary" data-action="ics-go">הורדה</button></div>`);
+}
+
+// ---------- actions ----------
+const actions = {
+  tab: (el) => setTab(el.dataset.tab),
+  noop: () => {},
+  add(el) {
+    const id = el.dataset.id;
+    store.update(() => {
+      if (!sem().order.includes(id)) sem().order.push(id);
+      cprefs(id);
+    });
+    ui.open = { [id]: true };
+    ensureCourse(id);
+    toast('הקורס נוסף');
+  },
+  remove(el) {
+    const id = el.dataset.id;
+    store.update(() => {
+      sem().order = sem().order.filter((x) => x !== id);
+      delete sem().courses[id];
+    });
+  },
+  toggle(el) { ui.open[el.dataset.id] = !ui.open[el.dataset.id]; render(); },
+  rate(el) {
+    const n = el.dataset.name;
+    store.update((s) => {
+      const r = s.ratings[n] || 0;
+      const next = r === 0 ? 1 : r === 1 ? -1 : 0;
+      if (next) s.ratings[n] = next; else delete s.ratings[n];
+    });
+  },
+  pin(el) {
+    const { id, n, v } = el.dataset;
+    store.update(() => {
+      const pins = cprefs(id).pins;
+      if (pins[n] === v) delete pins[n]; else pins[n] = v;
+    });
+  },
+  pref(el) {
+    const { id, key, field, v } = el.dataset;
+    store.update(() => {
+      const p = cprefs(id).prefs;
+      p[key] = { ...DEFAULT_PREFS, ...(p[key] || {}), [field]: field === 'weight' ? +v : v };
+    });
+  },
+  brush(el) { ui.brush = +el.dataset.v; render(); },
+  'clear-cells': () => store.update((s) => { s.constraints.cells = {}; }),
+  more() { ui.limit += 10; render(); },
+  show(el) { ui.shown[el.dataset.i] = !ui.shown[el.dataset.i]; render(); },
+  compare(el) {
+    const i = +el.dataset.i;
+    ui.compare = ui.compare.includes(i) ? ui.compare.filter((x) => x !== i) : [...ui.compare, i].slice(-2);
+    render();
+    if (ui.compare.length === 2) window.scrollTo({ top: 0, behavior: 'smooth' });
+  },
+  'compare-clear': () => { ui.compare = []; render(); },
+  'save-result'(el) {
+    const res = ui.results.results[+el.dataset.i];
+    const plan = {
+      id: Math.random().toString(36).slice(2, 9),
+      name: `מערכת ${sem().plans.length + 1}`,
+      picks: Object.fromEntries(res.courses.map(({ course, picks }) => [course.id, picks.map((p) => p.g.n)])),
+      attend: {},
+    };
+    store.update(() => sem().plans.push(plan));
+    ui.plan = plan.id;
+    toast(`נשמר בתור "${plan.name}"`);
+  },
+  plan(el) { ui.plan = el.dataset.id; render(); },
+  'plan-view'(el) { ui.planView = el.dataset.v; render(); },
+  'plan-rename'() {
+    const p = currentPlan();
+    const name = prompt('שם למערכת', p.name);
+    if (name?.trim()) store.update(() => { p.name = name.trim(); });
+  },
+  'plan-dup'() {
+    const p = currentPlan();
+    const copy = { ...structuredClone(p), id: Math.random().toString(36).slice(2, 9), name: `${p.name} (עותק)` };
+    store.update(() => sem().plans.push(copy));
+    ui.plan = copy.id;
+    render();
+  },
+  'plan-del'() {
+    const p = currentPlan();
+    if (!confirm(`למחוק את "${p.name}"?`)) return;
+    store.update(() => { sem().plans = sem().plans.filter((x) => x !== p); });
+  },
+  attend(el) {
+    const { cid, n, v } = el.dataset;
+    const p = currentPlan();
+    store.update(() => {
+      p.attend ||= {};
+      p.attend[cid] ||= {};
+      p.attend[cid][n] = v;
+    });
+    closeSheet();
+  },
+  swap(el) {
+    const { cid, nums } = el.dataset;
+    const p = currentPlan();
+    store.update(() => {
+      p.picks[cid] = nums.split(',').map(Number);
+      if (p.attend) delete p.attend[cid];
+    });
+    closeSheet();
+    toast('הקבוצה הוחלפה');
+  },
+  async 'copy-reg'() {
+    const p = currentPlan();
+    const text = registrationText(registrationRows([...ui.courses.values()], p), `${p.name} · ${currentSemLabel()}`);
+    try { await navigator.clipboard.writeText(text); toast('הרשימה הועתקה'); } catch { prompt('העתיקו מכאן:', text); }
+  },
+  async 'share-link'() {
+    const p = currentPlan();
+    const url = `${location.origin}${location.pathname}#s=${await encodePlan(S().semester, p)}`;
+    if (navigator.share) {
+      try { await navigator.share({ title: p.name, text: `המערכת שלי: ${p.name}`, url }); return; } catch (e) { if (e.name === 'AbortError') return; }
+    }
+    try { await navigator.clipboard.writeText(url); toast('הקישור הועתק'); } catch { prompt('העתיקו את הקישור:', url); }
+  },
+  async png() {
+    const p = currentPlan();
+    const blob = await weekPng(planBlocks(p), { view: ui.planView, hueOf, title: `${p.name} · ${currentSemLabel()}` });
+    const file = new File([blob], `${p.name}.png`, { type: 'image/png' });
+    if (navigator.canShare?.({ files: [file] })) {
+      try { await navigator.share({ files: [file], title: p.name }); return; } catch (e) { if (e.name === 'AbortError') return; }
+    }
+    download(blob, `${p.name}.png`);
+  },
+  ics: () => icsSheet(),
+  'ics-go'() {
+    const p = currentPlan();
+    const text = ics(planBlocks(p), { start: $('#ics-start').value, end: $('#ics-end').value, name: p.name });
+    download(new Blob([text], { type: 'text/calendar' }), `${p.name}.ics`);
+    closeSheet();
+  },
+  'shared-save'() {
+    const sp = ui.shared.plan;
+    const plan = { ...structuredClone(sp), id: Math.random().toString(36).slice(2, 9), name: sp.name || 'מערכת ששותפה' };
+    store.update(() => {
+      sem().plans.push(plan);
+      for (const id of Object.keys(plan.picks)) if (!sem().order.includes(id)) { sem().order.push(id); cprefs(id); }
+    });
+    ui.shared = null;
+    ui.plan = plan.id;
+    history.replaceState(null, '', '#plans');
+    render();
+    toast('המערכת נשמרה אצלך');
+  },
+  'shared-close'() { ui.shared = null; history.replaceState(null, '', '#plans'); render(); },
+  settings: () => settingsSheet(),
+  'close-sheet': () => closeSheet(),
+  backup() {
+    download(new Blob([JSON.stringify(S(), null, 1)], { type: 'application/json' }), 'bgu-schedule-backup.json');
+  },
+  reset() {
+    if (!confirm('למחוק את כל הקורסים, הדירוגים והמערכות ששמרת?')) return;
+    const semester = S().semester;
+    store.replaceAll({ semester });
+    closeSheet();
+  },
+};
+
+document.addEventListener('click', (ev) => {
+  const tabBtn = ev.target.closest('.tabs [data-tab]');
+  if (tabBtn) return setTab(tabBtn.dataset.tab);
+  const blk = ev.target.closest('.blk[data-bi]');
+  if (blk && ui.tab === 'plans' && !ui.shared) return blockSheet(+blk.dataset.bi);
+  const el = ev.target.closest('[data-action]');
+  if (el && actions[el.dataset.action]) {
+    ev.preventDefault?.();
+    actions[el.dataset.action](el, ev);
+  }
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSheet(); });
+view.addEventListener('input', (e) => {
+  if (e.target.id === 'q') { ui.q = e.target.value; renderSearch(); }
+  if (e.target.dataset.weight) {
+    store.get().constraints.weights[e.target.dataset.weight] = +e.target.value;
+    store.save();
+    e.target.closest('.weight').querySelector('.muted').textContent = ['לא משנה', 'קצת', 'חשוב', 'מאוד'][+e.target.value];
+  }
+});
+store.subscribe(render);
+
+// ---------- boot ----------
+function currentSemLabel() {
+  return ui.semesters?.find((s) => s.id === S().semester)?.label || S().semester || '';
+}
+
+async function loadSemester() {
+  ui.courses = new Map();
+  ui.index = [];
+  ui.results = null;
+  ui.resultsKey = '';
+  render();
+  try {
+    const idx = await data.index(S().semester);
+    ui.index = idx.courses;
+  } catch {
+    ui.error = 'לא הצלחתי לטעון את רשימת הקורסים. בדקו את החיבור לאינטרנט ונסו לרענן.';
+  }
+  const need = new Set([...sem().order, ...sem().plans.flatMap((p) => Object.keys(p.picks))]);
+  await Promise.all([...need].map(ensureCourse));
+  render();
+}
+
+async function boot() {
+  const hash = location.hash.slice(1);
+  if (['constraints', 'results', 'plans'].includes(hash)) ui.tab = hash;
+  try {
+    ui.semesters = await data.semesters();
+  } catch {
+    ui.semesters = [];
+    ui.error = 'לא הצלחתי לטעון את נתוני הקורסים.';
+  }
+  if (hash.startsWith('s=')) {
+    try {
+      ui.shared = await decodePlan(hash.slice(2));
+      S().semester = ui.shared.semester;
+      ui.tab = 'plans';
+    } catch { ui.error = 'הקישור ששותף איתך פגום או חלקי.'; }
+  }
+  if (!S().semester || !ui.semesters.some((s) => s.id === S().semester)) S().semester = ui.semesters[0]?.id || '2027-1';
+  const sel = $('#semester');
+  sel.innerHTML = ui.semesters.map((s) => `<option value="${s.id}">${esc(s.label)}</option>`).join('');
+  sel.value = S().semester;
+  sel.addEventListener('change', () => {
+    ui.shared = null;
+    store.update((s) => { s.semester = sel.value; });
+    loadSemester();
+  });
+  await loadSemester();
+}
+
+boot();

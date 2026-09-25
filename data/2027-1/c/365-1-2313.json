@@ -1,0 +1,72 @@
+{
+ "id": "365-1-2313",
+ "name": "מעבדת חומרים 1",
+ "credits": 1.5,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר מ. חרץ",
+   "meetings": [
+    {
+     "day": 4,
+     "start": "08:00",
+     "end": "11:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר מ. חרץ",
+   "meetings": [
+    {
+     "day": 4,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר מ. חרץ",
+   "meetings": [
+    {
+     "day": 4,
+     "start": "14:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 4,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר מ. חרץ",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

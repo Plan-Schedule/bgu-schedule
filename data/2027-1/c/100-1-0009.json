@@ -1,0 +1,15 @@
+{
+ "id": "100-1-0009",
+ "name": "תוכנית - לימודים בחו\"ל",
+ "credits": 0,
+ "hours": 0,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

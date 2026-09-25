@@ -1,0 +1,55 @@
+{
+ "id": "362-1-4201",
+ "name": "המיקרו-מחשב במערכות מכניות",
+ "credits": 3.5,
+ "hours": 5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [
+    {
+     "day": 1,
+     "start": "12:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 2,
+       "start": "09:00",
+       "end": "11:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    },
+    {
+     "n": 12,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 2,
+       "start": "11:00",
+       "end": "13:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
