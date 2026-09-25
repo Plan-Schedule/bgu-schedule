@@ -202,6 +202,7 @@ function courseCard(id) {
         <div class="course-title">${esc(name)}</div>
         <div class="course-meta"><span dir="ltr">${data.displayId(id)}</span>${c?.credits != null ? ` · ${c.credits} נק״ז` : ''}${c ? ` · ${c.groups.length} קבוצות` : ' · טוען…'}</div>
       </div>
+      <button class="course-x" data-action="remove" data-id="${id}" aria-label="הסרת ${esc(name)}" title="הסרת הקורס">✕</button>
       <span class="muted" aria-hidden="true">${open ? '▴' : '▾'}</span>
     </div>`;
   if (!open || !c) return `<article class="card course">${head}</article>`;
@@ -672,8 +673,10 @@ const actions = {
     ensureCourse(id);
     toast('הקורס נוסף');
   },
-  remove(el) {
+  async remove(el) {
     const id = el.dataset.id;
+    const name = ui.courses.get(id)?.name || data.displayId(id);
+    if (!(await ask({ title: `להסיר את "${name}"?`, text: 'הדירוגים וההעדפות שסימנת בקורס הזה יימחקו. מערכות ששמרת לא משתנות.', yes: 'הסרה', danger: true }))) return;
     store.update(() => {
       sem().order = sem().order.filter((x) => x !== id);
       delete sem().courses[id];
