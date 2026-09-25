@@ -1,5 +1,5 @@
 // Share links, calendar export and the registration cheat-sheet.
-import { mins, typeLabel, findGroup, DAY_FULL } from './model.js';
+import { mins, typeLabel, findGroup, DAY_FULL, validPlan } from './model.js';
 import { displayId } from './data.js';
 
 const b64url = (bytes) => btoa(String.fromCharCode(...bytes)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -22,8 +22,26 @@ export async function decodePlan(str) {
   const kind = str[0];
   let bytes = unb64url(str.slice(1));
   if (kind === 'z') bytes = await pipe(bytes, new DecompressionStream('deflate-raw'));
-  const o = JSON.parse(new TextDecoder().decode(bytes));
-  return { semester: o.s, plan: { name: o.n, picks: o.p, attend: o.a || {} } };
+  return sanitizePlan(JSON.parse(new TextDecoder().decode(bytes)));
+}
+
+const isObj = (x) => x && typeof x === 'object' && !Array.isArray(x);
+const ID = /^\d{3}-\d-\d{4}$/;
+
+/** A shared link is input from a stranger: keep only well-formed fields. */
+export function sanitizePlan(o) {
+  if (!isObj(o) || typeof o.s !== 'string' || !/^\d{4}-[1-3]$/.test(o.s)) throw new Error('bad link');
+  const picks = {}, attend = {};
+  for (const [id, nums] of Object.entries(isObj(o.p) ? o.p : {})) {
+    if (!ID.test(id) || !Array.isArray(nums)) continue;
+    picks[id] = nums.filter((n) => Number.isInteger(n) && n > 0 && n < 10000).slice(0, 6);
+  }
+  for (const [id, m] of Object.entries(isObj(o.a) ? o.a : {})) {
+    if (!picks[id] || !isObj(m)) continue;
+    attend[id] = Object.fromEntries(Object.entries(m).filter(([n, v]) => /^\d{1,4}$/.test(n) && validPlan(v)));
+  }
+  if (!Object.keys(picks).length) throw new Error('empty link');
+  return { semester: o.s, plan: { name: String(o.n ?? '').slice(0, 60), picks, attend } };
 }
 
 /** Lines for typing into the registration system. */

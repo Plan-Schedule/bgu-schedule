@@ -129,11 +129,14 @@ const hourCells = (m) => {
  * Turns picks + attendance choices into concrete blocks for the grid.
  * attend: { [groupN]: 'go' | 'rec' | 'skip' | 'alt:<n>' }; missing → from component plan.
  */
+export const validPlan = (v) => typeof v === 'string' && /^(go|rec|skip|alt:\d{1,4})$/.test(v);
+
 export function blocks(course, picks, prefs = {}, attend = {}) {
   const out = [];
   for (const { g, role } of picks) {
     const key = compKey(g, role);
-    const plan = attend[g.n] || prefs[key]?.plan || DEFAULT_PREFS.plan;
+    // attend/prefs can come from a shared link or a backup file: only known values get through
+    const plan = [attend[g.n], prefs[key]?.plan, DEFAULT_PREFS.plan].find(validPlan);
     let src = g;
     let mode = plan;
     if (plan.startsWith('alt:')) {

@@ -87,3 +87,18 @@ test('store: v1 ratings migrate to the three-level scale', async () => {
   assert.deepEqual(s.ratings, { a: 2, b: -2 });
   assert.equal(s.v, 2);
 });
+
+test('security: attendance values from a shared link or backup cannot inject markup', async () => {
+  const { blocks: mk } = await import('../js/model.js');
+  const { sanitizePlan } = await import('../js/share.js');
+  const g1 = logic.groups[0];
+  const evil = 'x" onmouseover="alert(1)';
+  const bl = mk(logic, [{ g: g1, role: 'primary' }], { 'P:שעור': { plan: evil } }, { 1: evil });
+  assert.ok(bl.every((b) => ['go', 'rec', 'skip', 'moved', 'alt'].includes(b.mode)));
+  const p = sanitizePlan({ s: '2027-1', n: '<b>x</b>'.repeat(20), p: { '212-1-0201': [1, 11, 'x'], '../x': [1] }, a: { '212-1-0201': { 1: evil, 11: 'rec' } } });
+  assert.deepEqual(Object.keys(p.plan.picks), ['212-1-0201']);
+  assert.deepEqual(p.plan.picks['212-1-0201'], [1, 11]);
+  assert.deepEqual(p.plan.attend['212-1-0201'], { 11: 'rec' });
+  assert.ok(p.plan.name.length <= 60);
+  assert.throws(() => sanitizePlan({ s: '"><img>', p: {} }));
+});
