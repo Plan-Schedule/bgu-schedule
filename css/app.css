@@ -173,7 +173,7 @@ main { max-width: 1100px; margin: 0 auto; padding: 16px; outline: none; }
 .week .col { position: relative; border-inline-start: 1px solid var(--border); background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--hour) - 1px), var(--border) calc(var(--hour) - 1px), var(--border) var(--hour)); }
 .blk { position: absolute; border-radius: 7px; padding: 3px 5px; overflow: hidden; font-size: 11.5px; line-height: 1.25;
   background: hsl(var(--h) var(--c-s) var(--c-l1)); color: hsl(var(--h) 60% var(--c-l3)); border: 1px solid hsl(var(--h) 55% var(--c-l2)); border-inline-start-width: 4px; cursor: pointer; text-align: start; }
-.blk b { font-weight: 600; display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.blk b { font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; word-break: break-word; }
 .blk .t { opacity: .85; white-space: nowrap; }
 .blk .p { opacity: .85; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
 .blk.m-rec { background: repeating-linear-gradient(135deg, hsl(var(--h) var(--c-s) var(--c-l1)) 0 6px, var(--surface) 6px 12px); border-style: dashed; }
