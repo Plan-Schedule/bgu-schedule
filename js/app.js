@@ -693,7 +693,8 @@ store.subscribe(render);
 
 // ---------- boot ----------
 function currentSemLabel() {
-  return ui.semesters?.find((s) => s.id === S().semester)?.label || S().semester || '';
+  const [y, s] = (S().semester || '').split('-');
+  return y ? `${data.SEM_NAMES[s] || s} ${data.hebrewYear(+y)}` : '';
 }
 
 async function loadSemester() {
@@ -729,15 +730,31 @@ async function boot() {
       ui.tab = 'plans';
     } catch { ui.error = 'הקישור ששותף איתך פגום או חלקי.'; }
   }
-  if (!S().semester || !ui.semesters.some((s) => s.id === S().semester)) S().semester = ui.semesters[0]?.id || '2027-1';
-  const sel = $('#semester');
-  sel.innerHTML = ui.semesters.map((s) => `<option value="${s.id}">${esc(s.label)}</option>`).join('');
-  sel.value = S().semester;
-  sel.addEventListener('change', () => {
+  const has = (id) => ui.semesters.some((s) => s.id === id);
+  if (!has(S().semester)) S().semester = has(data.currentSemesterId()) ? data.currentSemesterId() : ui.semesters[0]?.id || '2027-1';
+  const yearSel = $('#year'), semSel = $('#sem');
+  const years = [...new Set(ui.semesters.map((s) => +s.id.split('-')[0]))].sort((a, b) => b - a);
+  yearSel.innerHTML = years.map((y) => `<option value="${y}">${data.hebrewYear(y)} (${y})</option>`).join('');
+  const fillSems = () => {
+    const y = yearSel.value;
+    semSel.innerHTML = ui.semesters.filter((s) => s.id.startsWith(y + '-')).sort((a, b) => a.id.localeCompare(b.id))
+      .map((s) => `<option value="${s.id}">${data.SEM_NAMES[s.id.split('-')[1]] || s.id}</option>`).join('');
+  };
+  const switchTo = (id) => {
     ui.shared = null;
-    store.update((s) => { s.semester = sel.value; });
+    store.update((s) => { s.semester = id; });
     loadSemester();
+  };
+  yearSel.value = S().semester.split('-')[0];
+  fillSems();
+  semSel.value = S().semester;
+  yearSel.addEventListener('change', () => {
+    const wanted = `${yearSel.value}-${S().semester.split('-')[1]}`;
+    fillSems();
+    semSel.value = has(wanted) ? wanted : semSel.options[0].value;
+    switchTo(semSel.value);
   });
+  semSel.addEventListener('change', () => switchTo(semSel.value));
   await loadSemester();
 }
 

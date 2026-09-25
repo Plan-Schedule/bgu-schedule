@@ -26,6 +26,7 @@ const SEM = args.sem || '1';
 const LEVEL = args.level ?? '1';
 const CONCURRENCY = +(args.concurrency || 3);
 const ONLY = args.only ? args.only.split(',') : null;
+const ONCE = 'once' in args; // past semesters don't change: download them a single time
 
 const decoder = new TextDecoder('windows-1255');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -71,12 +72,22 @@ async function main() {
   const semKey = `${YEAR}-${SEM}`;
   const dir = join(ROOT, 'data', semKey);
 
+  if (ONCE) {
+    const have = JSON.parse(await readFile(join(dir, 'index.json'), 'utf8').catch(() => '{"courses":[]}'));
+    if (have.courses.length) return console.log(`${semKey} already downloaded, skipping`);
+  }
   console.log(`Searching all courses for ${semKey} (level ${LEVEL || 'any'})…`);
   let list = parseIndex(await post(SEARCH_FORM));
   list = [...new Map(list.map((c) => [c.id, c])).values()];
   console.log(`${list.length} courses in the catalogue`);
   if (ONLY) list = list.filter((c) => ONLY.includes(c.id));
-  if (!list.length) throw new Error('No courses found; the site layout may have changed');
+  if (!list.length) {
+    // A semester the university hasn't published yet (e.g. summer) is fine; an empty
+    // semester we already had means the site changed.
+    const had = await readFile(join(dir, 'index.json'), 'utf8').catch(() => null);
+    if (had) throw new Error('No courses found; the site layout may have changed');
+    return console.log(`${semKey}: not published yet`);
+  }
 
   // Keep what an earlier run already knows, so a partial run never shrinks the index.
   const prev = JSON.parse(await readFile(join(dir, 'index.json'), 'utf8').catch(() => '{"courses":[]}'));
