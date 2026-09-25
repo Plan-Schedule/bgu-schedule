@@ -5,7 +5,11 @@ import {
   typeLabel, range, DAYS, DAY_FULL, DEFAULT_PREFS, DEFAULT_WEIGHTS, rating, RATE, overlaps, fmtTime,
 } from './model.js';
 import { weekHtml, weekPng, esc, shortName } from './grid.js';
-import { encodePlan, decodePlan, registrationRows, registrationText, ics, download } from './share.js';
+import {
+  encodePlan, decodePlan, registrationRows, registrationText, ics, download,
+  pack, unpack, sanitizeState, encodeCourseList, decodeCourseList,
+} from './share.js';
+import { CONFIG } from './config.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const view = $('#view');
@@ -49,6 +53,14 @@ const starOf = (name) => {
   const r = rating(S().ratings, name);
   return r === RATE.REC ? '<span class="star">⭐</span>' : r === RATE.OK ? '<span>👌</span>' : r === RATE.AVOID ? '<span class="avoid">🚫</span>' : '';
 };
+
+/** Share sheet on phones, clipboard elsewhere. Resolves true when the link left the page. */
+async function shareUrl(url, title, text) {
+  if (navigator.share) {
+    try { await navigator.share({ title, text, url }); return true; } catch (e) { if (e.name === 'AbortError') return false; }
+  }
+  try { await navigator.clipboard.writeText(url); toast('הקישור הועתק'); return true; } catch { prompt('העתיקו את הקישור:', url); return true; }
+}
 
 function toast(msg) {
   const t = $('#toast');
@@ -124,9 +136,18 @@ function renderCourses() {
         <div class="big">📚</div>
         <p><b>עוד לא הוספת קורסים.</b><br>חפשו למעלה לפי שם או מספר קורס.</p>
       </div>` : `
+      <div class="row" style="justify-content:center;margin-top:14px"><button class="btn sm" data-action="list-share">🔗 שיתוף רשימת הקורסים (למשל לכל המחזור)</button></div>
       <div class="sticky-bar"><button class="btn primary" data-action="tab" data-tab="results">✨ לבנות לי מערכות</button></div>`}
+    ${dataNote()}
   `;
 }
+
+/** Where the data comes from and how fresh it is; shown wherever people decide based on it. */
+function dataNote() {
+  const cur = (ui.semesters || []).find((s) => s.id === S().semester);
+  return `<p class="data-note">השעות נלקחו מ<a href="${CONFIG.university.catalogueUrl}" target="_blank" rel="noopener">${esc(CONFIG.university.catalogueName)} של ${esc(CONFIG.university.name)}</a>${cur?.updated ? ` ועודכנו ב-${esc(fmtDate(cur.updated))}` : ''}. שעות וקבוצות יכולות להשתנות, ולפני הרישום כדאי לבדוק אותן באתר האוניברסיטה.</p>`;
+}
+const fmtDate = (iso) => new Date(iso).toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric', year: 'numeric' });
 
 function renderSearch() {
   const box = $('#qres');
@@ -425,7 +446,21 @@ function renderPlans() {
         <button class="btn" data-action="png">🖼️ שמירה כתמונה</button>
         <button class="btn" data-action="ics">📅 הוספה ליומן</button>
       </div>
-    </div>`;
+    </div>
+    ${ui.shared ? '' : backupNudge()}
+    ${dataNote()}`;
+}
+
+/** After real work and no backup for a while, suggest the one-tap restore link. */
+function backupNudge() {
+  const m = S().meta;
+  const days = m.lastBackup ? (Date.now() - new Date(m.lastBackup)) / 864e5 : Infinity;
+  if (m.changes < 15 || days < 3 || ui.nudgeDismissed) return '';
+  return `<div class="notice" style="margin-top:14px">
+    <b>💾 כדאי לשמור את הנתונים שלך</b><br>
+    <span class="small">הכול שמור רק בדפדפן הזה. קישור שחזור אחד שולחים לעצמך (למשל בוואטסאפ), ואיתו מחזירים הכול בכל מכשיר.</span>
+    <div class="row" style="margin-top:8px"><button class="btn sm primary" data-action="restore-link">שליחת קישור שחזור לעצמי</button><button class="btn sm ghost" data-action="nudge-later">לא עכשיו</button></div>
+  </div>`;
 }
 
 // ---------- sheets ----------
@@ -471,28 +506,91 @@ function blockSheet(bi) {
 }
 
 function settingsSheet() {
-  const sems = ui.semesters || [];
-  const cur = sems.find((s) => s.id === S().semester);
+  const last = S().meta.lastBackup;
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
   openSheet(`
-    <h3>הגדרות וגיבוי</h3>
-    <p class="muted small">כל מה שבחרת נשמר רק בדפדפן הזה. כדי לעבור בין טלפון למחשב מורידים קובץ גיבוי וטוענים אותו במכשיר השני.</p>
+    <h3>שמירת הנתונים שלי</h3>
+    <p class="muted small">הקורסים, הדירוגים והמערכות שלך שמורים רק בדפדפן הזה, ואף אחד אחר לא רואה אותם. כדי לא לאבד אותם, או כדי לעבור לטלפון או למחשב אחר:</p>
     <div class="opt-list">
+      <button class="opt" data-action="restore-link"><span class="ico">📤</span><span class="grow"><b>שליחת קישור שחזור לעצמי</b><br><span class="muted small">פותחים את הקישור בכל מכשיר וכל הנתונים חוזרים. ${last ? `נשמר לאחרונה ${esc(fmtDate(last))}.` : 'עוד לא נשמר.'}</span></span></button>
       <button class="opt" data-action="backup"><span class="ico">⬇️</span><span class="grow"><b>הורדת קובץ גיבוי</b></span></button>
-      <label class="opt"><span class="ico">⬆️</span><span class="grow"><b>טעינת קובץ גיבוי</b></span><input type="file" accept="application/json" id="restore" hidden></label>
+      <label class="opt"><span class="ico">⬆️</span><span class="grow"><b>טעינת קובץ גיבוי</b></span><input type="file" accept="application/json,.json" id="restore" hidden></label>
+    </div>
+    ${standalone ? '' : `<h3 style="margin-top:16px">התקנה כאפליקציה</h3>
+    <p class="muted small">לא חובה: הכול עובד גם מהקישור. התקנה מוסיפה אייקון למסך הבית, פותחת את המתכנן במסך מלא ומאפשרת להשתמש בו גם בלי אינטרנט.</p>
+    <div class="opt-list"><button class="opt" data-action="install"><span class="ico">📲</span><span class="grow"><b>הוספה למסך הבית</b></span></button></div>`}
+    <h3 style="margin-top:16px">עוד</h3>
+    <div class="opt-list">
+      <a class="opt" href="${CONFIG.feedbackUrl}" target="_blank" rel="noopener"><span class="ico">💬</span><span class="grow"><b>יש לי הערה</b><br><span class="muted small">באג, רעיון, או שעה שלא מתאימה לאתר האוניברסיטה</span></span></a>
+      <a class="opt" href="about.html"><span class="ico">ℹ️</span><span class="grow"><b>אודות, פרטיות ותנאי שימוש</b></span></a>
+      <button class="opt" data-action="intro"><span class="ico">👋</span><span class="grow"><b>הסבר קצר על המתכנן</b></span></button>
       <button class="opt" data-action="reset"><span class="ico">🗑️</span><span class="grow"><b>מחיקת כל הנתונים שלי</b></span></button>
     </div>
-    <p class="muted small">הנתונים על הקורסים נלקחים מקובץ הקורסים של האוניברסיטה ומתעדכנים אוטומטית פעם ביום${cur?.updated ? ` (עדכון אחרון: ${cur.updated})` : ''}. לפני הרישום כדאי לבדוק את השעות גם באתר של האוניברסיטה.</p>
     <div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-sheet">סגירה</button></div>`);
   $('#restore').addEventListener('change', async (e) => {
     try {
-      const obj = JSON.parse(await e.target.files[0].text());
-      if (obj?.v !== 1 && obj?.v !== 2) throw new Error();
-      store.replaceAll(obj);
-      closeSheet();
+      restoreState(sanitizeState(JSON.parse(await e.target.files[0].text())));
       toast('הגיבוי נטען');
-      loadSemester();
     } catch { toast('הקובץ לא נראה כמו גיבוי של המתכנן'); }
   });
+}
+
+function restoreState(clean) {
+  store.replaceAll(clean);
+  closeSheet();
+  store.persist();
+  bootSelectors();
+  loadSemester();
+}
+
+function introSheet() {
+  openSheet(`
+    <div class="intro">
+      <div class="intro-logo" aria-hidden="true"></div>
+      <h3>ברוכים הבאים ל${esc(CONFIG.appName)}</h3>
+      <p class="muted">בונים מערכת שעות ל${esc(CONFIG.university.short)} לפי המרצים והמתרגלים שאתם רוצים, ורואים מה מקבלים ועל מה מוותרים.</p>
+      <ol class="steps">
+        <li><b>מוסיפים קורסים</b><span>מחפשים לפי שם או מספר, או פותחים קישור של המחזור.</span></li>
+        <li><b>מדרגים ומחליטים</b><span>⭐ מומלץ · 👌 בסדר · 🚫 להימנע, ולאן באמת הולכים.</span></li>
+        <li><b>מקבלים מערכות</b><span>רק כאלה שאפשר להירשם אליהן, עם מה שקיבלתם ועל מה ויתרתם.</span></li>
+      </ol>
+      <p class="fine">כלי עצמאי של סטודנטים, <b>לא אתר רשמי של האוניברסיטה</b>. השעות נלקחות מהאתר הציבורי שלה ויכולות להשתנות, ולכן לפני הרישום בודקים שם. הנתונים שלכם נשמרים רק במכשיר שלכם. <a href="about.html">פרטים</a></p>
+      <button class="btn primary" data-action="intro-done" style="width:100%;padding:12px">בואו נתחיל</button>
+    </div>`);
+}
+
+function courseListSheet() {
+  const ids = sem().order;
+  openSheet(`
+    <h3>שיתוף רשימת הקורסים</h3>
+    <p class="muted small">מי שיפתח את הקישור יקבל את הקורסים האלה בלחיצה אחת. זה מתאים לקבוצת המחזור. רק רשימת הקורסים עוברת, בלי הדירוגים והמערכות שלך.</p>
+    <label class="field"><span>שם לרשימה</span><input id="list-name" maxlength="80" placeholder="למשל: הנדסת תוכנה שנה א׳ סתו"></label>
+    <ul class="mini-list">${ids.map((id) => `<li><span dir="ltr">${data.displayId(id)}</span> ${esc(ui.courses.get(id)?.name || '')}</li>`).join('')}</ul>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-sheet">ביטול</button><button class="btn primary" data-action="list-share-go">שיתוף הקישור</button></div>`);
+}
+
+async function incomingListSheet(list) {
+  const idx = await data.index(list.semester).catch(() => ({ courses: [] }));
+  const known = new Map(idx.courses.map((c) => [c.id, c]));
+  const ids = list.ids.filter((id) => known.has(id));
+  const already = new Set(store.sem().order);
+  openSheet(`
+    <h3>רשימת קורסים ששותפה איתך</h3>
+    <p class="muted small">${list.name ? `<b>${esc(list.name)}</b> · ` : ''}${esc(currentSemLabel())}</p>
+    ${ids.length ? `<div class="opt-list">${ids.map((id) => `<label class="opt"><input type="checkbox" name="add" value="${id}" ${already.has(id) ? 'checked disabled' : 'checked'}><span class="grow"><b>${esc(known.get(id).name)}</b><br><span class="muted small" dir="ltr">${data.displayId(id)}</span>${already.has(id) ? ' <span class="muted small">· כבר ברשימה שלך</span>' : ''}</span></label>`).join('')}</div>`
+      : `<div class="notice warn">הקורסים ברשימה הזו לא נמצאו בסמסטר הזה.</div>`}
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-sheet">ביטול</button>${ids.length ? `<button class="btn primary" data-action="list-add">הוספת הקורסים</button>` : ''}</div>`);
+}
+
+function restoreAskSheet(clean) {
+  ui.pendingRestore = clean;
+  const n = Object.values(clean.sems).reduce((a, x) => a + x.order.length, 0);
+  const p = Object.values(clean.sems).reduce((a, x) => a + x.plans.length, 0);
+  openSheet(`
+    <h3>שחזור נתונים מקישור</h3>
+    <p>בקישור יש ${n} קורסים, ${p} מערכות ו-${Object.keys(clean.ratings).length} דירוגים.</p>
+    <p class="muted small">השחזור יחליף את מה שכבר שמור בדפדפן הזה.</p>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-sheet">ביטול</button><button class="btn primary" data-action="restore-yes">שחזור</button></div>`);
 }
 
 function icsSheet() {
@@ -571,6 +669,7 @@ const actions = {
       attend: {},
     };
     store.update(() => sem().plans.push(plan));
+    store.persist();
     ui.plan = plan.id;
     toast(`נשמר בתור "${plan.name}"`);
   },
@@ -621,10 +720,7 @@ const actions = {
   async 'share-link'() {
     const p = currentPlan();
     const url = `${location.origin}${location.pathname}#s=${await encodePlan(S().semester, p)}`;
-    if (navigator.share) {
-      try { await navigator.share({ title: p.name, text: `המערכת שלי: ${p.name}`, url }); return; } catch (e) { if (e.name === 'AbortError') return; }
-    }
-    try { await navigator.clipboard.writeText(url); toast('הקישור הועתק'); } catch { prompt('העתיקו את הקישור:', url); }
+    await shareUrl(url, p.name, `המערכת שלי: ${p.name}`);
   },
   async png() {
     const p = currentPlan();
@@ -657,14 +753,65 @@ const actions = {
   },
   'shared-close'() { ui.shared = null; history.replaceState(null, '', '#plans'); render(); },
   settings: () => settingsSheet(),
+  intro: () => introSheet(),
+  'intro-done'() {
+    store.update((s) => { s.seen.intro = true; });
+    closeSheet();
+    if (ui.pendingList) { incomingListSheet(ui.pendingList); ui.pendingList = null; }
+  },
+  'list-share': () => courseListSheet(),
+  async 'list-share-go'() {
+    const name = $('#list-name').value.trim();
+    const url = `${location.origin}${location.pathname}#c=${await encodeCourseList(S().semester, name, sem().order)}`;
+    closeSheet();
+    await shareUrl(url, name || 'רשימת קורסים', `רשימת הקורסים${name ? ` ל${name}` : ''} במתכנן המערכת:`);
+  },
+  'list-add'() {
+    const ids = [...document.querySelectorAll('input[name=add]:checked:not(:disabled)')].map((i) => i.value);
+    store.update(() => {
+      for (const id of ids) if (!sem().order.includes(id)) { sem().order.push(id); cprefs(id); }
+    });
+    ids.forEach(ensureCourse);
+    closeSheet();
+    ui.tab = 'courses';
+    render();
+    toast(ids.length ? `נוספו ${ids.length} קורסים` : 'לא נוספו קורסים');
+  },
+  async 'restore-link'() {
+    const url = `${location.origin}${location.pathname}#r=${await pack(S())}`;
+    const ok = await shareUrl(url, 'קישור שחזור · מתכנן מערכת', 'קישור השחזור שלי למתכנן המערכת (לא לשתף, יש בו את הדירוגים שלי):');
+    if (ok) { store.markBackup(); store.persist(); ui.nudgeDismissed = true; render(); }
+  },
+  'restore-yes'() {
+    const clean = ui.pendingRestore;
+    ui.pendingRestore = null;
+    if (clean) { restoreState(clean); toast('הנתונים שוחזרו'); }
+  },
+  'nudge-later'() { ui.nudgeDismissed = true; render(); },
+  async install() {
+    if (ui.installPrompt) {
+      ui.installPrompt.prompt();
+      const { outcome } = await ui.installPrompt.userChoice;
+      ui.installPrompt = null;
+      if (outcome === 'accepted') closeSheet();
+      return;
+    }
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    openSheet(`<h3>הוספה למסך הבית</h3>
+      ${ios ? `<ol class="steps"><li><b>לוחצים על כפתור השיתוף</b><span>הריבוע עם החץ למעלה, בתחתית ספארי.</span></li><li><b>"הוסף למסך הבית"</b><span>גוללים קצת למטה ברשימה.</span></li><li><b>"הוסף"</b><span>האייקון יופיע במסך הבית.</span></li></ol>`
+        : `<ol class="steps"><li><b>פותחים את תפריט הדפדפן</b><span>⋮ בכרום, למעלה.</span></li><li><b>"התקנת אפליקציה" או "הוספה למסך הבית"</b><span></span></li></ol>`}
+      <p class="muted small">אם לא מתקינים, הכול ממשיך לעבוד מהקישור.</p>
+      <div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-sheet">הבנתי</button></div>`);
+  },
   'close-sheet': () => closeSheet(),
   backup() {
+    store.markBackup();
     download(new Blob([JSON.stringify(S(), null, 1)], { type: 'application/json' }), 'bgu-schedule-backup.json');
   },
   reset() {
     if (!confirm('למחוק את כל הקורסים, הדירוגים והמערכות ששמרת?')) return;
     const semester = S().semester;
-    store.replaceAll({ semester });
+    store.replaceAll({ semester, seen: { intro: true } });
     closeSheet();
   },
 };
@@ -714,22 +861,7 @@ async function loadSemester() {
   render();
 }
 
-async function boot() {
-  const hash = location.hash.slice(1);
-  if (['constraints', 'results', 'plans'].includes(hash)) ui.tab = hash;
-  try {
-    ui.semesters = await data.semesters();
-  } catch {
-    ui.semesters = [];
-    ui.error = 'לא הצלחתי לטעון את נתוני הקורסים.';
-  }
-  if (hash.startsWith('s=')) {
-    try {
-      ui.shared = await decodePlan(hash.slice(2));
-      S().semester = ui.shared.semester;
-      ui.tab = 'plans';
-    } catch { ui.error = 'הקישור ששותף איתך פגום או חלקי.'; }
-  }
+function bootSelectors() {
   const has = (id) => ui.semesters.some((s) => s.id === id);
   if (!has(S().semester)) S().semester = has(data.currentSemesterId()) ? data.currentSemesterId() : ui.semesters[0]?.id || '2027-1';
   const yearSel = $('#year'), semSel = $('#sem');
@@ -740,22 +872,77 @@ async function boot() {
     semSel.innerHTML = ui.semesters.filter((s) => s.id.startsWith(y + '-')).sort((a, b) => a.id.localeCompare(b.id))
       .map((s) => `<option value="${s.id}">${data.SEM_NAMES[s.id.split('-')[1]] || s.id}</option>`).join('');
   };
+  yearSel.value = S().semester.split('-')[0];
+  fillSems();
+  semSel.value = S().semester;
   const switchTo = (id) => {
     ui.shared = null;
     store.update((s) => { s.semester = id; });
     loadSemester();
   };
-  yearSel.value = S().semester.split('-')[0];
-  fillSems();
-  semSel.value = S().semester;
-  yearSel.addEventListener('change', () => {
+  yearSel.onchange = () => {
     const wanted = `${yearSel.value}-${S().semester.split('-')[1]}`;
     fillSems();
     semSel.value = has(wanted) ? wanted : semSel.options[0].value;
     switchTo(semSel.value);
-  });
-  semSel.addEventListener('change', () => switchTo(semSel.value));
+  };
+  semSel.onchange = () => switchTo(semSel.value);
+}
+
+/** Links someone sent: a plan (#s=), a course list (#c=), or my own restore link (#r=). */
+async function readLink(hash) {
+  const offered = (id) => (ui.semesters || []).some((s) => s.id === id);
+  try {
+    if (hash.startsWith('s=')) {
+      ui.shared = await decodePlan(hash.slice(2));
+      if (offered(ui.shared.semester)) S().semester = ui.shared.semester;
+      ui.tab = 'plans';
+    } else if (hash.startsWith('c=')) {
+      const list = await decodeCourseList(hash.slice(2));
+      if (offered(list.semester)) S().semester = list.semester;
+      history.replaceState(null, '', location.pathname);
+      return () => (S().seen.intro ? incomingListSheet(list) : (ui.pendingList = list));
+    } else if (hash.startsWith('r=')) {
+      const clean = sanitizeState(await unpack(hash.slice(2)));
+      history.replaceState(null, '', location.pathname);
+      const empty = !Object.keys(S().ratings).length && !Object.values(S().sems).some((x) => x.order.length || x.plans.length);
+      return () => (empty ? (restoreState(clean), toast('הנתונים שוחזרו')) : restoreAskSheet(clean));
+    }
+  } catch { ui.error = 'הקישור שנפתח פגום או חלקי. אולי הוא נחתך בהעתקה?'; }
+  return null;
+}
+
+// A link opened while the app is already open in this tab only changes the #hash.
+window.addEventListener('hashchange', async () => {
+  const hash = location.hash.slice(1);
+  if (!/^[scr]=/.test(hash)) return;
+  const after = await readLink(hash);
+  bootSelectors();
+  await loadSemester();
+  if (after) after();
+});
+
+async function boot() {
+  const hash = location.hash.slice(1);
+  if (['constraints', 'results', 'plans'].includes(hash)) ui.tab = hash;
+  try {
+    ui.semesters = await data.semesters();
+  } catch {
+    ui.semesters = [];
+    ui.error = 'לא הצלחתי לטעון את נתוני הקורסים.';
+  }
+  const after = await readLink(hash);
+  bootSelectors();
+  if (!S().seen.intro && !hash.startsWith('r=')) introSheet();
+  if (after) after();
   await loadSemester();
 }
+
+// Installing is optional; the site works the same from a plain link.
+window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); ui.installPrompt = e; });
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+for (const a of document.querySelectorAll('[data-feedback]')) a.href = CONFIG.feedbackUrl;
 
 boot();

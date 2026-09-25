@@ -47,7 +47,7 @@ async function post(form, tries = 8) {
     try {
       const res = await fetch(URL_ANN, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'bgu-schedule (github.com/dolev423/bgu-schedule)' },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'bgu-schedule catalogue bot (+https://github.com/Plan-Schedule/bgu-schedule)' },
         body: new URLSearchParams(form).toString(),
         signal: AbortSignal.timeout(60_000),
       });

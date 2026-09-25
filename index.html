@@ -4,13 +4,28 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>מתכנן מערכת שעות</title>
-  <meta name="description" content="בונים מערכת שעות בבן-גוריון: מחפשים קורסים, מדרגים מרצים ומתרגלים, ומקבלים את המערכות הכי טובות.">
+  <meta name="description" content="בונים מערכת שעות בבן-גוריון: מחפשים קורסים, מדרגים מרצים ומתרגלים, ומקבלים את המערכות הכי טובות. חינם, בלי הרשמה.">
+  <!-- link preview (WhatsApp, Telegram, Facebook…) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="מתכנן מערכת שעות">
+  <meta property="og:title" content="מתכנן מערכת שעות · בן-גוריון">
+  <meta property="og:description" content="בוחרים מרצים ומתרגלים, ומקבלים מערכות שאפשר באמת להירשם אליהן. חינם, בלי הרשמה, הכול נשמר רק אצלכם.">
+  <meta property="og:url" content="https://plan-schedule.github.io/bgu-schedule/">
+  <meta property="og:image" content="https://plan-schedule.github.io/bgu-schedule/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="מערכת שעות שבועית עם קורסים צבעוניים">
+  <meta property="og:locale" content="he_IL">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="assets/icon-180.png">
+  <meta name="apple-mobile-web-app-title" content="מערכת שעות">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)">
   <meta name="theme-color" content="#14171c" media="(prefers-color-scheme: dark)">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e8730c'/%3E%3Cpath d='M8 10h16M8 16h10M8 22h13' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/rubik-hebrew.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
@@ -23,7 +38,10 @@
           <p class="sub"><span class="uni">אוניברסיטת בן-גוריון · </span><select id="year" aria-label="שנת לימודים"></select> <select id="sem" aria-label="סמסטר"></select></p>
         </div>
       </div>
-      <button class="icon-btn" data-action="settings" aria-label="הגדרות וגיבוי">⚙︎</button>
+      <div class="row" style="gap:6px;flex-wrap:nowrap">
+        <a class="icon-btn" data-feedback target="_blank" rel="noopener" aria-label="יש לי הערה" title="יש לי הערה">💬</a>
+        <button class="icon-btn" data-action="settings" aria-label="שמירת נתונים והגדרות" title="שמירת נתונים והגדרות">⚙︎</button>
+      </div>
     </div>
     <nav class="tabs" role="tablist">
       <button role="tab" data-tab="courses"><span class="tab-ico">📚</span><span>קורסים</span></button>
@@ -34,6 +52,11 @@
   </header>
 
   <main id="view" tabindex="-1"></main>
+
+  <footer class="foot">
+    <p><b>כלי עצמאי של סטודנטים, לא אתר רשמי של אוניברסיטת בן-גוריון.</b> אין לנו קשר לאוניברסיטה, והיא לא אחראית לו.</p>
+    <p><a href="about.html">אודות, פרטיות ותנאי שימוש</a> · <a data-feedback target="_blank" rel="noopener">יש לי הערה</a> · <a href="about.html#accessibility">נגישות</a></p>
+  </footer>
 
   <div id="sheet" class="sheet" hidden>
     <div class="sheet-backdrop" data-action="close-sheet"></div>

@@ -2,8 +2,7 @@
 #   year = the civil year the academic year ends in (2027 = תשפ"ז)
 #   semester: 1 = סתו, 2 = אביב, 3 = קיץ
 #   once = a past semester: download it a single time instead of every day
-2027 1
-2027 2
-2027 3
+#   auto = the current academic year (and next autumn), worked out from today's date
+auto
 2026 1 once
 2026 2 once

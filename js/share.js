@@ -10,38 +10,118 @@ async function pipe(bytes, stream) {
   return new Uint8Array(await new Response(out).arrayBuffer());
 }
 
-/** plan → compact string for the URL hash. Only group numbers travel; the catalogue fills in the rest. */
-export async function encodePlan(semester, plan) {
-  const payload = JSON.stringify({ s: semester, n: plan.name, p: plan.picks, a: plan.attend || {} });
-  const bytes = new TextEncoder().encode(payload);
+/** JSON → short URL-safe string (deflated when the browser can). */
+export async function pack(obj) {
+  const bytes = new TextEncoder().encode(JSON.stringify(obj));
   if (typeof CompressionStream === 'function') return 'z' + b64url(await pipe(bytes, new CompressionStream('deflate-raw')));
   return 'j' + b64url(bytes);
 }
 
-export async function decodePlan(str) {
-  const kind = str[0];
+export async function unpack(str) {
+  if (!str || str.length > 200_000) throw new Error('bad link');
   let bytes = unb64url(str.slice(1));
-  if (kind === 'z') bytes = await pipe(bytes, new DecompressionStream('deflate-raw'));
-  return sanitizePlan(JSON.parse(new TextDecoder().decode(bytes)));
+  if (str[0] === 'z') bytes = await pipe(bytes, new DecompressionStream('deflate-raw'));
+  return JSON.parse(new TextDecoder().decode(bytes));
 }
+
+/** plan → compact string for the URL hash. Only group numbers travel; the catalogue fills in the rest. */
+export const encodePlan = (semester, plan) => pack({ s: semester, n: plan.name, p: plan.picks, a: plan.attend || {} });
+export const decodePlan = async (str) => sanitizePlan(await unpack(str));
 
 const isObj = (x) => x && typeof x === 'object' && !Array.isArray(x);
 const ID = /^\d{3}-\d-\d{4}$/;
+const SEM = /^\d{4}-[1-3]$/;
+const text = (v, max) => String(v ?? '').replace(/[\u0000-\u001f]/g, ' ').slice(0, max);
 
-/** A shared link is input from a stranger: keep only well-formed fields. */
-export function sanitizePlan(o) {
-  if (!isObj(o) || typeof o.s !== 'string' || !/^\d{4}-[1-3]$/.test(o.s)) throw new Error('bad link');
-  const picks = {}, attend = {};
-  for (const [id, nums] of Object.entries(isObj(o.p) ? o.p : {})) {
+function cleanPicks(o) {
+  const picks = {};
+  for (const [id, nums] of Object.entries(isObj(o) ? o : {})) {
     if (!ID.test(id) || !Array.isArray(nums)) continue;
-    picks[id] = nums.filter((n) => Number.isInteger(n) && n > 0 && n < 10000).slice(0, 6);
+    const ok = nums.filter((n) => Number.isInteger(n) && n > 0 && n < 10000).slice(0, 6);
+    if (ok.length) picks[id] = ok;
   }
-  for (const [id, m] of Object.entries(isObj(o.a) ? o.a : {})) {
+  return picks;
+}
+
+function cleanAttend(o, picks) {
+  const attend = {};
+  for (const [id, m] of Object.entries(isObj(o) ? o : {})) {
     if (!picks[id] || !isObj(m)) continue;
     attend[id] = Object.fromEntries(Object.entries(m).filter(([n, v]) => /^\d{1,4}$/.test(n) && validPlan(v)));
   }
+  return attend;
+}
+
+/** A shared link is input from a stranger: keep only well-formed fields. */
+export function sanitizePlan(o) {
+  if (!isObj(o) || typeof o.s !== 'string' || !SEM.test(o.s)) throw new Error('bad link');
+  const picks = cleanPicks(o.p);
   if (!Object.keys(picks).length) throw new Error('empty link');
-  return { semester: o.s, plan: { name: String(o.n ?? '').slice(0, 60), picks, attend } };
+  return { semester: o.s, plan: { name: text(o.n, 60), picks, attend: cleanAttend(o.a, picks) } };
+}
+
+/** "Courses of my cohort": a named list of course ids for one semester. */
+export const encodeCourseList = (semester, name, ids) => pack({ s: semester, n: name, c: ids });
+export async function decodeCourseList(str) {
+  const o = await unpack(str);
+  if (!isObj(o) || !SEM.test(o.s) || !Array.isArray(o.c)) throw new Error('bad link');
+  const ids = [...new Set(o.c.filter((id) => typeof id === 'string' && ID.test(id)))].slice(0, 30);
+  if (!ids.length) throw new Error('empty link');
+  return { semester: o.s, name: text(o.n, 80), ids };
+}
+
+/**
+ * Everything the student saved (restore link / backup file). It may have been
+ * sent by someone else, so it is rebuilt field by field from known shapes.
+ */
+export function sanitizeState(o) {
+  if (!isObj(o) || (o.v !== 1 && o.v !== 2)) throw new Error('not a backup');
+  const r = o.v === 1 ? { 1: 2, [-1]: -2 } : { 2: 2, 1: 1, [-2]: -2 };
+  const ratings = {};
+  for (const [name, v] of Object.entries(isObj(o.ratings) ? o.ratings : {}).slice(0, 2000)) {
+    if (r[v] !== undefined && name.length <= 80) ratings[text(name, 80)] = r[v];
+  }
+  const cells = {};
+  for (const [k, v] of Object.entries(isObj(o.constraints?.cells) ? o.constraints.cells : {})) {
+    if (/^[1-7]-([0-9]|1[0-9]|2[0-3])$/.test(k) && (v === 1 || v === 2)) cells[k] = v;
+  }
+  const weights = {};
+  for (const [k, v] of Object.entries(isObj(o.constraints?.weights) ? o.constraints.weights : {})) {
+    if (['free', 'gaps', 'soft'].includes(k) && [0, 1, 2, 3].includes(v)) weights[k] = v;
+  }
+  const sems = {};
+  for (const [semId, sv] of Object.entries(isObj(o.sems) ? o.sems : {})) {
+    if (!SEM.test(semId) || !isObj(sv)) continue;
+    const order = [...new Set((Array.isArray(sv.order) ? sv.order : []).filter((id) => typeof id === 'string' && ID.test(id)))].slice(0, 40);
+    const courses = {};
+    for (const id of order) {
+      const c = isObj(sv.courses?.[id]) ? sv.courses[id] : {};
+      const prefs = {};
+      for (const [k, p] of Object.entries(isObj(c.prefs) ? c.prefs : {})) {
+        if (!/^[PS]:[^<>"'&]{0,20}$/.test(k) || !isObj(p)) continue;
+        prefs[k] = { plan: validPlan(p.plan) && !p.plan.startsWith('alt:') ? p.plan : 'go', weight: [0, 1, 2, 3].includes(p.weight) ? p.weight : 2 };
+      }
+      const pins = {};
+      for (const [n, v] of Object.entries(isObj(c.pins) ? c.pins : {})) if (/^\d{1,4}$/.test(n) && (v === 'must' || v === 'never')) pins[n] = v;
+      courses[id] = { prefs, pins };
+    }
+    const plans = [];
+    for (const p of (Array.isArray(sv.plans) ? sv.plans : []).slice(0, 30)) {
+      if (!isObj(p)) continue;
+      const picks = cleanPicks(p.picks);
+      if (!Object.keys(picks).length) continue;
+      plans.push({ id: /^[a-z0-9]{1,12}$/.test(p.id) ? p.id : Math.random().toString(36).slice(2, 9), name: text(p.name, 60) || 'מערכת', picks, attend: cleanAttend(p.attend, picks) });
+    }
+    sems[semId] = { order, courses, plans };
+  }
+  return {
+    v: 2,
+    semester: SEM.test(o.semester) ? o.semester : null,
+    ratings,
+    constraints: { cells, weights },
+    sems,
+    seen: { intro: true },
+  };
 }
 
 /** Lines for typing into the registration system. */

@@ -1,0 +1,28 @@
+name: יש לי הערה
+description: באג, רעיון, או שעה שלא מתאימה לאתר האוניברסיטה
+title: "[הערה] "
+labels: [feedback]
+body:
+  - type: dropdown
+    id: kind
+    attributes:
+      label: על מה ההערה?
+      options:
+        - משהו לא עובד (באג)
+        - שעה, קבוצה או מרצה לא נכונים
+        - רעיון לשיפור
+        - אחר
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: מה קרה?
+      description: אם זה קורס מסוים, כתבו את מספר הקורס (למשל 212.1.0201) ואת הקבוצה.
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: באיזה מכשיר ודפדפן? (לא חובה)
+      placeholder: למשל אייפון, ספארי

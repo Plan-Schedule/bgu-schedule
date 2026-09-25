@@ -9,6 +9,8 @@ const fresh = () => ({
   ratings: {},
   constraints: { cells: {}, weights: {} },
   sems: {},
+  seen: {}, // intro screen, install tip…
+  meta: { lastBackup: null, changes: 0 }, // for the "save a restore link" reminder
 });
 
 let state = load();
@@ -29,7 +31,8 @@ export function migrate(s) {
     s.ratings = Object.fromEntries(Object.entries(s.ratings || {}).map(([k, r]) => [k, r > 0 ? 2 : -2]));
     s.v = 2;
   }
-  return { ...fresh(), ...s };
+  const f = fresh();
+  return { ...f, ...s, seen: { ...f.seen, ...s.seen }, meta: { ...f.meta, ...s.meta } };
 }
 
 export function save() {
@@ -41,6 +44,17 @@ export function save() {
 
 export const get = () => state;
 
+/** Ask the browser to keep our data even when storage is tight (and Safari's 7-day rule). */
+export function persist() {
+  navigator.storage?.persist?.().catch(() => {});
+}
+
+export function markBackup() {
+  state.meta.lastBackup = new Date().toISOString();
+  state.meta.changes = 0;
+  save();
+}
+
 export function sem() {
   const k = state.semester;
   if (!state.sems[k]) state.sems[k] = { order: [], courses: {}, plans: [] };
@@ -50,6 +64,7 @@ export function sem() {
 /** Mutate, persist, re-render. */
 export function update(fn) {
   fn(state);
+  state.meta.changes++;
   save();
   for (const l of listeners) l();
 }
@@ -57,7 +72,7 @@ export function update(fn) {
 export const subscribe = (fn) => listeners.add(fn);
 
 export function replaceAll(next) {
-  state = migrate({ ...fresh(), ...next });
+  state = migrate({ ...fresh(), ...next, meta: { lastBackup: new Date().toISOString(), changes: 0 } });
   save();
   for (const l of listeners) l();
 }

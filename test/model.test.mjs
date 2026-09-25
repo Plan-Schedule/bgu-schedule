@@ -102,3 +102,36 @@ test('security: attendance values from a shared link or backup cannot inject mar
   assert.ok(p.plan.name.length <= 60);
   assert.throws(() => sanitizePlan({ s: '"><img>', p: {} }));
 });
+
+test('security: restore links and course lists keep only well-formed data', async () => {
+  const { sanitizeState, pack, unpack, decodeCourseList, encodeCourseList } = await import('../js/share.js');
+  const evil = '"><img src=x onerror=alert(1)>';
+  const s = sanitizeState({
+    v: 2, semester: evil, ratings: { 'מר ע. שמרת': 2, x: 99, [evil]: 1 },
+    constraints: { cells: { '3-10': 2, [evil]: 2, '3-11': 5 }, weights: { free: 3, gaps: evil, [evil]: 1 } },
+    sems: {
+      '2027-1': {
+        order: ['212-1-0201', evil],
+        courses: { '212-1-0201': { prefs: { 'P:שעור': { plan: evil, weight: 9 }, [evil]: { plan: 'go' } }, pins: { 1: 'must', 2: evil } } },
+        plans: [{ id: evil, name: evil.repeat(5), picks: { '212-1-0201': [1, 11] }, attend: { '212-1-0201': { 11: 'rec', 1: evil } } }],
+      },
+      [evil]: {},
+    },
+  });
+  assert.equal(s.semester, null);
+  assert.deepEqual(Object.keys(s.sems), ['2027-1']);
+  assert.deepEqual(s.sems['2027-1'].order, ['212-1-0201']);
+  assert.deepEqual(s.sems['2027-1'].courses['212-1-0201'], { prefs: { 'P:שעור': { plan: 'go', weight: 2 } }, pins: { 1: 'must' } });
+  assert.deepEqual(s.constraints, { cells: { '3-10': 2 }, weights: { free: 3 } });
+  assert.equal(s.ratings['מר ע. שמרת'], 2);
+  assert.equal(s.ratings.x, undefined);
+  const plan = s.sems['2027-1'].plans[0];
+  assert.match(plan.id, /^[a-z0-9]+$/);
+  assert.deepEqual(plan.attend['212-1-0201'], { 11: 'rec' });
+  assert.throws(() => sanitizeState({ v: 3 }));
+  // round trip through a link
+  assert.deepEqual(await unpack(await pack({ a: 'שלום' })), { a: 'שלום' });
+  const l = await decodeCourseList(await encodeCourseList('2027-1', 'x'.repeat(200), ['212-1-0201', evil, '212-1-0201']));
+  assert.deepEqual(l.ids, ['212-1-0201']);
+  assert.equal(l.name.length, 80);
+});

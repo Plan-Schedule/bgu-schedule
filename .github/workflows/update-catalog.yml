@@ -36,7 +36,7 @@ jobs:
             else
               failed=$((failed + 1)); echo "::warning::$year-$sem could not be updated"
             fi
-          done < <(grep -v '^#' scraper/semesters.txt)
+          done < <(node scraper/plan.mjs)
           echo "updated: $ok, failed: $failed"
           [ "$ok" -gt 0 ]
       - name: Commit changes
