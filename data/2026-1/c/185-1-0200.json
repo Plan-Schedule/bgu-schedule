@@ -1,0 +1,15 @@
+{
+ "id": "185-1-0200",
+ "name": "הדרכה בספריה",
+ "credits": 0,
+ "hours": 1,
+ "groups": [
+  {
+   "n": 1,
+   "type": "הדרכה אישית",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

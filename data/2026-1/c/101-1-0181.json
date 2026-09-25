@@ -1,0 +1,190 @@
+{
+ "id": "101-1-0181",
+ "name": "מחקר ותיאוריה בפסיכולוגיה",
+ "credits": 2,
+ "hours": 2,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' א. ברגר",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "ד\"ר נ. רגב",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "שעור",
+   "lecturer": "פרופ' א. דינשטין",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 4,
+   "type": "שעור",
+   "lecturer": "פרופ' נ. מירן",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 5,
+   "type": "שעור",
+   "lecturer": "פרופ' נ. סופר-דודק",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 6,
+   "type": "שעור",
+   "lecturer": "פרופ' ט. אייל",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 7,
+   "type": "שעור",
+   "lecturer": "ד\"ר ט. יציב",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 8,
+   "type": "שעור",
+   "lecturer": "פרופ' פ. רוזנברג יוזפובסקי",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 9,
+   "type": "שעור",
+   "lecturer": "פרופ' י. ברבי-מאיר",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 10,
+   "type": "שעור",
+   "lecturer": "פרופ' ע. בר כליפה",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 11,
+   "type": "שעור",
+   "lecturer": "פרופ' ג. אנהולט",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 12,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. ברקת",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 13,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. שמחון",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 14,
+   "type": "שעור",
+   "lecturer": "פרופ' ג. אבידן",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 15,
+   "type": "שעור",
+   "lecturer": "פרופ' נ. גרון-סלע",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 16,
+   "type": "שעור",
+   "lecturer": "פרופ' נ. עצבה-פוריה",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 17,
+   "type": "שעור",
+   "lecturer": "פרופ' ל. טיקוצקי",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 18,
+   "type": "שעור",
+   "lecturer": "פרופ' צ. גנאל",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 19,
+   "type": "שעור",
+   "lecturer": "ד\"ר ת. קולודני",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 20,
+   "type": "שעור",
+   "lecturer": "פרופ' י. קסלר",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 21,
+   "type": "שעור",
+   "lecturer": "ד\"ר ט. שדה",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 22,
+   "type": "שעור",
+   "lecturer": "מר א. אבטן",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 23,
+   "type": "שעור",
+   "lecturer": "פרופ' ח. כהן",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 24,
+   "type": "שעור",
+   "lecturer": "פרופ' א. צנגן",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 25,
+   "type": "שעור",
+   "lecturer": "פרופ' ג. שחר",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 26,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. דואק",
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

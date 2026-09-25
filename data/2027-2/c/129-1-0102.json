@@ -1,0 +1,43 @@
+{
+ "id": "129-1-0102",
+ "name": "מבוא לשיטות מחקר איכותניות בחינוך",
+ "credits": 3,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": "פרופ' א. סוידאן",
+     "meetings": [
+      {
+       "day": 3,
+       "start": "16:00",
+       "end": "18:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

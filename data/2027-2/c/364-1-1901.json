@@ -1,0 +1,66 @@
+{
+ "id": "364-1-1901",
+ "name": "בסיסי נתונים",
+ "credits": 3.5,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. אבן",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": "מר א. קרצ'מר",
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": "מר א. קרצ'מר",
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. אבן",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "16:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": "מר מ. גלוחוב",
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": "מר מ. גלוחוב",
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

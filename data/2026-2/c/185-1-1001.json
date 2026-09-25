@@ -1,0 +1,102 @@
+{
+ "id": "185-1-1001",
+ "name": "עקרונות מתמטיים לתעופה",
+ "credits": 6,
+ "hours": 7,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר ד. גולקו",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": "גב' נ. גורביץ",
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "מר ד. אביבי",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": "גב' ס. גולוב",
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": "גב' א. קרבץ",
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. לרמן",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 31,
+     "type": "תרגיל",
+     "lecturer": "גב' ל. מילר",
+     "meetings": []
+    },
+    {
+     "n": 32,
+     "type": "תרגיל",
+     "lecturer": "גב' א. קרבץ",
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "type": "שעור",
+   "lecturer": "ד\"ר ט. זלצמן",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 41,
+     "type": "תרגיל",
+     "lecturer": "גב' י. שרמקוב",
+     "meetings": []
+    },
+    {
+     "n": 42,
+     "type": "תרגיל",
+     "lecturer": "גב' ל. מילר",
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "type": "שעור",
+   "lecturer": "ד\"ר ד. גולדשטיין",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 51,
+     "type": "תרגיל",
+     "lecturer": "מר ל. סירוטה",
+     "meetings": []
+    },
+    {
+     "n": 52,
+     "type": "תרגיל",
+     "lecturer": "מר ד. שורץ",
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

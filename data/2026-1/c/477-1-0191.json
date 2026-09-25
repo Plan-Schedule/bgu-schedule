@@ -1,0 +1,37 @@
+{
+ "id": "477-1-0191",
+ "name": "המטולוגיה כללית ורפואית",
+ "credits": 3,
+ "hours": 3.3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר י. מזר",
+   "meetings": [
+    {
+     "day": 2,
+     "start": "12:00",
+     "end": "16:00",
+     "place": "בניין סימולציה [27] חדר 1",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 21,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

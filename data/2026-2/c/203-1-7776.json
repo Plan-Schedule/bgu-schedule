@@ -1,0 +1,29 @@
+{
+ "id": "203-1-7776",
+ "name": "התנסות מחקרית לסטודנטים מצטיינים ב - תכנית דקלים",
+ "credits": 1,
+ "hours": 1,
+ "groups": [
+  {
+   "n": 1,
+   "type": "מחקר",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "מחקר",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "מחקר",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

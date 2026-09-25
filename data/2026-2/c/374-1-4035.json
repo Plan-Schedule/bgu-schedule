@@ -1,0 +1,55 @@
+{
+ "id": "374-1-4035",
+ "name": "BIM ויישומים דיגיטליים בהנדסת מבנים",
+ "credits": 2,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "מר נ. דגן",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "09:00",
+     "end": "10:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": "מר נ. דגן",
+     "meetings": [
+      {
+       "day": 1,
+       "start": "10:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "מקוון",
+       "hybrid": true
+      }
+     ]
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": "מר נ. דגן",
+     "meetings": [
+      {
+       "day": 1,
+       "start": "12:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "מקוון",
+       "hybrid": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

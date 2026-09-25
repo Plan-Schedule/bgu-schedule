@@ -1,0 +1,40 @@
+{
+ "id": "142-1-1621",
+ "name": "מבוא למיסים",
+ "credits": 3,
+ "hours": 5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [
+    {
+     "day": 2,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 3,
+       "start": "15:00",
+       "end": "17:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

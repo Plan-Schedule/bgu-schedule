@@ -1,0 +1,88 @@
+{
+ "id": "361-1-4623",
+ "name": "מעבדה לתקשורת",
+ "credits": 2,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "מעבדה",
+   "lecturer": "ד\"ר ב. חליחל",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "13:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "מעבדה",
+   "lecturer": "מר א. יקיר",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "17:00",
+     "end": "21:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "מעבדה",
+   "lecturer": "מר ר. הירש",
+   "meetings": [
+    {
+     "day": 4,
+     "start": "13:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 4,
+   "type": "מעבדה",
+   "lecturer": "מר א. יקיר",
+   "meetings": [
+    {
+     "day": 4,
+     "start": "17:00",
+     "end": "21:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 5,
+   "type": "מעבדה",
+   "lecturer": "מר מ. בוכריס",
+   "meetings": [
+    {
+     "day": 2,
+     "start": "13:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

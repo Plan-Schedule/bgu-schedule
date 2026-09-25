@@ -1,0 +1,56 @@
+{
+ "id": "374-1-3011",
+ "name": "תב\"מ בהנדסת מבנים",
+ "credits": 2,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "סדנה",
+   "lecturer": "מר א. מירון",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "10:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    },
+    {
+     "day": 1,
+     "start": "14:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "סדנה",
+   "lecturer": "מר א. מירון",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "12:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    },
+    {
+     "day": 1,
+     "start": "14:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

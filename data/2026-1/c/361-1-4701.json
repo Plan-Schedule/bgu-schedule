@@ -1,0 +1,24 @@
+{
+ "id": "361-1-4701",
+ "name": "תקשורת אופטית",
+ "credits": 3,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' ד. שדות",
+   "meetings": [
+    {
+     "day": 2,
+     "start": "17:00",
+     "end": "20:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

@@ -1,0 +1,61 @@
+{
+ "id": "101-1-0537",
+ "name": "לימוד שדה בפסיכולוגיה קלינית - ב",
+ "credits": 2,
+ "hours": 4.5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "גב' א. לוין",
+   "meetings": [
+    {
+     "day": 2,
+     "start": "14:00",
+     "end": "16:00",
+     "place": "גולדברגר [28] חדר 102",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "התנסות",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "התנסות",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "התנסות",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 14,
+     "type": "התנסות",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 15,
+     "type": "התנסות",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 16,
+     "type": "התנסות",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

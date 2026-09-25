@@ -1,0 +1,102 @@
+{
+ "id": "185-1-0001",
+ "name": "מבוא לפיזיקה לתעופה",
+ "credits": 0,
+ "hours": 2,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. הלסטוך",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": "מר נ. שניר",
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "מר ד. פרלשטין",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": "מר א. שניידר",
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": "מר ש. פדר",
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "type": "שעור",
+   "lecturer": "מר ג. נעמן מרום",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 31,
+     "type": "תרגיל",
+     "lecturer": "מר א. שניידר",
+     "meetings": []
+    },
+    {
+     "n": 32,
+     "type": "תרגיל",
+     "lecturer": "מר י. הורביץ",
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. הלסטוך",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 41,
+     "type": "תרגיל",
+     "lecturer": "מר י. הורביץ",
+     "meetings": []
+    },
+    {
+     "n": 42,
+     "type": "תרגיל",
+     "lecturer": "מר ש. פדר",
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "type": "שעור",
+   "lecturer": "מר ר. הוניאט",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 51,
+     "type": "תרגיל",
+     "lecturer": "מר ד. פרלשטין",
+     "meetings": []
+    },
+    {
+     "n": 52,
+     "type": "תרגיל",
+     "lecturer": "מר ג. ויינטראוב",
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

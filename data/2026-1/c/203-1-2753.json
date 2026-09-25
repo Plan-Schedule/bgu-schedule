@@ -1,0 +1,15 @@
+{
+ "id": "203-1-2753",
+ "name": "מעבדה ב1 מקוצרת",
+ "credits": 1.5,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "מעבדה",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

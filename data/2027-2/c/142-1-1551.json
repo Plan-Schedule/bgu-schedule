@@ -1,0 +1,66 @@
+{
+ "id": "142-1-1551",
+ "name": "מקרו כלכלה 2",
+ "credits": 4,
+ "hours": 5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "מר ג. חזק",
+   "meetings": [
+    {
+     "day": 2,
+     "start": "08:00",
+     "end": "11:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "ד\"ר נ. שמעיה",
+   "meetings": [
+    {
+     "day": 2,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

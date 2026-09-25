@@ -1,0 +1,70 @@
+{
+ "id": "363-1-2051",
+ "name": "התא",
+ "credits": 2.5,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' ל. גבר",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "12:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": "גב' מ. סדן",
+     "meetings": [
+      {
+       "day": 5,
+       "start": "11:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": "גב' מ. סדן",
+     "meetings": [
+      {
+       "day": 5,
+       "start": "12:00",
+       "end": "13:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": "גב' מ. סדן",
+     "meetings": [
+      {
+       "day": 5,
+       "start": "13:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

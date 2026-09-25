@@ -1,0 +1,40 @@
+{
+ "id": "362-1-2173",
+ "name": "סדנא לתוכנות מחשב הנדסיות",
+ "credits": 1,
+ "hours": 2,
+ "groups": [
+  {
+   "n": 1,
+   "type": "מעבדה",
+   "lecturer": "מר י. מן מנהיים",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "18:00",
+     "end": "20:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "מעבדה",
+   "lecturer": "מר י. מן מנהיים",
+   "meetings": [
+    {
+     "day": 3,
+     "start": "18:00",
+     "end": "20:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

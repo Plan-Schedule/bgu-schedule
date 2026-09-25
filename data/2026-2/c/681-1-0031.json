@@ -1,0 +1,15 @@
+{
+ "id": "681-1-0031",
+ "name": "מחקר מודרך - 2",
+ "credits": 3,
+ "hours": 0,
+ "groups": [
+  {
+   "n": 1,
+   "type": "הדרכה אישית",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

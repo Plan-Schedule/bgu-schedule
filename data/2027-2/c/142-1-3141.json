@@ -1,0 +1,84 @@
+{
+ "id": "142-1-3141",
+ "name": "מבוא לכלכלה לתעשיה וניהול",
+ "credits": 3.5,
+ "hours": 5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "מר ג. חזק",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 4,
+       "start": "16:00",
+       "end": "18:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 4,
+       "start": "16:00",
+       "end": "18:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "מר ג. חזק",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 2,
+       "start": "12:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 2,
+       "start": "08:00",
+       "end": "10:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

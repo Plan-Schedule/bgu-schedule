@@ -1,0 +1,15 @@
+{
+ "id": "151-1-1001",
+ "name": "הכרת הספריה",
+ "credits": 0,
+ "hours": 1,
+ "groups": [
+  {
+   "n": 1,
+   "type": "קורס מקוון",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

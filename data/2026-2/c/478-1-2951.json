@@ -1,0 +1,32 @@
+{
+ "id": "478-1-2951",
+ "name": "מבוא לאורטופדיה",
+ "credits": 1.5,
+ "hours": 2,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר נ. מימון",
+   "meetings": [
+    {
+     "day": 4,
+     "start": "08:00",
+     "end": "10:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    },
+    {
+     "day": 2,
+     "start": "12:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

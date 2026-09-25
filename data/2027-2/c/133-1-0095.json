@@ -1,0 +1,32 @@
+{
+ "id": "133-1-0095",
+ "name": "נושאים בתחביר",
+ "credits": 4,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור\n(אנגלית)",
+   "lecturer": null,
+   "meetings": [
+    {
+     "day": 1,
+     "start": "10:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 4,
+     "start": "10:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

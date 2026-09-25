@@ -1,0 +1,39 @@
+{
+ "id": "142-1-1411",
+ "name": "מבוא לחשבונאות פיננסית 1",
+ "credits": 3,
+ "hours": 9,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [
+    {
+     "day": 2,
+     "start": "08:00",
+     "end": "11:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 5,
+     "start": "08:00",
+     "end": "11:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

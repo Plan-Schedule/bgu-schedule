@@ -1,0 +1,22 @@
+{
+ "id": "204-1-7772",
+ "name": "התנסות מחקרית 2 לתלמידים מצטיינים בתכנית \"דקלים\"",
+ "credits": 1,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "סדנה",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "סדנה",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

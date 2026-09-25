@@ -1,0 +1,34 @@
+{
+ "id": "364-1-3091",
+ "name": "סימולציה",
+ "credits": 4,
+ "hours": 5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "מר א. נק ברימן",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": "גב' ע. כהן",
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": "גב' ע. כהן",
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": "גב' י. וייס",
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

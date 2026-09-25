@@ -1,0 +1,15 @@
+{
+ "id": "205-1-9431",
+ "name": "ביולגיה של אלמוגים",
+ "credits": 4,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

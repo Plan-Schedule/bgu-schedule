@@ -1,0 +1,64 @@
+{
+ "id": "204-1-3453",
+ "name": "פרויקט",
+ "credits": 4,
+ "hours": 8,
+ "groups": [
+  {
+   "n": 1,
+   "type": "מעבדה",
+   "lecturer": "פרופ' ל. גבר",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "מעבדה",
+   "lecturer": "פרופ' ל. גבר",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "מעבדה",
+   "lecturer": "פרופ' ל. גבר",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 4,
+   "type": "מעבדה",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 5,
+   "type": "מעבדה",
+   "lecturer": "פרופ' ל. גבר",
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 6,
+   "type": "מעבדה",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 7,
+   "type": "מעבדה",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 8,
+   "type": "מעבדה",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

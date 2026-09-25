@@ -1,0 +1,28 @@
+{
+ "id": "364-1-1811",
+ "name": "למידת מכונה",
+ "credits": 3,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' ב. לרנר",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": "מר י. נוה",
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": "מר י. נוה",
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

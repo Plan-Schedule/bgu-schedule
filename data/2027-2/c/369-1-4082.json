@@ -1,0 +1,28 @@
+{
+ "id": "369-1-4082",
+ "name": "ביוראקטורים ב'",
+ "credits": 3,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור\n(אנגלית)",
+   "lecturer": "ד\"ר ע. ברעד",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": "מר נ. לורבר",
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

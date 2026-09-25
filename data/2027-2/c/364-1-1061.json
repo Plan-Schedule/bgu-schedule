@@ -1,0 +1,68 @@
+{
+ "id": "364-1-1061",
+ "name": "מודלים של רגרסיה ליניארית",
+ "credits": 3.5,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר י. ברצ'נקו",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": "מר ת. טורץ",
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": "מר ת. טורץ",
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "ד\"ר י. ברצ'נקו",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": "מר ת. טורץ",
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": "מר ר. וידבסקי",
+     "meetings": []
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [
+    {
+     "n": 31,
+     "type": "תרגיל",
+     "lecturer": "מר ר. וידבסקי",
+     "meetings": []
+    },
+    {
+     "n": 32,
+     "type": "תרגיל",
+     "lecturer": "מר ר. וידבסקי",
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

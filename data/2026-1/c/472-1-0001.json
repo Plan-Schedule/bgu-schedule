@@ -1,0 +1,36 @@
+{
+ "id": "472-1-0001",
+ "name": "הדרכה בספריה",
+ "credits": 0,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "מפגש חד-פעמי",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "מפגש חד-פעמי",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "מפגש חד-פעמי",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  },
+  {
+   "n": 4,
+   "type": "מפגש חד-פעמי",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

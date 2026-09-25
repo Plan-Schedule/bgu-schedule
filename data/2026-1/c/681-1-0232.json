@@ -1,0 +1,104 @@
+{
+ "id": "681-1-0232",
+ "name": "כתיבה מדעית",
+ "credits": 0.5,
+ "hours": 1,
+ "groups": [
+  {
+   "n": 1,
+   "type": "סדנה",
+   "lecturer": "ד\"ר א. פרטוק",
+   "meetings": [
+    {
+     "day": 3,
+     "start": "08:00",
+     "end": "11:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "סדנה",
+   "lecturer": "ד\"ר א. פרטוק",
+   "meetings": [
+    {
+     "day": 3,
+     "start": "14:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "סדנה",
+   "lecturer": "ד\"ר א. פרטוק",
+   "meetings": [
+    {
+     "day": 3,
+     "start": "08:00",
+     "end": "11:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 4,
+   "type": "סדנה",
+   "lecturer": "ד\"ר א. פרטוק",
+   "meetings": [
+    {
+     "day": 3,
+     "start": "14:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 5,
+   "type": "סדנה",
+   "lecturer": "ד\"ר א. פרטוק",
+   "meetings": [
+    {
+     "day": 3,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 8,
+   "type": "סדנה",
+   "lecturer": "ד\"ר א. פרטוק",
+   "meetings": [
+    {
+     "day": 3,
+     "start": "17:00",
+     "end": "20:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

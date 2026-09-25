@@ -1,0 +1,15 @@
+{
+ "id": "123-1-1451",
+ "name": "תורת ההגה",
+ "credits": 2,
+ "hours": 2,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

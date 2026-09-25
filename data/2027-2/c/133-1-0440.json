@@ -1,0 +1,40 @@
+{
+ "id": "133-1-0440",
+ "name": "מבוא לתחביר",
+ "credits": 2,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור\n(אנגלית)",
+   "lecturer": "ד\"ר ז. סגל",
+   "meetings": [
+    {
+     "day": 4,
+     "start": "12:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל\n(אנגלית)",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 3,
+       "start": "12:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

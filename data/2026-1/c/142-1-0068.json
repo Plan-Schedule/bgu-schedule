@@ -1,0 +1,88 @@
+{
+ "id": "142-1-0068",
+ "name": "סטטה לכלכלנים",
+ "credits": 1,
+ "hours": 1,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "גב ' ה. גולדשטיין",
+   "meetings": [
+    {
+     "day": 5,
+     "start": "13:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "גב ' ה. גולדשטיין",
+   "meetings": [
+    {
+     "day": 5,
+     "start": "13:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 3,
+   "type": "שעור",
+   "lecturer": "גב' ש. שירן שטיקמן",
+   "meetings": [
+    {
+     "day": 5,
+     "start": "15:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 4,
+   "type": "שעור",
+   "lecturer": "גב' ש. שירן שטיקמן",
+   "meetings": [
+    {
+     "day": 5,
+     "start": "15:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  },
+  {
+   "n": 5,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [
+    {
+     "day": 5,
+     "start": "17:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
+   "subs": []
+  }
+ ]
+}

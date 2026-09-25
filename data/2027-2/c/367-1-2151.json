@@ -1,0 +1,55 @@
+{
+ "id": "367-1-2151",
+ "name": "תורת המעגלים החשמליים",
+ "credits": 4,
+ "hours": 5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [
+    {
+     "day": 3,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 1,
+       "start": "09:00",
+       "end": "11:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 1,
+       "start": "11:00",
+       "end": "13:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

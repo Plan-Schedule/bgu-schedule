@@ -1,0 +1,28 @@
+{
+ "id": "367-1-1701",
+ "name": "תכנות",
+ "credits": 4,
+ "hours": 5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": "מר א. וול",
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": "מר א. וול",
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}
