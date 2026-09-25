@@ -48,5 +48,10 @@ jobs:
             echo "No changes"
           else
             git commit -m "Update course catalogue $(date -u +%F)"
-            git push
+            # code may have been pushed while the scrape ran; data/ is only written here, so a rebase is safe
+            for i in 1 2 3; do
+              git pull --rebase --quiet origin main && git push && exit 0
+              sleep $((i * 10))
+            done
+            exit 1
           fi
