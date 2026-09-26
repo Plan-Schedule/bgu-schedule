@@ -300,10 +300,14 @@ function wireConstraintGrid() {
     for (const e of els) setCell(e, all ? 0 : ui.brush);
     store.save();
   };
+  // Day and hour labels act on a tap (click), so a swipe that starts on them scrolls the page.
+  grid.addEventListener('click', (ev) => {
+    const t = ev.target;
+    if (t.dataset.day) fill(cellsWhere(`[data-cell^="${t.dataset.day}-"]`));
+    else if (t.dataset.hour) fill(cellsWhere(`[data-cell$="-${t.dataset.hour}"]`));
+  });
   grid.addEventListener('pointerdown', (ev) => {
     const t = ev.target;
-    if (t.dataset.day) return fill(cellsWhere(`[data-cell^="${t.dataset.day}-"]`));
-    if (t.dataset.hour) return fill(cellsWhere(`[data-cell$="-${t.dataset.hour}"]`));
     if (!t.dataset.cell) return;
     ev.preventDefault();
     painting = +t.dataset.v === ui.brush ? 0 : ui.brush;

@@ -5,7 +5,7 @@
 //   new version shows up on the next visit.
 // Course data: fetched fresh when online (it changes daily), cache used offline.
 
-const VERSION = 'v4';
+const VERSION = 'v5';
 const SHELL = `shell-${VERSION}`;
 const DATA = 'data';
 const FILES = [
