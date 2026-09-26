@@ -4,7 +4,7 @@ import {
   components, courseOptions, blocks as makeBlocks, solve, missedStars, weekStats, findGroup, alternatives,
   typeLabel, range, DAYS, DAY_FULL, DEFAULT_PREFS, DEFAULT_WEIGHTS, rating, RATE, overlaps, fmtTime,
 } from './model.js';
-import { weekHtml, weekPng, esc, shortName } from './grid.js';
+import { weekHtml, weekPng, esc, shortName, gridBlocks } from './grid.js';
 import {
   encodePlan, decodePlan, registrationRows, registrationText, ics, download,
   pack, unpack, sanitizeState, encodeCourseList, decodeCourseList,
@@ -541,8 +541,38 @@ function blockSheet(bi) {
   const course = b.course;
   const cur = plan.attend?.[course.id]?.[reg.n] || sem().courses[course.id]?.prefs?.[b.key]?.plan || 'go';
   const hybrid = reg.meetings.some((m) => m.hybrid);
-  const opt = (v, ico, label, sub = '', dis = false) => `<button class="opt" data-action="attend" data-cid="${course.id}" data-n="${reg.n}" data-v="${v}" aria-pressed="${cur === v}" ${dis ? 'disabled' : ''}><span class="ico">${ico}</span><span class="grow"><b>${label}</b>${sub ? `<br><span class="muted small">${sub}</span>` : ''}</span></button>`;
+  const opt = (v, ico, label, sub = '', dis = false) => `<button class="opt" data-action="attend" data-cid="${course.id}" data-n="${reg.n}" data-v="${v}" aria-pressed="${cur === v}" ${dis ? 'disabled' : ''}><span class="ico">${ico}</span><span class="grow"><b>${label}</b>${sub ? (sub.startsWith('<span') ? sub : `<br><span class="muted small">${sub}</span>`) : ''}</span></button>`;
   const alts = alternatives(course, reg.n);
+  const regInfo = findGroup(course, reg.n);
+  // lessons I attend elsewhere in the week, other than this group
+  const busy = bl.filter((x) => x.attended && x.g !== reg && x.regGroup !== reg);
+  const clashWith = (g) => busy.filter((x) => g.meetings.some((m) => overlaps(m, x.m)));
+  const clashLine = (g) => {
+    const c = clashWith(g);
+    return c.length ? `<span class="line warn">⚠ על חשבון: ${c.map((x) => `${esc(shortName(x.course.name))} ${esc(typeLabel(x.g.type))} ${x.g.n} (${fmtMeet(x.m)})`).join(', ')}</span>` : '';
+  };
+  const who = (g) => (g.lecturer ? `${starOf(g.lecturer, course.id)}${esc(g.lecturer)}` : 'ללא מרצה מוגדר');
+  const belongs = (a) => {
+    if (regInfo.role === 'sub') {
+      const mine = regInfo.parent, theirs = findGroup(course, a.n).parent;
+      return theirs === mine
+        ? `<span class="line ok">✓ שייך להרצאה שלך (${mine.n}), אפשר גם להירשם אליו</span>`
+        : `<span class="line info">↔ שייך להרצאה ${theirs.n}${theirs.lecturer ? ` של ${esc(theirs.lecturer)}` : ''}. כדי להירשם אליו צריך להחליף גם את ההרצאה</span>`;
+    }
+    const subs = a.subs || [];
+    return subs.length
+      ? `<span class="line info">↔ לתרגולים שלך יש הרצאה אחרת. כדי להירשם להרצאה הזו צריך גם תרגול שלה (${subs.map((x) => x.n).join(', ')})</span>`
+      : `<span class="line ok">✓ אפשר להירשם אליה בלי לשנות תרגול</span>`;
+  };
+  const altOpt = (a) => `<button class="opt" data-action="attend" data-cid="${course.id}" data-n="${reg.n}" data-v="alt:${a.n}" aria-pressed="${cur === `alt:${a.n}`}">
+    <span class="ico">↩</span>
+    <span class="grow">
+      <span class="big">${a.meetings.map(fmtMeet).join(' · ')}</span>
+      <span class="big">${who(a)}</span>
+      <span class="line">אלך במקום זה ל${esc(typeLabel(a.type))} ${a.n}</span>
+      ${belongs(a)}
+      ${clashLine(a)}
+    </span></button>`;
   // other registrations for this course that don't clash with the rest of the plan
   const others = bl.filter((x) => x.course.id !== course.id && (x.registered || x.mode === 'moved')).map((x) => x.m);
   const swaps = courseOptions(course).filter((o) => {
@@ -554,14 +584,32 @@ function blockSheet(bi) {
     <h3>${esc(course.name)}</h3>
     <p class="muted small">${esc(typeLabel(reg.type))} ${reg.n}${reg.lecturer ? ' · ' + starOf(reg.lecturer, course.id) + esc(reg.lecturer) : ''} · ${reg.meetings.map(fmtMeet).join(' · ')}${hybrid ? ' · 🎥 מוקלט' : ''}</p>
     <div class="opt-list">
-      ${opt('go', '🙋', 'אלך')}
+      ${opt('go', '🙋', 'אלך', clashLine(reg))}
       ${opt('rec', '🎥', 'אראה בהקלטה', hybrid ? '' : 'השיעור הזה לא מסומן כהיברידי', !hybrid)}
       ${opt('skip', '✕', 'לא אלך')}
-      ${alts.map((a) => opt(`alt:${a.n}`, '↩', `אלך במקום זה לקבוצה ${a.n}`, `${a.lecturer ? starOf(a.lecturer, course.id) + esc(a.lecturer) + ' · ' : ''}${a.meetings.map(fmtMeet).join(' · ')}`)).join('')}
+      ${alts.length ? `<p class="muted small" style="margin:8px 0 0">או ללכת לקבוצה אחרת (על הנוכחות לא בודקים):</p>` : ''}
+      ${alts.map(altOpt).join('')}
     </div>
     ${swaps.length ? `<details><summary><b>החלפת קבוצה ברישום</b> <span class="muted small">(${swaps.length} אפשרויות בלי התנגשות)</span></summary>
       <div class="opt-list">${swaps.map((o) => `<button class="opt" data-action="swap" data-cid="${course.id}" data-nums="${o.picks.map((p) => p.g.n).join(',')}"><span class="ico">⇄</span><span class="grow">${o.picks.map(({ g }) => `<b>${esc(typeLabel(g.type))} ${g.n}</b> ${g.lecturer ? starOf(g.lecturer, course.id) + esc(g.lecturer) : ''} <span class="muted small">${g.meetings.map(fmtMeet).join(' · ')}</span>`).join('<br>')}</span></button>`).join('')}</div>
     </details>` : ''}
+    <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" data-action="close-sheet">סגירה</button></div>`);
+}
+
+/** A "⚠ N שיעורים" block: what's in it, and (in my plans) a way into each lesson. */
+function clashSheet(gid, idxs) {
+  const bl = gridBlocks(gid);
+  const items = idxs.map((i) => [i, bl[i]]).filter(([, b]) => b);
+  const canEdit = ui.tab === 'plans' && !ui.shared;
+  openSheet(`
+    <h3>⚠ ${items.length} שיעורים באותה שעה</h3>
+    <p class="muted small">${canEdit ? 'כדי לפתור, לוחצים על אחד מהם ובוחרים "לא אלך", הקלטה או קבוצה אחרת.' : 'בשתי הקבוצות האלה צריך להיות באותו זמן.'}</p>
+    <div class="opt-list">${items.map(([i, b]) => `<${canEdit ? `button class="opt" data-action="open-block" data-bi="${i}"` : 'div class="opt"'}>
+      <span class="ico"><i class="cdot" style="--h:${hueOf(b.course.id)};width:12px;height:12px"></i></span>
+      <span class="grow">
+        <span class="big">${fmtMeet(b.m)}${b.g.lecturer ? ` · ${starOf(b.g.lecturer, b.course.id)}${esc(b.g.lecturer)}` : ''}</span>
+        <span class="line">${esc(b.course.name)} · ${esc(typeLabel(b.g.type))} ${b.g.n}${b.mode === 'alt' ? ` (במקום ${b.regGroup.n})` : ''}</span>
+      </span></${canEdit ? 'button' : 'div'}>`).join('')}</div>
     <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" data-action="close-sheet">סגירה</button></div>`);
 }
 
@@ -830,6 +878,7 @@ const actions = {
   },
   'shared-close'() { ui.shared = null; history.replaceState(null, '', '#plans'); render(); },
   settings: () => settingsSheet(),
+  'open-block': (el) => blockSheet(+el.dataset.bi),
   intro: () => introSheet(),
   'intro-done'() {
     store.update((s) => { s.seen.intro = true; });
@@ -897,6 +946,8 @@ const actions = {
 document.addEventListener('click', (ev) => {
   const tabBtn = ev.target.closest('.tabs [data-tab]');
   if (tabBtn) return setTab(tabBtn.dataset.tab);
+  const clash = ev.target.closest('.blk.clash');
+  if (clash) return clashSheet(clash.closest('[data-grid]').dataset.grid, clash.dataset.clash.split(',').map(Number));
   const blk = ev.target.closest('.blk[data-bi]');
   if (blk && ui.tab === 'plans' && !ui.shared) return blockSheet(+blk.dataset.bi);
   const el = ev.target.closest('[data-action]');
