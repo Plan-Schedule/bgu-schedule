@@ -14,5 +14,5 @@ export const CONFIG = {
   feedbackUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfaeSm2csPLuLKGGCbJIaN91LJRI26RXIliW6JlI_YnheREPw/viewform',
   sourceUrl: 'https://github.com/Plan-Schedule/bgu-schedule',
   // Anonymous visit counter (see js/stats.js). Empty = off.
-  statsUrl: '',
+  statsUrl: 'https://plan-schedule.goatcounter.com/count',
 };
