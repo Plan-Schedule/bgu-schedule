@@ -5,12 +5,12 @@
 //   new version shows up on the next visit.
 // Course data: fetched fresh when online (it changes daily), cache used offline.
 
-const VERSION = 'v7';
+const VERSION = 'v8';
 const SHELL = `shell-${VERSION}`;
 const DATA = 'data';
 const FILES = [
   './', 'index.html', 'about.html', 'manifest.webmanifest', 'css/app.css',
-  'js/app.js', 'js/model.js', 'js/grid.js', 'js/share.js', 'js/data.js', 'js/store.js', 'js/config.js',
+  'js/app.js', 'js/model.js', 'js/grid.js', 'js/share.js', 'js/data.js', 'js/store.js', 'js/config.js', 'js/stats.js',
   'assets/fonts/rubik-hebrew.woff2', 'assets/fonts/rubik-latin.woff2', 'assets/icon.svg', 'assets/icon-192.png',
 ];
 

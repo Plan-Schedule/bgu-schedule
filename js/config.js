@@ -13,4 +13,6 @@ export const CONFIG = {
   // Where "יש לי הערה" leads: a Google Form, so no account is needed to send one.
   feedbackUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfaeSm2csPLuLKGGCbJIaN91LJRI26RXIliW6JlI_YnheREPw/viewform',
   sourceUrl: 'https://github.com/Plan-Schedule/bgu-schedule',
+  // Anonymous visit counter (see js/stats.js). Empty = off.
+  statsUrl: '',
 };

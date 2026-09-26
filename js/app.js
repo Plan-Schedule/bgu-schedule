@@ -10,6 +10,7 @@ import {
   pack, unpack, sanitizeState, encodeCourseList, decodeCourseList,
 } from './share.js';
 import { CONFIG } from './config.js';
+import * as stats from './stats.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const view = $('#view');
@@ -337,6 +338,7 @@ function computeResults() {
   const st = store.solverState();
   if (ui.ignoreConstraints) st.constraints = { cells: {}, weights: {} };
   ui.results = courses.length ? solve(courses, st) : null;
+  if (ui.results) stats.event('schedules-built');
   return ui.results;
 }
 
@@ -737,6 +739,7 @@ const actions = {
     store.persist();
     ui.plan = plan.id;
     toast(`נשמר בתור "${plan.name}"`);
+    stats.event('plan-saved');
   },
   plan(el) { ui.plan = el.dataset.id; render(); },
   'plan-view'(el) { ui.planView = el.dataset.v; render(); },
@@ -794,7 +797,7 @@ const actions = {
   async 'share-link'() {
     const p = currentPlan();
     const url = `${location.origin}${location.pathname}#s=${await encodePlan(S().semester, p)}`;
-    await shareUrl(url, p.name, `המערכת שלי: ${p.name}`);
+    if (await shareUrl(url, p.name, `המערכת שלי: ${p.name}`)) stats.event('plan-shared');
   },
   async png() {
     const p = currentPlan();
@@ -838,7 +841,7 @@ const actions = {
     const name = $('#list-name').value.trim();
     const url = `${location.origin}${location.pathname}#c=${await encodeCourseList(S().semester, name, sem().order)}`;
     closeSheet();
-    await shareUrl(url, name || 'רשימת קורסים', `רשימת הקורסים${name ? ` ל${name}` : ''} במתכנן המערכת:`);
+    if (await shareUrl(url, name || 'רשימת קורסים', `רשימת הקורסים${name ? ` ל${name}` : ''} במתכנן המערכת:`)) stats.event('course-list-shared');
   },
   'list-add'() {
     const ids = [...document.querySelectorAll('input[name=add]:checked:not(:disabled)')].map((i) => i.value);
@@ -850,11 +853,12 @@ const actions = {
     ui.tab = 'courses';
     render();
     toast(ids.length ? `נוספו ${ids.length} קורסים` : 'לא נוספו קורסים');
+    if (ids.length) stats.event('course-list-added');
   },
   async 'restore-link'() {
     const url = `${location.origin}${location.pathname}#r=${await pack(S())}`;
     const ok = await shareUrl(url, 'קישור שחזור · מתכנן מערכת', 'קישור השחזור שלי למתכנן המערכת (לא לשתף, יש בו את הדירוגים שלי):');
-    if (ok) { store.markBackup(); store.persist(); ui.nudgeDismissed = true; render(); }
+    if (ok) { store.markBackup(); store.persist(); ui.nudgeDismissed = true; render(); stats.event('restore-link-saved'); }
   },
   'restore-yes'() {
     const clean = ui.pendingRestore;
@@ -1013,6 +1017,8 @@ async function boot() {
   }
   const after = await readLink(hash);
   bootSelectors();
+  stats.pageview();
+  if (ui.shared) stats.event('shared-plan-opened');
   if (!S().seen.intro && !hash.startsWith('r=')) introSheet();
   if (after) after();
   await loadSemester();
@@ -1020,6 +1026,7 @@ async function boot() {
 
 // Installing is optional; the site works the same from a plain link.
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); ui.installPrompt = e; });
+window.addEventListener('appinstalled', () => stats.event('app-installed'));
 if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
