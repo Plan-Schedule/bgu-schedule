@@ -10,7 +10,7 @@ export const CONFIG = {
     catalogueName: 'קובץ הקורסים',
     catalogueUrl: 'https://bgu4u.bgu.ac.il/pls/scwp/!app.gate?app=ann',
   },
-  // Where "יש לי הערה" leads. A Google Form works for people without a GitHub account.
-  feedbackUrl: 'https://github.com/Plan-Schedule/bgu-schedule/issues/new?template=feedback.yml',
+  // Where "יש לי הערה" leads: a Google Form, so no account is needed to send one.
+  feedbackUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfaeSm2csPLuLKGGCbJIaN91LJRI26RXIliW6JlI_YnheREPw/viewform',
   sourceUrl: 'https://github.com/Plan-Schedule/bgu-schedule',
 };
