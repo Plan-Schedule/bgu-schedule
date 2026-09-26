@@ -257,7 +257,8 @@ function renderConstraints() {
   const brush = (v, color, label) => `<button class="brush" data-action="brush" data-v="${v}" aria-pressed="${ui.brush === v}"><i style="background:${color}"></i>${label}</button>`;
   const slider = (k, label, hint) => `
     <label class="weight"><span><b>${label}</b> <span class="muted small">${['לא משנה', 'קצת', 'חשוב', 'מאוד'][w[k]]}</span></span>
-      <input type="range" min="0" max="3" step="1" value="${w[k]}" data-weight="${k}">
+      <input type="range" min="0" max="3" step="1" value="${w[k]}" data-weight="${k}" aria-label="${label}">
+      <span class="ticks" aria-hidden="true"><span>לא משנה</span><span>קצת</span><span>חשוב</span><span>מאוד</span></span>
       <span class="muted small">${hint}</span></label>`;
   return `
     <div class="section-head"><div>
