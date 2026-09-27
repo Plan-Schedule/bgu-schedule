@@ -228,7 +228,10 @@ function courseCard(id) {
           const p = { ...DEFAULT_PREFS, ...(cp.prefs[k.key] || {}) };
           p.weight = p.weight ? 2 : 0;
           if (p.plan !== 'go') p.plan = 'skip';
-          const seg = (field, opts) => `<div class="seg" role="group">${opts.map(([v, l]) => `<button data-action="pref" data-id="${id}" data-key="${esc(k.key)}" data-field="${field}" data-v="${v}" aria-pressed="${String(p[field]) === String(v)}">${l}</button>`).join('')}</div>`;
+          const seg = (field, opts) => {
+            const i = Math.max(0, opts.findIndex(([v]) => String(p[field]) === String(v)));
+            return `<div class="seg anim" role="group" style="--n:${opts.length};--i:${i}">${opts.map(([v, l]) => `<button data-action="pref" data-id="${id}" data-key="${esc(k.key)}" data-field="${field}" data-v="${v}" aria-pressed="${String(p[field]) === String(v)}">${l}</button>`).join('')}</div>`;
+          };
           return `<div class="comp">
             <div class="comp-label">${esc(k.label)}</div>
             <div class="row" style="gap:14px">
@@ -262,7 +265,7 @@ function renderConstraints() {
   const slider = (k, label, hint) => {
     const cur = w[k] === 0 ? 0 : w[k] === 3 ? 3 : 2;
     return `<div class="weight"><b>${label}</b>
-      <div class="seg wide" role="group" aria-label="${label}">${[[0, 'לא משנה'], [2, 'חשוב'], [3, 'מאוד']].map(([v, l]) =>
+      <div class="seg wide anim" role="group" aria-label="${label}" style="--n:3;--i:${[0, 2, 3].indexOf(cur)}">${[[0, 'לא משנה'], [2, 'חשוב'], [3, 'מאוד']].map(([v, l]) =>
         `<button data-action="weight" data-k="${k}" data-v="${v}" aria-pressed="${cur === v}">${l}</button>`).join('')}</div>
       <span class="muted small">${hint}</span></div>`;
   };
@@ -815,6 +818,21 @@ function icsRange() {
   return { start, end, breaks: $('#ics-breaks')?.checked ? ui.icsBreaks : [] };
 }
 
+/** Mark the tapped button as the chosen one in its group, and slide the group's pill to it. */
+function selectIn(el) {
+  const group = el.parentElement;
+  const buttons = [...group.children].filter((b) => b.tagName === 'BUTTON');
+  for (const b of buttons) b.setAttribute('aria-pressed', String(b === el));
+  group.style.setProperty('--i', buttons.indexOf(el));
+}
+
+/** Save a small choice without rebuilding the page (a rebuild would cut the animation short). */
+function quietSave(el) {
+  selectIn(el);
+  S().meta.changes++;
+  store.save();
+}
+
 // ---------- actions ----------
 const actions = {
   tab: (el) => setTab(el.dataset.tab),
@@ -858,13 +876,15 @@ const actions = {
   },
   pref(el) {
     const { id, key, field, v } = el.dataset;
-    store.update(() => {
-      const p = cprefs(id).prefs;
-      p[key] = { ...DEFAULT_PREFS, ...(p[key] || {}), [field]: field === 'weight' ? +v : v };
-    });
+    const p = cprefs(id).prefs;
+    p[key] = { ...DEFAULT_PREFS, ...(p[key] || {}), [field]: field === 'weight' ? +v : v };
+    quietSave(el);
   },
-  brush(el) { ui.brush = +el.dataset.v; render(); },
-  weight(el) { store.update((s) => { s.constraints.weights[el.dataset.k] = +el.dataset.v; }); },
+  brush(el) { ui.brush = +el.dataset.v; selectIn(el); },
+  weight(el) {
+    S().constraints.weights[el.dataset.k] = +el.dataset.v;
+    quietSave(el);
+  },
   'q-clear'() { ui.q = ''; renderSearch(); const q = $('#q'); q.value = ''; q.focus(); },
   build(el) {
     ui.ignoreConstraints = !!el.dataset.free;
