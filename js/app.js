@@ -7,7 +7,7 @@ import {
 import { weekHtml, weekPng, esc, shortName, gridBlocks } from './grid.js';
 import {
   encodePlan, decodePlan, registrationRows, registrationText, ics, download,
-  pack, unpack, sanitizeState, encodeCourseList, decodeCourseList,
+  pack, unpack, sanitizeState, encodeCourseList, decodeCourseList, calendarBlocks, googleLink,
 } from './share.js';
 import { CONFIG } from './config.js';
 import * as stats from './stats.js';
@@ -134,14 +134,14 @@ function renderCourses() {
     <div class="search">
       <div class="search-field">
         <input id="q" type="search" autocomplete="off" placeholder="חיפוש לפי שם או מספר קורס, למשל ״לוגיקה״ או 212.1.0201" aria-label="חיפוש קורס">
+        <button class="q-clear" data-action="q-clear" aria-label="ניקוי החיפוש" title="ניקוי" hidden>✕</button>
         <span class="kbd" aria-hidden="true">🔍</span>
       </div>
       <div id="qres"></div>
     </div>
     ${list.length ? `
       <p class="legend">
-        <span>דירוג: ⭐ מומלץ · 👌 בסדר · 🚫 להימנע, לכל קורס בנפרד (לחיצה נוספת מבטלת)</span>
-        <span>📌 חייב את הקבוצה הזו</span><span>⛔ לא מתאים לי</span><span>🎥 מוקלט (היברידי)</span>
+        <span><b>⭐ מומלץ</b> מעדיף את המרצה או המתרגל</span><span><b>🚫 לא מתאים</b> לא לשבץ את הקבוצה</span><span><b>📌 חובה</b> רק הקבוצה הזו</span><span>🎥 מוקלט · לחיצה נוספת מבטלת</span>
       </p>` : ''}
     <div class="courses">
       ${sem().order.map((id) => courseCard(id)).join('')}
@@ -171,6 +171,8 @@ function renderSearch() {
   const box = $('#qres');
   if (!box) return;
   const q = ui.q || '';
+  const clear = $('.q-clear');
+  if (clear) clear.hidden = !q;
   if (!q.trim()) { box.innerHTML = ''; return; }
   if (!ui.index.length) { box.innerHTML = `<div class="card pad muted small">טוען את רשימת הקורסים…</div>`; return; }
   const hits = data.search(ui.index, q);
@@ -181,14 +183,6 @@ function renderSearch() {
       <button class="btn sm ${added ? '' : 'primary'}" data-action="${added ? 'noop' : 'add'}" data-id="${c.id}" ${added ? 'disabled' : ''}>${added ? '✓ נוסף' : '+ הוספה'}</button>
     </div>`;
   }).join('') : `<div class="pad muted">לא נמצא קורס כזה בסמסטר ${esc(currentSemLabel())}.</div>`}</div>`;
-}
-
-const RATE_OPTS = [[RATE.REC, '⭐', 'מומלץ'], [RATE.OK, '👌', 'בסדר'], [RATE.AVOID, '🚫', 'להימנע']];
-
-function rateControl(name, id) {
-  const r = rating(ratingsOf(id), name);
-  return `<span class="person" data-r="${r}"><span class="nm">${esc(name)}</span><span class="rate-seg" role="group" aria-label="דירוג ${esc(name)}">${RATE_OPTS.map(([v, ico, label]) =>
-    `<button data-action="rate" data-id="${id}" data-name="${esc(name)}" data-v="${v}" aria-pressed="${r === v}" title="${label}" aria-label="${label}">${ico}</button>`).join('')}</span></span>`;
 }
 
 function courseCard(id) {
@@ -209,29 +203,37 @@ function courseCard(id) {
   if (!open || !c) return `<article class="card course">${head}</article>`;
   const cp = cprefs(id);
   const comps = components(c);
-  const pinBtn = (n, v, ico, t) => `<button class="pin" data-action="pin" data-id="${id}" data-n="${n}" data-v="${v}" aria-pressed="${cp.pins[n] === v}" title="${t}" aria-label="${t}">${ico}</button>`;
-  const grp = (g, sub) => `
+  const ratings = ratingsOf(id);
+  const pinBtn = (n, v, label, cls) => `<button class="act ${cls}" data-action="pin" data-id="${id}" data-n="${n}" data-v="${v}" aria-pressed="${cp.pins[n] === v}">${label}</button>`;
+  const grp = (g, sub) => {
+    const star = g.lecturer && ratings[g.lecturer] === RATE.REC;
+    return `
     <div class="grp ${sub ? 'sub' : ''} ${cp.pins[g.n] || ''}">
       <div class="gnum">${g.n}<small>${esc(typeLabel(g.type))}</small></div>
-      <div>
-        ${g.lecturer
-          ? rateControl(g.lecturer, id)
-          : `<span class="person none">ללא מרצה מוגדר</span>`}
+      <div class="ginfo">
+        <div class="gwho">${g.lecturer ? `${star ? '⭐ ' : ''}${esc(g.lecturer)}` : '<span class="muted">ללא מרצה מוגדר</span>'}</div>
         <div class="times">${g.meetings.length ? g.meetings.map((m) => `${fmtMeet(m)}${m.hybrid ? ' <span class="rec" title="מוקלט">🎥</span>' : ''}`).join(' · ') : 'ללא שעות'}</div>
+        <div class="acts">
+          ${g.lecturer ? `<button class="act star" data-action="rate" data-id="${id}" data-name="${esc(g.lecturer)}" data-v="${RATE.REC}" aria-pressed="${star}" title="בכל הקבוצות של ${esc(g.lecturer)} בקורס">⭐ מומלץ</button>` : ''}
+          ${pinBtn(g.n, 'never', '🚫 לא מתאים', 'never')}
+          ${pinBtn(g.n, 'must', '📌 חובה', 'must')}
+        </div>
       </div>
-      <div class="pins">${pinBtn(g.n, 'must', '📌', 'חייב את הקבוצה הזו')}${pinBtn(g.n, 'never', '⛔', 'לא מתאים לי')}</div>
     </div>`;
+  };
   return `
     <article class="card course">${head}
       <div class="course-body">
         ${comps.map((k) => {
           const p = { ...DEFAULT_PREFS, ...(cp.prefs[k.key] || {}) };
+          p.weight = p.weight ? 2 : 0;
+          if (p.plan !== 'go') p.plan = 'skip';
           const seg = (field, opts) => `<div class="seg" role="group">${opts.map(([v, l]) => `<button data-action="pref" data-id="${id}" data-key="${esc(k.key)}" data-field="${field}" data-v="${v}" aria-pressed="${String(p[field]) === String(v)}">${l}</button>`).join('')}</div>`;
           return `<div class="comp">
             <div class="comp-label">${esc(k.label)}</div>
             <div class="row" style="gap:14px">
-              <div><div class="lbl">אני מתכוון…</div>${seg('plan', [['go', 'ללכת'], ['rec', 'לראות הקלטות'], ['skip', 'לא ללכת']])}</div>
-              <div><div class="lbl">כמה חשוב לי מי מלמד?</div>${seg('weight', [[0, 'לא משנה'], [1, 'קצת'], [2, 'חשוב'], [3, 'מאוד']])}</div>
+              <div><div class="lbl">אני מתכוון…</div>${seg('plan', [['go', 'ללכת'], ['skip', 'לא ללכת']])}</div>
+              <div><div class="lbl">כמה חשוב לי מי מלמד?</div>${seg('weight', [[0, 'לא משנה'], [2, 'חשוב']])}</div>
             </div>
           </div>`;
         }).join('')}
@@ -256,11 +258,14 @@ function renderConstraints() {
     for (let d = 1; d <= 6; d++) grid += `<div class="cell" data-cell="${d}-${h}" data-v="${cells[`${d}-${h}`] || 0}"></div>`;
   }
   const brush = (v, color, label) => `<button class="brush" data-action="brush" data-v="${v}" aria-pressed="${ui.brush === v}"><i style="background:${color}"></i>${label}</button>`;
-  const slider = (k, label, hint) => `
-    <label class="weight"><span><b>${label}</b> <span class="muted small">${['לא משנה', 'קצת', 'חשוב', 'מאוד'][w[k]]}</span></span>
-      <input type="range" min="0" max="3" step="1" value="${w[k]}" data-weight="${k}" aria-label="${label}">
-      <span class="ticks" aria-hidden="true"><span>לא משנה</span><span>קצת</span><span>חשוב</span><span>מאוד</span></span>
-      <span class="muted small">${hint}</span></label>`;
+  // three steps: לא משנה / חשוב / מאוד (older saves may hold 1 = "קצת", shown as חשוב)
+  const slider = (k, label, hint) => {
+    const cur = w[k] === 0 ? 0 : w[k] === 3 ? 3 : 2;
+    return `<div class="weight"><b>${label}</b>
+      <div class="seg wide" role="group" aria-label="${label}">${[[0, 'לא משנה'], [2, 'חשוב'], [3, 'מאוד']].map(([v, l]) =>
+        `<button data-action="weight" data-k="${k}" data-v="${v}" aria-pressed="${cur === v}">${l}</button>`).join('')}</div>
+      <span class="muted small">${hint}</span></div>`;
+  };
   return `
     <div class="section-head"><div>
       <h2>מתי אני לא יכול או לא רוצה</h2>
@@ -395,7 +400,7 @@ function renderResults() {
         </div>
       </div>
       <ul class="res-lines">${res.courses.map(({ course, picks }) => `<li><span class="dot" style="--h:${hueOf(course.id)}"></span><span class="cn">${esc(shortName(course.name))}</span>${pickLine(course, picks)}</li>`).join('')}</ul>
-      ${lost.length ? `<div class="lost">ויתרת על: ${lost.map((l) => `<b>⭐ ${esc(l.name)}</b> (${esc(shortName(l.course.name))}, ${esc(l.comp.label)})`).join(' · ')}</div>` : ''}
+      ${lost.length ? `<div class="lost">⚠ ויתרת על: ${lost.map((l) => `⭐ ${esc(l.name)} (${esc(shortName(l.course.name))}, ${esc(l.comp.label)})`).join(' · ')}</div>` : ''}
       ${ui.shown[i] ? weekHtml(res.blocks, { hueOf }) : ''}
     </article>`;
   }).join('');
@@ -643,6 +648,80 @@ function settingsSheet() {
   });
 }
 
+/** Which "add to home screen" instructions fit this device and browser. */
+function detectBrowser() {
+  const ua = navigator.userAgent;
+  if (/FBAN|FBAV|Instagram|WhatsApp|Line\/|Telegram|Snapchat|TikTok|musical_ly|; wv\)/i.test(ua)) return 'inapp';
+  if (isIOS()) return /CriOS|FxiOS|EdgiOS/.test(ua) ? 'ios-other' : 'ios-safari';
+  if (/Android/i.test(ua)) return /SamsungBrowser/.test(ua) ? 'samsung' : /Firefox/.test(ua) ? 'android-firefox' : 'android-chrome';
+  if (/Firefox/.test(ua)) return 'desktop-firefox';
+  if (/Edg\//.test(ua)) return 'desktop-edge';
+  if (/Chrome|Chromium/.test(ua)) return 'desktop-chrome';
+  if (/Safari/.test(ua)) return 'mac-safari';
+  return 'desktop-chrome';
+}
+
+const INSTALL_GUIDES = {
+  'ios-safari': ['אייפון · ספארי', [
+    ['לוחצים על כפתור השיתוף', 'הריבוע עם החץ למעלה ⬆️, בתחתית המסך (או בראש המסך באייפד).'],
+    ['"הוסף למסך הבית"', 'גוללים קצת למטה ברשימה שנפתחה.'],
+    ['"הוסף"', 'האייקון של המתכנן יופיע במסך הבית.'],
+  ]],
+  'ios-other': ['אייפון · כרום / אדג׳ / פיירפוקס', [
+    ['לוחצים על כפתור השיתוף', 'הריבוע עם החץ ⬆️ בשורת הכתובת, למעלה.'],
+    ['"הוסף למסך הבית"', 'אם לא מופיע: גוללים למטה ← "עריכת פעולות", או פותחים את הקישור בספארי.'],
+    ['"הוסף"', 'האייקון יופיע במסך הבית.'],
+  ]],
+  inapp: ['נפתח מתוך וואטסאפ / אינסטגרם', [
+    ['פותחים את הקישור בדפדפן הרגיל', 'בוואטסאפ ובאינסטגרם: ⋯ או ⋮ בפינה ← "פתח בספארי" / "פתח בדפדפן". אפשר גם להעתיק את הקישור ולהדביק בספארי או בכרום.'],
+    ['שם לוחצים שוב ⚙︎ ← "הוספה למסך הבית"', 'מתוך האפליקציות האלה אי אפשר להתקין, ולכן ההוראות יופיעו רק בדפדפן.'],
+  ]],
+  'android-chrome': ['אנדרואיד · כרום', [
+    ['לוחצים על ⋮', 'שלוש הנקודות בפינה העליונה.'],
+    ['"התקנת אפליקציה" או "הוספה למסך הבית"', ''],
+    ['"התקנה"', 'המתכנן יופיע במסך הבית ובמגירת האפליקציות.'],
+  ]],
+  samsung: ['אנדרואיד · סמסונג אינטרנט', [
+    ['לוחצים על ☰', 'התפריט בתחתית המסך.'],
+    ['"הוסף דף אל"', ''],
+    ['"מסך הבית"', 'המתכנן יופיע במסך הבית.'],
+  ]],
+  'android-firefox': ['אנדרואיד · פיירפוקס', [
+    ['לוחצים על ⋮', 'בתפריט.'],
+    ['"התקנה" או "הוספה למסך הבית"', ''],
+  ]],
+  'desktop-chrome': ['מחשב · כרום', [
+    ['לוחצים על אייקון ההתקנה', 'מסך קטן עם חץ, בקצה שורת הכתובת. אם לא מופיע: ⋮ ← "שמירה ושיתוף" (Cast, save and share) ← "התקנת הדף כאפליקציה".'],
+    ['"התקנה"', 'המתכנן ייפתח בחלון משלו ויופיע ברשימת התוכנות.'],
+  ]],
+  'desktop-edge': ['מחשב · אדג׳', [
+    ['⋯ ← "אפליקציות"', ''],
+    ['"התקנת אתר זה כאפליקציה"', ''],
+  ]],
+  'mac-safari': ['מק · ספארי', [
+    ['בתפריט "קובץ" ← "הוסף ל-Dock"', 'זמין מ-macOS Sonoma ואילך.'],
+  ]],
+  'desktop-firefox': ['מחשב · פיירפוקס', [
+    ['פיירפוקס במחשב לא מתקין אתרים כאפליקציה', 'אפשר לשמור את האתר כסימנייה (Ctrl+D), או לפתוח אותו בכרום או באדג׳ ולהתקין משם.'],
+  ]],
+};
+
+function installSheet(key) {
+  const [title, steps] = INSTALL_GUIDES[key] || INSTALL_GUIDES['android-chrome'];
+  const canPrompt = !!ui.installPrompt;
+  openSheet(`
+    <h3>הוספה למסך הבית</h3>
+    <p class="muted small">לא חובה: הכול עובד גם מהקישור. התקנה מוסיפה אייקון, פותחת את המתכנן במסך מלא, עובדת גם בלי אינטרנט ושומרת על הנתונים שלך.</p>
+    ${canPrompt ? `<button class="btn primary" data-action="install" style="width:100%;padding:12px;margin:6px 0 10px">📲 התקנה בלחיצה</button>` : ''}
+    <p style="margin:8px 0 4px"><b>${esc(title)}</b></p>
+    <ol class="steps">${steps.map(([h, t]) => `<li><b>${h}</b><span>${t}</span></li>`).join('')}</ol>
+    ${key === 'inapp' ? `<button class="btn" data-action="copy-page-link" style="width:100%">📋 העתקת הקישור</button>` : ''}
+    <details style="margin-top:12px"><summary class="small">מכשיר או דפדפן אחר?</summary>
+      <div class="row" style="margin-top:8px">${Object.entries(INSTALL_GUIDES).filter(([k]) => k !== key).map(([k, [t]]) => `<button class="btn sm" data-action="install" data-guide="${k}">${esc(t)}</button>`).join('')}</div>
+    </details>
+    <div class="row" style="justify-content:flex-end;margin-top:12px"><button class="btn" data-action="close-sheet">סגירה</button></div>`);
+}
+
 function restoreState(clean) {
   store.replaceAll(clean);
   closeSheet();
@@ -701,17 +780,39 @@ function restoreAskSheet(clean) {
     <div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-sheet">ביטול</button><button class="btn primary" data-action="restore-yes">שחזור</button></div>`);
 }
 
-function icsSheet() {
+const isPhone = () => /android|iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent));
+
+async function icsSheet() {
+  const cal = (await data.calendar())[S().semester];
   const d = new Date();
   d.setDate(d.getDate() + ((7 - d.getDay()) % 7 || 7));
   const iso = (x) => x.toISOString().slice(0, 10);
-  const end = new Date(d); end.setDate(end.getDate() + 7 * 13 - 2);
+  const fallbackEnd = new Date(d); fallbackEnd.setDate(fallbackEnd.getDate() + 7 * 13 - 2);
+  const start = cal?.start || iso(d), end = cal?.end || iso(fallbackEnd);
+  ui.icsBreaks = cal?.breaks || [];
+  const shortDate = (x) => new Date(x + 'T00:00:00').toLocaleDateString('he-IL', { day: 'numeric', month: 'numeric', year: 'numeric' });
   openSheet(`
     <h3>הוספה ליומן</h3>
-    <p class="muted small">נוצר קובץ יומן עם אירוע שבועי חוזר לכל שיעור שבחרת ללכת אליו או לראות בהקלטה. פותחים אותו בטלפון או מייבאים ל-Google Calendar.</p>
-    <label class="field"><span>תחילת הסמסטר</span><input type="date" id="ics-start" value="${iso(d)}"></label>
-    <label class="field"><span>סוף הסמסטר</span><input type="date" id="ics-end" value="${iso(end)}"></label>
-    <div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-sheet">ביטול</button><button class="btn primary" data-action="ics-go">הורדה</button></div>`);
+    <p><b>מאיזה תאריך עד איזה תאריך להכניס את המערכת ליומן?</b></p>
+    <div class="date-range">
+      <label class="field"><span>מתאריך</span><input type="date" id="ics-start" value="${start}"></label>
+      <label class="field"><span>עד תאריך</span><input type="date" id="ics-end" value="${end}"></label>
+    </div>
+    <p class="muted small">${cal ? `ברירת המחדל היא ${esc(currentSemLabel())} לפי לוח השנה של האוניברסיטה: ${shortDate(cal.start)} עד ${shortDate(cal.end)}.` : 'לא מצאתי את תאריכי הסמסטר בלוח השנה של האוניברסיטה, אז כדאי לבדוק את התאריכים.'}</p>
+    ${ui.icsBreaks.length ? `<label class="check"><input type="checkbox" id="ics-breaks" checked> לא להכניס שיעורים בימי חופשה (${ui.icsBreaks.map((x) => esc(x.title.replace(/^חג /, ''))).join(', ')})</label>` : ''}
+    <p style="margin-top:14px"><b>לאיזה יומן?</b></p>
+    <div class="opt-list">
+      <button class="opt" data-action="ics-phone"><span class="ico">📱</span><span class="grow"><span class="big">${isIOS() ? 'היומן של האייפון' : 'היומן של המכשיר'}</span><span class="line">${isIOS() ? 'נפתח ישר ביומן של אפל (Calendar)' : isPhone() ? 'קובץ יומן שנפתח ביומן של המכשיר' : 'קובץ יומן (Outlook, יומן של Mac וכו׳)'}</span></span></button>
+      <button class="opt" data-action="ics-google"><span class="ico">🗓️</span><span class="grow"><span class="big">Google Calendar</span><span class="line">${isPhone() ? 'מוסיפים כל שיעור בלחיצה' : 'ייבוא כל המערכת בבת אחת'}</span></span></button>
+    </div>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-sheet">ביטול</button></div>`);
+}
+
+function icsRange() {
+  const start = $('#ics-start').value, end = $('#ics-end').value;
+  if (!start || !end || end < start) { toast('בדקו את התאריכים: תאריך הסיום צריך להיות אחרי תאריך ההתחלה'); return null; }
+  return { start, end, breaks: $('#ics-breaks')?.checked ? ui.icsBreaks : [] };
 }
 
 // ---------- actions ----------
@@ -720,6 +821,8 @@ const actions = {
   noop: () => {},
   add(el) {
     const id = el.dataset.id;
+    ui.q = ''; // done searching: close the results and empty the field
+    $('#q')?.blur();
     store.update(() => {
       if (!sem().order.includes(id)) sem().order.push(id);
       cprefs(id);
@@ -761,6 +864,8 @@ const actions = {
     });
   },
   brush(el) { ui.brush = +el.dataset.v; render(); },
+  weight(el) { store.update((s) => { s.constraints.weights[el.dataset.k] = +el.dataset.v; }); },
+  'q-clear'() { ui.q = ''; renderSearch(); const q = $('#q'); q.value = ''; q.focus(); },
   build(el) {
     ui.ignoreConstraints = !!el.dataset.free;
     setTab('results');
@@ -857,11 +962,41 @@ const actions = {
     download(blob, `${p.name}.png`);
   },
   ics: () => icsSheet(),
-  'ics-go'() {
+  'ics-phone'() {
+    const r = icsRange();
+    if (!r) return;
     const p = currentPlan();
-    const text = ics(planBlocks(p), { start: $('#ics-start').value, end: $('#ics-end').value, name: p.name });
-    download(new Blob([text], { type: 'text/calendar' }), `${p.name}.ics`);
+    download(new Blob([ics(planBlocks(p), { ...r, name: p.name })], { type: 'text/calendar' }), `${p.name}.ics`);
     closeSheet();
+    stats.event('calendar-phone');
+  },
+  'ics-google'() {
+    const r = icsRange();
+    if (!r) return;
+    const p = currentPlan();
+    const lessons = calendarBlocks(planBlocks(p));
+    stats.event('calendar-google');
+    if (!isPhone()) {
+      download(new Blob([ics(planBlocks(p), { ...r, name: p.name })], { type: 'text/calendar' }), `${p.name}.ics`);
+      openSheet(`
+        <h3>ייבוא ל-Google Calendar</h3>
+        <p>קובץ היומן ירד למחשב. עכשיו:</p>
+        <ol class="steps">
+          <li><b>פותחים את ההגדרות של Google Calendar</b><span><a href="https://calendar.google.com/calendar/r/settings/export" target="_blank" rel="noopener">calendar.google.com ← הגדרות ← ייבוא וייצוא</a></span></li>
+          <li><b>"בחירת קובץ מהמחשב"</b><span>בוחרים את הקובץ ${esc(p.name)}.ics מתיקיית ההורדות.</span></li>
+          <li><b>"ייבוא"</b><span>כל השיעורים נכנסים כאירועים שבועיים.</span></li>
+        </ol>
+        <p class="muted small">טיפ: אם קודם יוצרים ביומן לוח חדש בשם "מערכת שעות" ומייבאים אליו, קל למחוק או להחליף את כל המערכת בבת אחת.</p>
+        <div class="row" style="justify-content:flex-end"><button class="btn primary" data-action="close-sheet">סיום</button></div>`);
+      return;
+    }
+    openSheet(`
+      <h3>הוספה ל-Google Calendar</h3>
+      <p class="muted small">לוחצים על כל שיעור, והוא נפתח באפליקציית Google Calendar כאירוע שבועי מוכן. לוחצים "שמירה" וחוזרים לכאן לשיעור הבא.</p>
+      <div class="opt-list">${lessons.map((b) => `<a class="opt gcal" href="${esc(googleLink(b, r))}" target="_blank" rel="noopener">
+        <span class="ico">＋</span><span class="grow"><span class="big">${fmtMeet(b.m)}</span><span class="line">${esc(shortName(b.course.name))} · ${esc(typeLabel(b.g.type))} ${b.g.n}${b.g.lecturer ? ' · ' + esc(b.g.lecturer) : ''}</span></span></a>`).join('')}</div>
+      <div class="row" style="justify-content:flex-end"><button class="btn primary" data-action="close-sheet">סיום</button></div>`);
+    for (const a of document.querySelectorAll('.opt.gcal')) a.addEventListener('click', () => a.classList.add('done'));
   },
   'shared-save'() {
     const sp = ui.shared.plan;
@@ -915,20 +1050,18 @@ const actions = {
     if (clean) { restoreState(clean); toast('הנתונים שוחזרו'); }
   },
   'nudge-later'() { ui.nudgeDismissed = true; render(); },
-  async install() {
-    if (ui.installPrompt) {
+  async install(el) {
+    if (ui.installPrompt && !el?.dataset.guide) {
       ui.installPrompt.prompt();
       const { outcome } = await ui.installPrompt.userChoice;
       ui.installPrompt = null;
-      if (outcome === 'accepted') closeSheet();
+      if (outcome === 'accepted') { closeSheet(); toast('המתכנן הותקן 🎉'); }
       return;
     }
-    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    openSheet(`<h3>הוספה למסך הבית</h3>
-      ${ios ? `<ol class="steps"><li><b>לוחצים על כפתור השיתוף</b><span>הריבוע עם החץ למעלה, בתחתית ספארי.</span></li><li><b>"הוסף למסך הבית"</b><span>גוללים קצת למטה ברשימה.</span></li><li><b>"הוסף"</b><span>האייקון יופיע במסך הבית.</span></li></ol>`
-        : `<ol class="steps"><li><b>פותחים את תפריט הדפדפן</b><span>⋮ בכרום, למעלה.</span></li><li><b>"התקנת אפליקציה" או "הוספה למסך הבית"</b><span></span></li></ol>`}
-      <p class="muted small">אם לא מתקינים, הכול ממשיך לעבוד מהקישור.</p>
-      <div class="row" style="justify-content:flex-end"><button class="btn" data-action="close-sheet">הבנתי</button></div>`);
+    installSheet(el?.dataset.guide || detectBrowser());
+  },
+  async 'copy-page-link'() {
+    try { await navigator.clipboard.writeText(location.origin + location.pathname); toast('הקישור הועתק'); } catch { await ask({ title: 'העתיקו את הקישור', copy: location.origin + location.pathname, yes: 'סגירה' }); }
   },
   'close-sheet': () => closeSheet(),
   backup() {
@@ -973,6 +1106,38 @@ function currentSemLabel() {
   return y ? `${data.SEM_NAMES[s] || s} ${data.hebrewYear(+y)}` : '';
 }
 
+/**
+ * The course card used to offer more levels (👌 בסדר, 🚫 להימנע, recordings, 4 importance steps).
+ * Map what people already chose onto the simpler set, once per semester:
+ * בסדר → no rating, להימנע → that person's groups marked "לא מתאים", recordings → not going,
+ * any importance above zero → "חשוב".
+ */
+function simplifyOldChoices() {
+  const sv = sem();
+  if (sv.simplified || !sv.order.every((id) => ui.courses.has(id))) return;
+  for (const id of sv.order) {
+    const cs = sv.courses[id];
+    if (!cs) continue;
+    for (const p of Object.values(cs.prefs || {})) {
+      if (p.plan === 'rec') p.plan = 'skip';
+      if (p.weight) p.weight = 2;
+    }
+    const r = ratingsOf(id);
+    const c = ui.courses.get(id);
+    for (const [name, v] of Object.entries(r)) {
+      if (v === RATE.REC) continue;
+      delete r[name];
+      if (v === RATE.AVOID) {
+        for (const g of c.groups.flatMap((x) => [x, ...(x.subs || [])])) if (g.lecturer === name) (cs.pins ||= {})[g.n] = 'never';
+      }
+    }
+  }
+  const w = S().constraints.weights;
+  for (const k of Object.keys(w)) if (w[k] === 1) w[k] = 2;
+  sv.simplified = true;
+  store.save();
+}
+
 async function loadSemester() {
   ui.courses = new Map();
   ui.index = [];
@@ -987,6 +1152,7 @@ async function loadSemester() {
   }
   const need = new Set([...sem().order, ...sem().plans.flatMap((p) => Object.keys(p.picks))]);
   await Promise.all([...need].map(ensureCourse));
+  simplifyOldChoices();
   // One-time move from app-wide ratings to per-course ones; courses added later start unrated.
   if (!S().seen.perCourseRatings && sem().order.every((id) => ui.courses.has(id))) {
     sem().order.forEach(ratingsOf);

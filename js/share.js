@@ -156,18 +156,56 @@ const icsDate = (d, m) => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.get
 const icsEsc = (s) => String(s).replace(/[\\;,]/g, (c) => '\\' + c).replace(/\n/g, '\\n');
 
 /** Weekly recurring events for everything the student attends (or watches), from start to end date. */
-export function ics(blocks, { start, end, name }) {
+/** The lessons worth putting in a calendar: the ones I attend or watch, once each. */
+export const calendarBlocks = (blocks) => blocks.filter((b) => b.mode !== 'skip' && b.mode !== 'moved');
+
+const ymd = (d) => `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
+const isoDay = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+
+/** First date on or after `start` that falls on the lesson's weekday. */
+function firstDay(start, day) {
   const s = new Date(start + 'T00:00:00');
+  const d = new Date(s);
+  d.setDate(s.getDate() + ((day - 1 - s.getDay() + 7) % 7));
+  return d;
+}
+
+const lessonTitle = (b) => `${b.course.name} – ${typeLabel(b.g.type)}${b.mode === 'rec' ? ' (הקלטה)' : b.mode === 'alt' ? ` (במקום קבוצה ${b.regGroup.n})` : ''}`;
+const lessonDetails = (b) => `קבוצה ${b.g.n}${b.g.lecturer ? ' · ' + b.g.lecturer : ''} · יום ${DAY_FULL[b.m.day]}`;
+
+/** "Add to Google Calendar" link for one weekly lesson (works in the phone app and on the web). */
+export function googleLink(b, { start, end }) {
+  const first = firstDay(start, b.m.day);
+  const e = new Date(end + 'T00:00:00');
+  const q = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: lessonTitle(b),
+    dates: `${icsDate(first, mins(b.m.start))}/${icsDate(first, mins(b.m.end))}`,
+    ctz: 'Asia/Jerusalem',
+    recur: `RRULE:FREQ=WEEKLY;UNTIL=${ymd(e)}T215959Z`,
+    location: b.m.place || '',
+    details: lessonDetails(b),
+  });
+  return `https://calendar.google.com/calendar/render?${q}`;
+}
+
+/**
+ * Weekly recurring events for everything the student attends (or watches), from start to end date.
+ * breaks: [{ from, to }] (YYYY-MM-DD, inclusive) — lessons on those days are left out.
+ */
+export function ics(blocks, { start, end, name, breaks = [] }) {
   const e = new Date(end + 'T23:59:00');
   const until = `${e.getFullYear()}${pad(e.getMonth() + 1)}${pad(e.getDate())}T215900Z`;
   const now = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
   const out = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//bgu-schedule//HE', 'CALSCALE:GREGORIAN', `X-WR-CALNAME:${icsEsc(name)}`];
   let i = 0;
-  for (const b of blocks) {
-    if (b.mode === 'skip' || b.mode === 'moved') continue;
-    const first = new Date(s);
-    first.setDate(s.getDate() + ((b.m.day - 1 - s.getDay() + 7) % 7));
-    const note = b.mode === 'rec' ? ' (הקלטה)' : b.mode === 'alt' ? ` (במקום קבוצה ${b.regGroup.n})` : '';
+  for (const b of calendarBlocks(blocks)) {
+    const first = firstDay(start, b.m.day);
+    const skip = [];
+    for (let d = new Date(first); d <= e; d.setDate(d.getDate() + 7)) {
+      const day = isoDay(d);
+      if (breaks.some((x) => day >= x.from && day <= x.to)) skip.push(`EXDATE;TZID=Asia/Jerusalem:${icsDate(d, mins(b.m.start))}`);
+    }
     out.push(
       'BEGIN:VEVENT',
       `UID:${b.course.id}-${b.g.n}-${b.m.day}-${b.m.start.replace(':', '')}-${i++}@bgu-schedule`,
@@ -175,9 +213,10 @@ export function ics(blocks, { start, end, name }) {
       `DTSTART;TZID=Asia/Jerusalem:${icsDate(first, mins(b.m.start))}`,
       `DTEND;TZID=Asia/Jerusalem:${icsDate(first, mins(b.m.end))}`,
       `RRULE:FREQ=WEEKLY;UNTIL=${until}`,
-      `SUMMARY:${icsEsc(`${b.course.name} – ${typeLabel(b.g.type)}${note}`)}`,
+      ...skip,
+      `SUMMARY:${icsEsc(lessonTitle(b))}`,
       `LOCATION:${icsEsc(b.m.place || '')}`,
-      `DESCRIPTION:${icsEsc(`קבוצה ${b.g.n}${b.g.lecturer ? ' · ' + b.g.lecturer : ''} · יום ${DAY_FULL[b.m.day]}`)}`,
+      `DESCRIPTION:${icsEsc(lessonDetails(b))}`,
       'END:VEVENT',
     );
   }

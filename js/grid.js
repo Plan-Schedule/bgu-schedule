@@ -10,7 +10,7 @@ export function visible(blocks, view) {
   return view === 'reg' ? blocks.filter((b) => b.registered || b.mode === 'moved') : blocks;
 }
 
-const STRIPE = 18; // % of a day column kept for lessons I'm not attending, when they share an hour with one I am
+const BAND = 22; // px: a lesson I skip, shown as a band along the bottom of one I attend at that hour
 const passiveMode = (m) => m === 'skip' || m === 'moved';
 const overlap = (a, b) => a.start < b.end && b.start < a.end;
 const span = (b) => ({ start: mins(b.m.start), end: mins(b.m.end) });
@@ -18,10 +18,10 @@ const span = (b) => ({ start: mins(b.m.start), end: mins(b.m.end) });
 /**
  * Places blocks in each day column. Rules, so nothing gets squeezed into unreadable slivers:
  * - A lesson I attend takes the full width; one I skip (or am registered to but sit elsewhere)
- *   becomes a narrow stripe at the side when it shares an hour with one I attend.
+ *   becomes a thin band across the bottom of that time when it shares an hour with one I attend.
  * - Two lessons I attend at the same time become one "⚠ N שיעורים" block that opens a list.
  * - A day with any of that gets a wider column.
- * items: { day, start, end, right, width (percent), kind: 'one' | 'stripe' | 'clash', blocks }
+ * items: { day, start, end, right, width (percent), kind: 'one' | 'band' | 'clash', blocks, stack }
  */
 function layout(list, view) {
   const days = [1, 2, 3, 4, 5];
@@ -47,11 +47,14 @@ function layout(list, view) {
         last.kind = 'clash';
       } else act.push({ day: d, ...sp, kind: 'one', blocks: [b], right: 0, width: 100 });
     }
-    // lessons I don't attend: a side stripe next to attended ones, side-by-side lanes otherwise
+    // lessons I don't attend: a band along the bottom when they share time with one I attend,
+    // side-by-side lanes otherwise
     const pas = dayList.filter(isPassive).map((b) => ({ day: d, ...span(b), kind: 'one', blocks: [b] }));
-    const stripes = pas.filter((p) => act.some((a) => overlap(a, p)));
-    const free = pas.filter((p) => !stripes.includes(p));
-    for (const a of act) if (stripes.some((p) => overlap(a, p))) a.width = 100 - STRIPE;
+    const bands = pas.filter((p) => act.some((a) => overlap(a, p)));
+    const free = pas.filter((p) => !bands.includes(p));
+    bands.sort((a, b) => a.end - b.end).forEach((p, i, all) => {
+      Object.assign(p, { kind: 'band', right: 0, width: 100, stack: all.slice(0, i).filter((q) => Math.abs(q.end - p.end) < 30).length });
+    });
     const lanesFor = (group, right0, width) => {
       const ends = [];
       const placed = group.map((it) => {
@@ -66,10 +69,9 @@ function layout(list, view) {
       }
       return ends.length;
     };
-    lanesFor(stripes.map((p) => Object.assign(p, { kind: 'stripe' })), 100 - STRIPE, STRIPE);
     const freeLanes = lanesFor(free, 0, 100);
-    if (stripes.length || freeLanes > 1 || act.some((a) => a.kind === 'clash')) wide.add(d);
-    items.push(...act, ...stripes, ...free);
+    if (freeLanes > 1 || act.some((a) => a.kind === 'clash')) wide.add(d);
+    items.push(...act, ...free, ...bands);
   }
   return { days, lo, hi, items, wide };
 }
@@ -109,8 +111,10 @@ export function weekHtml(blocks, { view = 'att', hueOf, tap = false } = {}) {
       const mode = view === 'reg' ? 'go' : b.mode;
       const tag = view === 'att' ? MODE_TAG[mode] || '' : '';
       const common = `data-bi="${blocks.indexOf(b)}" ${tap ? '' : 'tabindex="-1"'} title="${esc(label(b))}"`;
-      if (it.kind === 'stripe') {
-        html += `<button class="blk stripe m-${mode}" ${common} style="--h:${hueOf(b.course.id)};${pos}" aria-label="${esc(label(b))}"><span class="tag">${tag}</span></button>`;
+      if (it.kind === 'band') {
+        const bpos = `top:calc(${pct(it.end)}% - ${BAND * (it.stack + 1) + 2}px);height:${BAND}px;right:2px;width:calc(100% - 4px)`;
+        html += `<button class="blk band" ${common} style="--h:${hueOf(b.course.id)};${bpos}" aria-label="${esc(label(b))}">
+          <span>${tag} ${esc(shortName(b.course.name))} · ${esc(typeLabel(b.g.type).slice(0, 3))}׳ ${b.g.n}</span></button>`;
         continue;
       }
       html += `<button class="blk m-${mode}" ${common} style="--h:${hueOf(b.course.id)};${pos}">
@@ -190,6 +194,17 @@ export async function weekPng(blocks, { view = 'att', hueOf, title = '' }) {
     const hue = hueOf(b.course.id);
     const mode = view === 'reg' ? 'go' : b.mode;
     const faded = mode === 'skip' || mode === 'moved';
+    const tag = view === 'att' && MODE_TAG[mode] ? MODE_TAG[mode] : '';
+    if (it.kind === 'band') {
+      // drawn after the lessons it sits on (items keep bands last)
+      const bandH = 20, y = top + ((it.end - lo * 60) / 60) * hourH - (bandH + 2) * (it.stack + 1);
+      x.globalAlpha = 1;
+      x.fillStyle = `hsla(${hue}, 70%, 85%, .85)`; x.strokeStyle = `hsl(${hue} 55% 42%)`; x.lineWidth = 1; x.setLineDash([4, 3]);
+      roundRect(x, bx, y, bw, bandH, 5); x.fill(); x.stroke(); x.setLineDash([]);
+      x.fillStyle = `hsl(${hue} 60% 22%)`; x.font = font(500, 11); x.textAlign = 'right';
+      x.fillText(clip(x, `${tag} ${shortName(b.course.name)} · ${typeLabel(b.g.type)} ${b.g.n}`, bw - 12), bx + bw - 6, y + 14);
+      continue;
+    }
     x.globalAlpha = faded ? 0.45 : 1;
     x.fillStyle = mode === 'rec' || faded ? '#ffffff' : `hsl(${hue} 75% 93%)`;
     x.strokeStyle = `hsl(${hue} 55% 42%)`;
@@ -198,13 +213,7 @@ export async function weekPng(blocks, { view = 'att', hueOf, title = '' }) {
     roundRect(x, bx, by, bw, bh, 8); x.fill(); x.stroke();
     x.setLineDash([]);
     x.fillStyle = `hsl(${hue} 55% 42%)`; x.fillRect(bx + bw - 5, by, 5, bh);
-    const tag = view === 'att' && MODE_TAG[mode] ? MODE_TAG[mode] : '';
-    if (it.kind === 'stripe') {
-      x.fillStyle = `hsl(${hue} 60% 20%)`; x.font = font(400, 13); x.textAlign = 'center';
-      x.fillText(tag, bx + bw / 2, by + 18);
-      x.globalAlpha = 1;
-      continue;
-    }
+
     x.fillStyle = `hsl(${hue} 60% 20%)`;
     x.font = font(600, 14); x.fillText(clip(x, shortName(b.course.name), bw - 20), tx, by + 17);
     x.font = font(400, 12);

@@ -39,6 +39,8 @@ jobs:
           done < <(node scraper/plan.mjs)
           echo "updated: $ok, failed: $failed"
           [ "$ok" -gt 0 ]
+      - name: Academic calendar
+        run: node scraper/calendar.mjs || echo "::warning::academic calendar not updated"
       - name: Commit changes
         run: |
           git config user.name "catalogue-bot"

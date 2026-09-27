@@ -301,9 +301,10 @@ a.opt { color: inherit; text-decoration: none; }
 .course-x { border: 1px solid var(--border); background: var(--surface); color: var(--muted); border-radius: 50%; width: 32px; height: 32px; flex: none; font-size: 14px; display: grid; place-items: center; }
 .course-x:hover { color: var(--avoid); border-color: var(--avoid); background: var(--avoid-soft); }
 
-/* lessons I'm not attending, next to one I am: a narrow stripe */
-.blk.stripe { padding: 2px 0; display: flex; justify-content: center; border-inline-start-width: 1px; }
-.blk.stripe .tag { position: static; font-size: 11px; }
+/* a lesson I skip at the same time as one I attend: a band across the bottom, in its colour */
+.blk.band { z-index: 2; padding: 0 6px; display: flex; align-items: center; border: 1px dashed hsl(var(--h) 55% var(--c-l2)); border-radius: 6px;
+  background: hsl(var(--h) var(--c-s) var(--c-l1) / .88); color: hsl(var(--h) 60% var(--c-l3)); font-size: 10.5px; font-weight: 500; box-shadow: 0 -1px 3px rgba(0,0,0,.12); }
+.blk.band span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: .85; }
 /* two lessons I'm attending at the same time */
 .blk.clash { background: var(--avoid-soft); border: 2px solid var(--avoid); color: var(--avoid); --h: 0; }
 .blk.clash b { color: var(--avoid); }
@@ -315,3 +316,34 @@ a.opt { color: inherit; text-decoration: none; }
 .opt .line.ok { color: var(--ok); }
 .opt .line.info { color: var(--text); }
 .opt .line.warn { color: var(--avoid); font-weight: 500; }
+
+/* course card: who teaches, when, and three clear actions */
+.grp { grid-template-columns: 50px minmax(0, 1fr); }
+.gwho { font-weight: 600; }
+.acts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.act { border: 1.5px solid var(--border); background: var(--surface); color: var(--text); border-radius: 999px; padding: 5px 12px; font-size: 13.5px; font-weight: 500; min-height: 34px; }
+.act:hover { border-color: var(--muted); }
+.act.star[aria-pressed="true"] { background: var(--star-soft); border-color: var(--star); }
+.act.never[aria-pressed="true"] { background: var(--avoid-soft); border-color: var(--avoid); color: var(--avoid); }
+.act.must[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); }
+.grp.never .gwho, .grp.never .times { opacity: .5; text-decoration: line-through; }
+.legend b { font-weight: 600; }
+
+.q-clear { position: absolute; left: 44px; top: 50%; transform: translateY(-50%); border: 0; background: var(--surface-2); color: var(--muted); width: 28px; height: 28px; border-radius: 50%; font-size: 13px; display: grid; place-items: center; }
+.q-clear[hidden] { display: none; }
+.search input::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }
+.search input { padding-left: 80px; }
+.seg.wide { display: flex; width: 100%; }
+.seg.wide button { flex: 1; padding: 8px 6px; font-size: 14px; }
+.lost { font-weight: 700; color: var(--avoid); font-size: 14px; }
+
+.date-range { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.date-range .field { margin: 6px 0; }
+.date-range input { width: 100%; font-size: 16px; min-height: 42px; }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; margin: 8px 0; }
+.check input { width: 20px; height: 20px; accent-color: var(--accent); flex: none; margin-top: 1px; }
+.opt.gcal .ico { font-weight: 700; color: var(--accent); }
+.opt.gcal.done { opacity: .6; }
+.opt.gcal.done .ico::before { content: "✓"; }
+.opt.gcal.done .ico { font-size: 0; }
+.opt.gcal.done .ico::before { font-size: 18px; color: var(--ok); }

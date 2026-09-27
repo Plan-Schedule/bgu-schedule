@@ -14,6 +14,8 @@ async function json(path) {
 }
 
 export const semesters = () => json('data/semesters.json');
+/** Semester dates and teaching breaks from the university's academic calendar ({} if unavailable). */
+export const calendar = () => json('data/calendar.json').catch(() => ({}));
 export const index = (sem) => json(`data/${sem}/index.json`);
 export const course = (sem, id) => json(`data/${sem}/c/${id}.json`);
 

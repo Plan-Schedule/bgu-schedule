@@ -144,3 +144,15 @@ test('ratings are per course, falling back to old app-wide ratings', () => {
   const al = solve([algebra], state).results[0].courses[0].picks[0].g;
   assert.notEqual(al.lecturer, name); // algebra: avoid
 });
+
+test('academic calendar: Hebrew year and semester detection', async () => {
+  const { civilYear, semestersFrom } = await import('../scraper/calendar.mjs');
+  assert.equal(civilYear('תשפ"ז'), 2027);
+  assert.equal(civilYear('תשפ"ח'), 2028);
+  const s = semestersFrom([
+    { semester: 'סמסטר סתיו תשפ"ז', e: { title: 'פתיחת שנת הלימודים תשפ"ז', startDate: '2026-10-18T08:00:00Z' } },
+    { semester: 'סמסטר סתיו תשפ"ז', e: { title: 'חג חנוכה', subTitle: 'פגרת לימודים', startDate: '2026-12-06T00:00:00Z', endDate: '2026-12-06T23:59:00Z' } },
+    { semester: 'סמסטר סתיו תשפ"ז', e: { title: 'סיום סמסטר סתיו תשפ"ז', startDate: '2027-01-15T00:00:00Z' } },
+  ]);
+  assert.deepEqual(s['2027-1'], { start: '2026-10-18', end: '2027-01-15', breaks: [{ from: '2026-12-06', to: '2026-12-06', title: 'חג חנוכה' }] });
+});
