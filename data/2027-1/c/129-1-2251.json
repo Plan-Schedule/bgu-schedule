@@ -68,13 +68,31 @@
      "n": 14,
      "type": "תרגיל",
      "lecturer": ", ע. גרובר",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "12:00",
+       "end": "13:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 15,
      "type": "תרגיל",
      "lecturer": ", ע. גרובר",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "13:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ]
   }
