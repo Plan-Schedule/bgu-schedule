@@ -7,12 +7,12 @@
   {
    "n": 1,
    "type": "מעבדה",
-   "lecturer": null,
+   "lecturer": "מר ג. חילו",
    "meetings": [
     {
      "day": 4,
-     "start": "16:00",
-     "end": "20:00",
+     "start": "09:00",
+     "end": "13:00",
      "place": "",
      "mode": "בכיתה החל משבוע 1 כל שבוע",
      "hybrid": false

@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. קשת",
      "meetings": [
       {
        "day": 3,
@@ -52,7 +52,7 @@
     {
      "n": 13,
      "type": "תרגיל",
-     "lecturer": "מר א. קשת",
+     "lecturer": "גב' נ. ויצמן",
      "meetings": [
       {
        "day": 3,

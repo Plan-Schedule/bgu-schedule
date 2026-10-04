@@ -145,7 +145,7 @@
     {
      "n": 23,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. רודה",
      "meetings": [
       {
        "day": 2,
@@ -160,7 +160,7 @@
     {
      "n": 24,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. רודה",
      "meetings": [
       {
        "day": 3,
@@ -455,7 +455,7 @@
     {
      "n": 64,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. רודה",
      "meetings": [
       {
        "day": 3,
@@ -735,7 +735,7 @@
     {
      "n": 99,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. רודה",
      "meetings": [
       {
        "day": 3,

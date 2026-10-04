@@ -8,35 +8,80 @@
    "n": 1,
    "type": "מעבדה",
    "lecturer": "מר כ. מזרחי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 4,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": []
   },
   {
    "n": 2,
    "type": "מעבדה",
    "lecturer": "מר ד. ג'בארין",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 4,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": []
   },
   {
    "n": 3,
    "type": "מעבדה",
    "lecturer": "ד\"ר א. ברודסקי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 4,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": []
   },
   {
    "n": 4,
    "type": "מעבדה",
    "lecturer": "ד\"ר א. ברודסקי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 4,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": []
   },
   {
    "n": 5,
    "type": "מעבדה",
    "lecturer": "גב' מ. רזנושיק",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 4,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": []
   }
  ]

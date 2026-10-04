@@ -33,6 +33,21 @@
        "hybrid": false
       }
      ]
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": "ד\"ר ע. גנדלמן",
+     "meetings": [
+      {
+       "day": 3,
+       "start": "14:00",
+       "end": "15:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ]
   }
