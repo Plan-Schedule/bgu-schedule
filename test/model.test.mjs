@@ -156,3 +156,35 @@ test('academic calendar: Hebrew year and semester detection', async () => {
   ]);
   assert.deepEqual(s['2027-1'], { start: '2026-10-18', end: '2027-01-15', breaks: [{ from: '2026-12-06', to: '2026-12-06', title: 'חג חנוכה' }] });
 });
+
+test('lesson types: line breaks from the catalogue and language suffixes', async () => {
+  const { typeLabel, normalizeCourse } = await import('../js/model.js');
+  assert.equal(typeLabel('שעור\n(אנגלית)'), 'הרצאה (אנגלית)');
+  assert.equal(typeLabel('תרגיל'), 'תרגול');
+  assert.equal(typeLabel('מעבדה'), 'מעבדה');
+  assert.equal(typeLabel(''), 'קבוצה');
+  const c = normalizeCourse({ groups: [{ type: 'שעור\n(אנגלית)', subs: [{ type: ' תרגיל \n(אנגלית)' }] }] });
+  assert.equal(c.groups[0].type, 'שעור (אנגלית)');
+  assert.equal(c.groups[0].subs[0].type, 'תרגיל (אנגלית)');
+});
+
+test('search output is plain data (for the worker) and expands to the same results', async () => {
+  const { searchSchedules, expandResults } = await import('../js/model.js');
+  const list = [logic, algebra, cs, data];
+  const state = { ratings: {}, courses: {}, constraints: { cells: { '1-8': 1 } } };
+  const raw = searchSchedules(list, state);
+  const copy = structuredClone(raw);
+  assert.deepEqual(copy, raw);
+  const a = expandResults(copy, list, state), b = solve(list, state);
+  assert.deepEqual(a.results.map((r) => [r.score, r.stats]), b.results.map((r) => [r.score, r.stats]));
+  assert.ok(a.results[0].courses[0].course === list.find((c) => c.id === a.results[0].courses[0].course.id));
+});
+
+test('registration window: four weeks before the semester to two weeks into it', async () => {
+  const { inRegistration } = await import('../scraper/plan.mjs');
+  const cal = { '2027-1': { start: '2026-10-18' } };
+  assert.equal(inRegistration(cal, 2027, 1, new Date('2026-10-05')), true);
+  assert.equal(inRegistration(cal, 2027, 1, new Date('2026-09-01')), false);
+  assert.equal(inRegistration(cal, 2027, 1, new Date('2026-11-10')), false);
+  assert.equal(inRegistration(cal, 2027, 2, new Date('2026-10-05')), false);
+});

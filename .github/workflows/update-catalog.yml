@@ -3,6 +3,9 @@ name: Update course catalogue
 on:
   schedule:
     - cron: '17 3 * * *' # every day, 06:17 Israel time
+    # Registration weeks: three more runs a day (12:17, 18:17, 00:17), only for the
+    # semester being registered to. Other days these runs find nothing to do and stop.
+    - cron: '17 9,15,21 * * *'
   workflow_dispatch:
 
 permissions:
@@ -36,10 +39,13 @@ jobs:
             else
               failed=$((failed + 1)); echo "::warning::$year-$sem could not be updated"
             fi
-          done < <(node scraper/plan.mjs)
+          done < <(node scraper/plan.mjs $BUSY)
           echo "updated: $ok, failed: $failed"
-          [ "$ok" -gt 0 ]
+          [ "$ok" -gt 0 ] || { [ -n "$BUSY" ] && [ "$failed" -eq 0 ]; }
+        env:
+          BUSY: ${{ github.event.schedule == '17 9,15,21 * * *' && '--busy' || '' }}
       - name: Academic calendar
+        if: github.event.schedule != '17 9,15,21 * * *'
         run: node scraper/calendar.mjs || echo "::warning::academic calendar not updated"
       - name: Commit changes
         run: |

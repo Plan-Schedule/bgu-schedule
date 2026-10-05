@@ -3,7 +3,7 @@
 //
 // What is sent: the page path (never the #… part: restore links carry all the
 // user's data there), the page title, the referring site (only its domain),
-// the screen size, and the names of a few actions (e.g. "plan-saved").
+// the screen size, and whether schedules were built / a plan was saved.
 // Switched off when CONFIG.statsUrl is empty, on localhost, and for people who
 // ask sites not to track them (Do Not Track / Global Privacy Control).
 
@@ -33,6 +33,9 @@ function refDomain() {
 }
 
 const seen = new Set();
+// Every action counts against the free plan like a page view, so only the two that
+// say whether the planner is actually useful are sent; the rest are ignored here.
+const COUNTED = new Set(['schedules-built', 'plan-saved']);
 
 /** One visit. Opening the installed app is counted under its own path so it's visible in the stats. */
 export function pageview() {
@@ -47,7 +50,7 @@ export function pageview() {
 
 /** A named action, counted at most once per visit. */
 export function event(name) {
-  if (seen.has(name)) return;
+  if (!COUNTED.has(name) || seen.has(name)) return;
   seen.add(name);
   send({ p: name, t: name, e: 'true' });
 }

@@ -83,7 +83,7 @@ export function parseCourse(html) {
         const meetingCell = cells.find((c) => c.html.includes('זמני לימוד'));
         const g = {
           n,
-          type: text(cells[1]?.html || ''),
+          type: text(cells[1]?.html || '').replace(/\s+/g, ' '),
           lecturer: text(cells[2]?.html || '') || null,
           meetings: [],
         };

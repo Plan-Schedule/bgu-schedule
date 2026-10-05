@@ -1,7 +1,7 @@
 import * as store from './store.js';
 import * as data from './data.js';
 import {
-  components, courseOptions, blocks as makeBlocks, solve, missedStars, weekStats, findGroup, alternatives,
+  components, courseOptions, blocks as makeBlocks, solve, expandResults, missedStars, weekStats, findGroup, alternatives,
   typeLabel, range, DAYS, DAY_FULL, DEFAULT_PREFS, DEFAULT_WEIGHTS, rating, RATE, overlaps, fmtTime,
 } from './model.js';
 import { weekHtml, weekPng, esc, shortName, gridBlocks } from './grid.js';
@@ -335,19 +335,67 @@ function wireConstraintGrid() {
 }
 
 // ---------- results tab ----------
+// Small searches run inline; big ones go to a worker and the tab shows "מחשב…" meanwhile.
+const solver = { worker: null, job: 0, broken: false };
+
+function solverWorker() {
+  if (solver.worker || solver.broken || typeof Worker === 'undefined') return solver.worker;
+  try {
+    solver.worker = new Worker(new URL('./solver-worker.js', import.meta.url), { type: 'module' });
+    solver.worker.onmessage = (e) => solver.onDone?.(e.data);
+    solver.worker.onerror = () => {
+      // Old browsers without module workers: fall back to the main thread.
+      solver.broken = true;
+      solver.worker = null;
+      solver.onDone?.({ job: solver.job, fallback: true });
+    };
+  } catch {
+    solver.broken = true;
+  }
+  return solver.worker;
+}
+
+function searchSize(courses, st) {
+  let n = 1;
+  for (const c of courses) n *= Math.max(1, courseOptions(c, st.courses?.[c.id]?.pins || {}).length);
+  return n;
+}
+
+function finishResults(r) {
+  ui.results = r;
+  ui.pending = false;
+  if (r) stats.event('schedules-built');
+}
+
+/** null while a background search is running. */
 function computeResults() {
   const courses = myCourses();
   const key = JSON.stringify([S().semester, sem().order, sem().courses, S().ratings, S().constraints, courses.length, !!ui.ignoreConstraints]);
-  if (key === ui.resultsKey && ui.results) return ui.results;
+  if (key === ui.resultsKey) return ui.pending ? null : ui.results;
   ui.resultsKey = key;
   ui.shown = {};
   ui.compare = [];
   ui.limit = 10;
   const st = store.solverState();
   if (ui.ignoreConstraints) st.constraints = { cells: {}, weights: {} };
-  ui.results = courses.length ? solve(courses, st) : null;
-  if (ui.results) stats.event('schedules-built');
-  return ui.results;
+  if (!courses.length) {
+    finishResults(null);
+    return null;
+  }
+  const worker = searchSize(courses, st) > 3000 && solverWorker();
+  if (!worker) {
+    finishResults(solve(courses, st));
+    return ui.results;
+  }
+  const job = ++solver.job;
+  ui.pending = true;
+  solver.onDone = (msg) => {
+    if (msg.job !== solver.job || key !== ui.resultsKey) return; // an older search; a newer one is on its way
+    finishResults(msg.raw ? expandResults(msg.raw, courses, st) : solve(courses, st));
+    if (ui.tab === 'results') render();
+  };
+  worker.postMessage({ job, courses, state: JSON.parse(JSON.stringify(st)) });
+  return null;
 }
 
 function statChips(st) {
@@ -371,6 +419,7 @@ function renderResults() {
   if (!sem().order.length) return `<div class="empty card"><div class="big">✨</div><p>קודם מוסיפים קורסים בלשונית "קורסים".</p><button class="btn primary" data-action="tab" data-tab="courses">לחיפוש קורסים</button></div>`;
   if (courses.length < sem().order.length) return `<div class="empty card">טוען קורסים…</div>`;
   const r = computeResults();
+  if (!r) return `<div class="empty card"><div class="spinner" aria-hidden="true"></div><p>מחשב את כל הצירופים האפשריים…</p></div>`;
   const head = `<div class="section-head"><div><h2>המערכות הכי טובות בשבילך</h2>
     <p class="lead">${r.results.length ? `נבדקו ${r.leaves.toLocaleString('he')} מערכות שאפשר להירשם אליהן. אלה המובילות לפי הדירוגים והאילוצים שלך.` : ''}${r.truncated ? ' (החיפוש נעצר מוקדם כי יש הרבה אפשרויות. כדאי לנעול 📌 כמה קבוצות.)' : ''}</p></div></div>`;
   const hasConstraints = Object.keys(S().constraints.cells).length || Object.keys(S().constraints.weights).length;
@@ -1162,6 +1211,7 @@ async function loadSemester() {
   ui.courses = new Map();
   ui.index = [];
   ui.results = null;
+  ui.pending = false;
   ui.resultsKey = '';
   render();
   try {

@@ -1,5 +1,7 @@
 // Loads the catalogue that the scraper publishes under data/.
 
+import { normalizeCourse } from './model.js';
+
 const cache = new Map();
 
 async function json(path) {
@@ -17,7 +19,7 @@ export const semesters = () => json('data/semesters.json');
 /** Semester dates and teaching breaks from the university's academic calendar ({} if unavailable). */
 export const calendar = () => json('data/calendar.json').catch(() => ({}));
 export const index = (sem) => json(`data/${sem}/index.json`);
-export const course = (sem, id) => json(`data/${sem}/c/${id}.json`);
+export const course = (sem, id) => json(`data/${sem}/c/${id}.json`).then(normalizeCourse);
 
 export const SEM_NAMES = { 1: 'סתו', 2: 'אביב', 3: 'קיץ' };
 

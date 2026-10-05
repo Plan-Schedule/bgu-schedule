@@ -9,8 +9,23 @@
 export const DAYS = ['', 'א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳'];
 export const DAY_FULL = ['', 'ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
 
-const TYPE_LABEL = { 'שעור': 'הרצאה', 'שיעור': 'הרצאה', 'תרגיל': 'תרגול' };
-export const typeLabel = (t) => TYPE_LABEL[t] || t || 'קבוצה';
+const TYPE_LABEL = { 'שעור': 'הרצאה', 'שיעור': 'הרצאה', 'תרגיל': 'תרגול', 'שעור ותרגיל': 'הרצאה ותרגול' };
+/** "שעור (אנגלית)" → "הרצאה (אנגלית)"; anything unknown is shown as the university writes it. */
+export function typeLabel(t) {
+  const s = String(t || '').replace(/\s+/g, ' ').trim();
+  const m = s.match(/^(.*?)\s*\(([^)]+)\)$/);
+  const base = m ? m[1] : s;
+  const label = TYPE_LABEL[base] || base || 'קבוצה';
+  return m ? `${label} (${m[2]})` : label;
+}
+
+/** Course files from older scrapes may hold "שעור\n(אנגלית)"; one space everywhere keeps keys stable. */
+export function normalizeCourse(c) {
+  for (const g of c.groups || []) {
+    for (const x of [g, ...(g.subs || [])]) x.type = String(x.type || '').replace(/\s+/g, ' ').trim();
+  }
+  return c;
+}
 
 export const mins = (t) => {
   const [h, m] = t.split(':').map(Number);
@@ -200,66 +215,108 @@ export function weekStats(blockList) {
  * Searches all registrations across the chosen courses.
  * state: { ratings, courses: { [id]: { prefs: {[compKey]: {plan, weight}}, pins } }, constraints: { cells, weights } }
  */
-export function solve(courseList, state, { limit = 40, maxLeaves = 300000 } = {}) {
-  const cells = state.constraints?.cells || {};
-  const w = { ...DEFAULT_WEIGHTS, ...(state.constraints?.weights || {}) };
-  const issues = [];
+export function solve(courseList, state, opts) {
+  return expandResults(searchSchedules(courseList, state, opts), courseList, state);
+}
 
+// The search below runs in a Web Worker on big inputs, so it only returns plain numbers:
+// for every result, which option (index into courseOptions) each course got.
+// expandResults turns that back into objects that point at the app's own course data.
+
+const SLOT = 5; // minutes; every meeting time in the catalogue is a multiple of 5
+const daySlots = (24 * 60) / SLOT;
+
+function prepare(courseList, state) {
+  const cells = state.constraints?.cells || {};
+  const issues = [];
   const perCourse = [];
-  for (const course of courseList) {
+  courseList.forEach((course, ci) => {
     const cs = state.courses?.[course.id] || {};
     const prefs = cs.prefs || {};
     const raw = courseOptions(course, cs.pins || {});
     if (!raw.length) {
-      issues.push({ course, reason: 'pins' });
-      continue;
+      issues.push({ ci, reason: 'pins' });
+      return;
     }
+    const ratings = courseRatings(state, course);
     const opts = [];
-    for (const o of raw) {
+    raw.forEach((o, oi) => {
       const bl = blocks(course, o.picks, prefs);
-      if (bl.some((b) => b.attended && hourCells(b.m).some((c) => cells[c] === 2))) continue;
+      const att = bl.filter((b) => b.attended);
+      if (att.some((b) => hourCells(b.m).some((c) => cells[c] === 2))) return;
       let person = 0;
-      const ratings = courseRatings(state, course);
       for (const { g, role } of o.picks) {
         const p = prefs[compKey(g, role)] || DEFAULT_PREFS;
-        const plan = p.plan || 'go';
-        if (plan === 'skip') continue;
+        if ((p.plan || 'go') === 'skip') continue;
         person += (p.weight ?? DEFAULT_PREFS.weight) * rating(ratings, g.lecturer);
       }
-      const regMeetings = o.picks.flatMap(({ g }) => g.meetings);
-      opts.push({ picks: o.picks, blocks: bl, person, regMeetings });
-    }
-    if (!opts.length) issues.push({ course, reason: 'constraints' });
-    else perCourse.push({ course, opts });
-  }
+      const soft = att.reduce((s, b) => s + hourCells(b.m).filter((c) => cells[c] === 1).length, 0);
+      // Registered meetings as slot ranges (for the clash check) and attended ones as minutes (for scoring).
+      const reg = o.picks.flatMap(({ g }) => g.meetings).filter((m) => m.day).map((m) => [
+        (m.day - 1) * daySlots + Math.floor(mins(m.start) / SLOT), (m.day - 1) * daySlots + Math.ceil(mins(m.end) / SLOT)]);
+      const attended = att.map((b) => [b.m.day, mins(b.m.start), mins(b.m.end)]);
+      opts.push({ oi, reg, attended, base: person * 10, soft, person });
+    });
+    if (!opts.length) issues.push({ ci, reason: 'constraints' });
+    else perCourse.push({ ci, opts });
+  });
+  return { perCourse, issues };
+}
+
+/** The search itself: pure data in, pure data out (safe to postMessage). */
+export function searchSchedules(courseList, state, { limit = 40, maxLeaves = 300000 } = {}) {
+  const w = { ...DEFAULT_WEIGHTS, ...(state.constraints?.weights || {}) };
+  const { perCourse, issues } = prepare(courseList, state);
   if (issues.length) return { results: [], issues, leaves: 0, truncated: false };
 
   perCourse.sort((a, b) => a.opts.length - b.opts.length);
+  const n = perCourse.length;
   const found = [];
   let leaves = 0, truncated = false;
-  const chosen = [];
-  const busy = [];
+  const chosen = new Array(n);
+  const busy = new Uint8Array(7 * daySlots);
+  const free = (o) => o.reg.every(([a, b]) => {
+    for (let i = a; i < b; i++) if (busy[i]) return false;
+    return true;
+  });
+  const mark = (o, v) => {
+    for (const [a, b] of o.reg) for (let i = a; i < b; i++) busy[i] = v;
+  };
 
-  const score = (sel) => {
-    const allBlocks = sel.flatMap((o) => o.blocks);
-    const st = weekStats(allBlocks);
-    const soft = allBlocks.filter((b) => b.attended).reduce((s, b) => s + hourCells(b.m).filter((c) => cells[c] === 1).length, 0);
-    const person = sel.reduce((s, o) => s + o.person, 0);
-    return {
-      score: person * 10 + st.freeDays.length * w.free * 8 - st.gapHours * w.gaps * 3 - soft * w.soft * 4 - st.clashes * 5,
-      stats: { ...st, softHours: soft, person },
-    };
+  // Same numbers as weekStats, without building block objects for every leaf.
+  const score = () => {
+    const byDay = [[], [], [], [], [], [], [], []];
+    let base = 0, soft = 0;
+    for (const o of chosen) {
+      base += o.base;
+      soft += o.soft;
+      for (const a of o.attended) byDay[a[0]].push(a);
+    }
+    let gaps = 0, clashes = 0, freeDays = 0;
+    for (let d = 1; d <= 7; d++) {
+      const list = byDay[d];
+      if (!list.length) {
+        if (d <= 5) freeDays++;
+        continue;
+      }
+      list.sort((a, b) => a[1] - b[1]);
+      let end = list[0][1];
+      for (const [, s, e] of list) {
+        if (s > end) gaps += s - end;
+        if (s < end) clashes++;
+        if (e > end) end = e;
+      }
+    }
+    return base + freeDays * w.free * 8 - (gaps / 60) * w.gaps * 3 - soft * w.soft * 4 - clashes * 5;
   };
 
   (function dfs(i) {
-    if (truncated) return;
-    if (i === perCourse.length) {
+    if (i === n) {
       if (++leaves > maxLeaves) {
         truncated = true;
         return;
       }
-      const sel = [...chosen];
-      found.push({ sel, ...score(sel) });
+      found.push({ sel: chosen.map((o) => o.oi), score: score() });
       if (found.length > limit * 60) {
         found.sort((a, b) => b.score - a.score);
         found.length = limit * 15;
@@ -267,39 +324,67 @@ export function solve(courseList, state, { limit = 40, maxLeaves = 300000 } = {}
       return;
     }
     for (const o of perCourse[i].opts) {
-      if (o.regMeetings.some((m) => busy.some((b) => overlaps(m, b)))) continue;
-      chosen.push(o);
-      busy.push(...o.regMeetings);
+      if (truncated) return;
+      if (!free(o)) continue;
+      chosen[i] = o;
+      mark(o, 1);
       dfs(i + 1);
-      busy.length -= o.regMeetings.length;
-      chosen.pop();
+      mark(o, 0);
     }
   })(0);
 
   found.sort((a, b) => b.score - a.score);
+  const order = perCourse.map((pc) => pc.ci);
+  return {
+    results: found.map((r) => ({ score: r.score, sel: r.sel.map((oi, i) => [order[i], oi]) })),
+    issues: found.length ? [] : [{ reason: 'clash' }],
+    leaves: Math.min(leaves, maxLeaves),
+    truncated,
+    limit,
+  };
+}
 
+/** Compact search output → results the UI can show. */
+export function expandResults(raw, courseList, state) {
+  const issues = raw.issues.map((i) => (i.ci != null ? { course: courseList[i.ci], reason: i.reason } : { reason: i.reason }));
+  const limit = raw.limit ?? 40;
+  const optCache = new Map();
+  const optionsOf = (ci) => {
+    if (!optCache.has(ci)) {
+      const course = courseList[ci];
+      optCache.set(ci, courseOptions(course, state.courses?.[course.id]?.pins || {}));
+    }
+    return optCache.get(ci);
+  };
   // Many top results differ only by one tutorial hour; keep the list varied.
   const perSig = new Map();
   const results = [];
-  for (const r of found) {
-    const sig = r.sel.map((o) => o.picks.filter((p) => p.role === 'primary').map((p) => p.g.n).join('.')).join('|');
+  for (const r of raw.results) {
+    const sel = r.sel.map(([ci, oi]) => ({ course: courseList[ci], picks: optionsOf(ci)[oi].picks }));
+    const sig = sel.map((o) => o.picks.filter((p) => p.role === 'primary').map((p) => p.g.n).join('.')).join('|');
     const c = perSig.get(sig) || 0;
     if (c >= 3) continue;
     perSig.set(sig, c + 1);
+    const allBlocks = sel.flatMap((o) => blocks(o.course, o.picks, state.courses?.[o.course.id]?.prefs || {}));
+    const cells = state.constraints?.cells || {};
+    const softHours = allBlocks.filter((b) => b.attended).reduce((s, b) => s + hourCells(b.m).filter((x) => cells[x] === 1).length, 0);
+    const person = sel.reduce((s, o) => {
+      const prefs = state.courses?.[o.course.id]?.prefs || {};
+      const ratings = courseRatings(state, o.course);
+      return s + o.picks.reduce((t, { g, role }) => {
+        const p = prefs[compKey(g, role)] || DEFAULT_PREFS;
+        return (p.plan || 'go') === 'skip' ? t : t + (p.weight ?? DEFAULT_PREFS.weight) * rating(ratings, g.lecturer);
+      }, 0);
+    }, 0);
     results.push({
       score: Math.round(r.score),
-      stats: r.stats,
-      courses: r.sel.map((o) => ({ course: perCourseCourse(o), picks: o.picks })),
-      blocks: r.sel.flatMap((o) => o.blocks),
+      stats: { ...weekStats(allBlocks), softHours, person },
+      courses: sel,
+      blocks: allBlocks,
     });
     if (results.length >= limit) break;
   }
-  if (!found.length) issues.push({ reason: 'clash' });
-  return { results, issues, leaves, truncated };
-
-  function perCourseCourse(o) {
-    return perCourse.find((pc) => pc.opts.includes(o)).course;
-  }
+  return { results, issues, leaves: raw.leaves, truncated: raw.truncated };
 }
 
 /** What a result gives up: recommended people who teach that component but are not in it. */
