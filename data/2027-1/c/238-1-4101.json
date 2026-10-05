@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. מזוז",
      "meetings": [
       {
        "day": 3,
@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. מזוז",
      "meetings": [
       {
        "day": 4,
@@ -52,7 +52,7 @@
     {
      "n": 13,
      "type": "מעבדה",
-     "lecturer": null,
+     "lecturer": "מר א. מזוז",
      "meetings": [
       {
        "day": 3,
@@ -67,7 +67,7 @@
     {
      "n": 14,
      "type": "מעבדה",
-     "lecturer": null,
+     "lecturer": "מר א. מזוז",
      "meetings": [
       {
        "day": 4,

@@ -23,7 +23,16 @@
      "n": 11,
      "type": "תרגיל",
      "lecturer": "גב' מ. רופל",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 4,
+       "start": "11:00",
+       "end": "13:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ]
   }
