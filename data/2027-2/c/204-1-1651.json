@@ -6,13 +6,13 @@
  "groups": [
   {
    "n": 1,
-   "type": "שעור\n(אנגלית)",
+   "type": "שעור (אנגלית)",
    "lecturer": null,
    "meetings": [],
    "subs": [
     {
      "n": 11,
-     "type": "תרגיל\n(אנגלית)",
+     "type": "תרגיל (אנגלית)",
      "lecturer": "מר י. פרלמוטר",
      "meetings": []
     }

@@ -45,7 +45,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": "מר ע. שמרת",
+     "lecturer": "מר נ. דגא",
      "meetings": [
       {
        "day": 1,
@@ -200,7 +200,7 @@
     {
      "n": 33,
      "type": "תרגיל",
-     "lecturer": "מר נ. דגא",
+     "lecturer": "מר ע. שמרת",
      "meetings": [
       {
        "day": 5,
@@ -287,7 +287,7 @@
   {
    "n": 8,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "ד\"ר ס. סמית",
    "meetings": [
     {
      "day": 5,
@@ -302,7 +302,7 @@
     {
      "n": 88,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר נ. דגא",
      "meetings": [
       {
        "day": 5,

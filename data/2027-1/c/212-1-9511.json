@@ -125,6 +125,12 @@
        "hybrid": true
       }
      ]
+    },
+    {
+     "n": 24,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
     }
    ]
   },
@@ -187,6 +193,12 @@
        "hybrid": true
       }
      ]
+    },
+    {
+     "n": 34,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
     }
    ]
   },

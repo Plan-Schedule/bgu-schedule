@@ -25,12 +25,12 @@
      "lecturer": "אינג' ד. חייט",
      "meetings": [
       {
-       "day": 3,
-       "start": "13:00",
-       "end": "14:00",
+       "day": 5,
+       "start": "16:00",
+       "end": "17:00",
        "place": "",
-       "mode": "בכיתה החל משבוע 1 כל שבוע",
-       "hybrid": false
+       "mode": "מקוון",
+       "hybrid": true
       }
      ]
     },
@@ -40,12 +40,12 @@
      "lecturer": "אינג' ד. חייט",
      "meetings": [
       {
-       "day": 4,
-       "start": "16:00",
-       "end": "17:00",
-       "place": "ביה\"ס אילנות [97] חדר 207",
-       "mode": "בכיתה החל משבוע 1 כל שבוע",
-       "hybrid": false
+       "day": 5,
+       "start": "17:00",
+       "end": "18:00",
+       "place": "",
+       "mode": "מקוון",
+       "hybrid": true
       }
      ]
     }

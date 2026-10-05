@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. שדות",
      "meetings": [
       {
        "day": 4,
@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. שדות",
      "meetings": [
       {
        "day": 4,
@@ -52,13 +52,13 @@
     {
      "n": 13,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. שדות",
      "meetings": [
       {
        "day": 3,
        "start": "13:00",
        "end": "14:00",
-       "place": "גוטמן [32] חדר 108",
+       "place": "",
        "mode": "בכיתה החל משבוע 1 כל שבוע",
        "hybrid": false
       }
