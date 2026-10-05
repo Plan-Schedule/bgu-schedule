@@ -89,6 +89,8 @@
 
   <script type="module">
     import { CONFIG } from './js/config.js';
+    import { shouldMove, moveAway } from './js/move.js';
+    if (shouldMove()) moveAway(null);
     for (const a of document.querySelectorAll('[data-feedback]')) a.href = CONFIG.feedbackUrl;
   </script>
 </body>
