@@ -11,7 +11,6 @@ import {
 } from './share.js';
 import { CONFIG } from './config.js';
 import * as stats from './stats.js';
-import { shouldMove, moveAway } from './move.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const view = $('#view');
@@ -1295,10 +1294,6 @@ window.addEventListener('hashchange', async () => {
 });
 
 async function boot() {
-  if (shouldMove()) {
-    const empty = !Object.keys(S().ratings).length && !Object.values(S().sems).some((x) => x.order.length || x.plans.length);
-    return moveAway(empty ? null : S());
-  }
   const hash = location.hash.slice(1);
   if (['constraints', 'results', 'plans'].includes(hash)) ui.tab = hash;
   try {
@@ -1319,7 +1314,7 @@ async function boot() {
 // Installing is optional; the site works the same from a plain link.
 window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); ui.installPrompt = e; });
 window.addEventListener('appinstalled', () => stats.event('app-installed'));
-if (!shouldMove() && 'serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 for (const a of document.querySelectorAll('[data-feedback]')) a.href = CONFIG.feedbackUrl;

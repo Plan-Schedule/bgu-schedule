@@ -13,10 +13,6 @@ export const CONFIG = {
   // Where "יש לי הערה" leads: a Google Form, so no account is needed to send one.
   feedbackUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSfaeSm2csPLuLKGGCbJIaN91LJRI26RXIliW6JlI_YnheREPw/viewform',
   sourceUrl: 'https://github.com/Plan-Schedule/bgu-schedule',
-  // The site's new home (e.g. 'https://bgu-schedule.pages.dev/'). When set, the old
-  // GitHub Pages address sends everyone there and takes their saved data along
-  // (see js/move.js). Empty = stay on GitHub Pages.
-  movedTo: '',
   // Anonymous visit counter (see js/stats.js). Empty = off.
   statsUrl: 'https://plan-schedule.goatcounter.com/count',
 };
