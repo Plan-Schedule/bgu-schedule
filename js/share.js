@@ -117,6 +117,12 @@ export function sanitizeState(o) {
     ratings,
     constraints: { cells, weights },
     sems,
+    profile: {
+      dept: text(o.profile?.dept, 80),
+      year: [1, 2, 3, 4, 5, 6].includes(o.profile?.year) ? o.profile.year : 0,
+      asOf: Number.isInteger(o.profile?.asOf) && o.profile.asOf > 2000 && o.profile.asOf < 2100 ? o.profile.asOf : 0,
+      skip: o.profile?.skip === true,
+    },
     seen: { intro: true, perCourseRatings: o.seen?.perCourseRatings === true },
   };
 }

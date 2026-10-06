@@ -9,6 +9,9 @@ const fresh = () => ({
   ratings: {},
   constraints: { cells: {}, weights: {} },
   sems: {},
+  // "מה התואר שלך?": some lectures are open only to certain degrees. year is the year in the
+  // degree during academic year asOf (2027 = תשפ"ז); skip = the student chose not to say.
+  profile: { dept: '', year: 0, asOf: 0, skip: false },
   seen: {}, // intro screen, install tip…
   meta: { lastBackup: null, changes: 0 }, // for the "save a restore link" reminder
 });
@@ -32,7 +35,7 @@ export function migrate(s) {
     s.v = 2;
   }
   const f = fresh();
-  return { ...f, ...s, seen: { ...f.seen, ...s.seen }, meta: { ...f.meta, ...s.meta } };
+  return { ...f, ...s, profile: { ...f.profile, ...s.profile }, seen: { ...f.seen, ...s.seen }, meta: { ...f.meta, ...s.meta } };
 }
 
 export function save() {
@@ -78,4 +81,13 @@ export function replaceAll(next) {
 }
 
 /** The subset the solver needs. */
-export const solverState = () => ({ ratings: state.ratings, courses: sem().courses, constraints: state.constraints });
+export const solverState = () => ({ ratings: state.ratings, courses: sem().courses, constraints: state.constraints, profile: profileFor(state.semester) });
+
+/** The profile as it applies to a semester: planning next year means one year further in the degree. */
+export function profileFor(semId) {
+  const p = state.profile;
+  if (!p?.dept || p.skip) return null;
+  const semYear = +String(semId || '').split('-')[0];
+  const year = p.year && p.asOf && semYear ? p.year + (semYear - p.asOf) : p.year;
+  return { dept: p.dept, year: year > 0 ? year : 0 };
+}

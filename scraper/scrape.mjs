@@ -10,10 +10,10 @@
 //
 // No dependencies; needs Node 20+.
 
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { parseCourse, parseIndex, text } from './parse.mjs';
+import { parseCourse, parseIndex, parsePopulation, populationGroups, text } from './parse.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const URL_ANN = 'https://bgu4u.bgu.ac.il/pls/scwp/!app.ann';
@@ -57,6 +57,45 @@ async function post(form, tries = 8) {
       if (i >= tries) throw e;
       await sleep(Math.min(5000 * i, 30_000));
     }
+  }
+}
+
+// "פרטי אוכלוסייה" of one group: which degrees may register to it (a GET, like the site's "הצג" button).
+async function population(c, n, tries = 4) {
+  const url = `${URL_ANN}?${new URLSearchParams({
+    lang: 'he', rn_course_department: c.dept, rn_course_degree_level: c.level, rn_course: c.num,
+    rn_year: YEAR, rn_semester: SEM, rn_institution: 0, rn_group_number: n, step: 5,
+  })}`;
+  for (let i = 1; ; i++) {
+    try {
+      const res = await fetch(url, { headers: { 'User-Agent': 'bgu-schedule catalogue bot (+https://github.com/Plan-Schedule/bgu-schedule)' }, signal: AbortSignal.timeout(30_000) });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return parsePopulation(decoder.decode(await res.arrayBuffer()));
+    } catch (e) {
+      if (i >= tries) throw e;
+      await sleep(3000 * i);
+    }
+  }
+}
+
+/**
+ * Only matters when there is a lecture to choose: courses with one group skip it.
+ * A group whose list can't be fetched keeps what the previous run saved.
+ */
+async function addPopulations(c, html, groups, path) {
+  if (groups.length < 2) return;
+  const old = JSON.parse(await readFile(path, 'utf8').catch(() => '{"groups":[]}'));
+  const wanted = new Set(populationGroups(html));
+  for (const g of [...groups, ...groups.flatMap((x) => x.subs || [])]) {
+    if (!wanted.has(g.n)) continue;
+    let pop;
+    try {
+      pop = await population(c, g.n);
+    } catch {
+      pop = old.groups.flatMap((x) => [x, ...(x.subs || [])]).find((x) => x.n === g.n)?.pop;
+    }
+    if (pop?.length) g.pop = pop;
+    await sleep(100);
   }
 }
 
@@ -112,8 +151,10 @@ async function main() {
           const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<br/) || [])[1];
           if (h1) label = text(h1).replace('פרטי קורס בסמסטר', '').trim();
         }
+        const path = join(dir, 'c', `${c.id}.json`);
+        await addPopulations(c, html, course.groups, path);
         const data = { id: c.id, name: course.name || c.name, credits: course.credits, hours: course.hours, groups: course.groups };
-        if (await writeIfChanged(join(dir, 'c', `${c.id}.json`), data)) changed++;
+        if (await writeIfChanged(path, data)) changed++;
         byId.set(c.id, { id: c.id, name: data.name, credits: data.credits, g: data.groups.length });
       } catch (e) {
         failed++;
@@ -127,7 +168,7 @@ async function main() {
   await Promise.all(Array.from({ length: CONCURRENCY }, worker));
 
   const courses = [...byId.values()].sort((a, b) => a.id.localeCompare(b.id));
-  const indexChanged = await writeIfChanged(join(dir, 'index.json'), { semester: semKey, label, courses });
+  const indexChanged = await writeIfChanged(join(dir, 'index.json'), { semester: semKey, label, courses, depts: await departments(dir) });
 
   const semPath = join(ROOT, 'data', 'semesters.json');
   const sems = JSON.parse(await readFile(semPath, 'utf8').catch(() => '[]')).filter((s) => s.id !== semKey);
@@ -137,6 +178,18 @@ async function main() {
 
   console.log(`Done: ${done} fetched, ${changed} changed, ${failed} failed`);
   if (failed > list.length / 4) process.exit(1);
+}
+
+/** Every department named in a population list this semester: the choices for "מה התואר שלך?". */
+async function departments(dir) {
+  const names = new Set();
+  for (const f of await readdir(join(dir, 'c')).catch(() => [])) {
+    const c = JSON.parse(await readFile(join(dir, 'c', f), 'utf8'));
+    for (const g of c.groups.flatMap((x) => [x, ...(x.subs || [])])) {
+      for (const r of g.pop || []) if (r.dept && (!r.degree || r.degree === 'תואר ראשון')) names.add(r.dept);
+    }
+  }
+  return [...names].sort((a, b) => a.localeCompare(b, 'he'));
 }
 
 main().catch((e) => {

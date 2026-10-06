@@ -352,6 +352,7 @@ a.opt { color: inherit; text-decoration: none; }
 /* segmented choices: a pill that slides to the chosen option */
 .seg.anim { position: relative; display: inline-grid; grid-auto-flow: column; grid-auto-columns: 1fr; isolation: isolate; }
 .seg.anim.wide { display: grid; }
+.seg.anim.empty::before { opacity: 0; }
 .seg.anim::before {
   content: ""; position: absolute; z-index: -1; top: 3px; bottom: 3px;
   width: calc((100% - 6px) / var(--n)); inset-inline-start: calc(3px + (100% - 6px) / var(--n) * var(--i));
@@ -373,3 +374,21 @@ button, .btn, .opt, .act { touch-action: manipulation; -webkit-tap-highlight-col
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2.4s; } }
+
+/* ---------- degree ("מה התואר שלך?") ---------- */
+.degree-card { margin: 0 0 14px; }
+.degree-card h3 { margin: 0 0 4px; }
+.deg-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; margin-top: 10px; }
+.deg-row select { flex: 1 1 200px; min-width: 0; min-height: 40px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); }
+.deg-line { margin: 0 0 12px; font-size: 14px; color: var(--muted); }
+.deg-line b { color: var(--text); font-weight: 600; }
+.link { background: none; border: 0; padding: 0 2px; color: var(--accent); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.deg-tag { display: inline-block; margin-inline-start: 6px; padding: 1px 7px; border-radius: 999px; font-size: 11.5px; font-weight: 500; vertical-align: 1px; background: var(--surface-2); color: var(--muted); border: 1px solid var(--border); }
+.deg-tag.maybe { background: var(--star-soft); color: var(--text); border-color: transparent; }
+.grp.closed .gnum, .grp.closed .gwho, .grp.closed .times { color: var(--faint); }
+.grp.closed .acts { display: none; }
+.who-for { margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+.who-for summary { cursor: pointer; width: max-content; list-style: none; text-decoration: underline dotted; text-underline-offset: 3px; }
+.who-for summary::-webkit-details-marker { display: none; }
+.who-for ul { margin: 4px 0 0; padding-inline-start: 18px; }
+.closed-toggle { display: block; margin: 4px auto 2px; color: var(--muted); font-size: 13.5px; text-decoration: none; padding: 8px; }

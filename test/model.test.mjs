@@ -188,3 +188,29 @@ test('registration window: four weeks before the semester to two weeks into it',
   assert.equal(inRegistration(cal, 2027, 1, new Date('2026-11-10')), false);
   assert.equal(inRegistration(cal, 2027, 2, new Date('2026-10-05')), false);
 });
+
+test('degree: lectures meant for other degrees are not offered', async () => {
+  const { openTo } = await import('../js/degrees.js');
+  const pop = (rows) => ({ pop: rows });
+  const se1 = { dept: 'הנדסת תכנה', year: 1 };
+  assert.equal(openTo(pop([{ dept: 'הנדסת תכנה', degree: 'תואר ראשון', year: 1 }]), se1), 'yes');
+  assert.equal(openTo(pop([{ dept: 'מדעי המחשב', degree: 'תואר ראשון' }]), se1), 'no');
+  assert.equal(openTo(pop([{ dept: 'הנדסת תכנה', degree: 'תואר ראשון', year: 2 }]), se1), 'no');
+  assert.equal(openTo(pop([{ dept: 'הנדסת תכנה', degree: 'תואר שני' }]), se1), 'no');
+  assert.equal(openTo(pop([{ dept: 'הנדסת תכנה', track: 'חד מחלקתי', major: 'מדעי הנתונים' }]), se1), 'maybe');
+  assert.equal(openTo(pop([{ faculty: 'מדעי ההנדסה', degree: 'תואר ראשון' }]), { dept: 'הנדסת מכונות', year: 1 }), 'yes');
+  assert.equal(openTo(pop([{ faculty: 'מדעי הטבע', degree: 'תואר ראשון' }]), { dept: 'הנדסת מכונות', year: 1 }), 'no');
+  assert.equal(openTo(pop([{ faculty: 'מדעי הטבע' }]), { dept: 'מחלקה לא מוכרת', year: 1 }), 'maybe');
+  assert.equal(openTo(pop([]), se1), 'yes');
+  assert.equal(openTo(pop([{ dept: 'מדעי המחשב' }]), null), 'yes');
+
+  // In the solver: only the lecture for the student's degree; none fits → planned without the rule, with a note.
+  const course = structuredClone(logic);
+  course.groups.forEach((g, i) => { g.pop = [{ dept: i === 0 ? 'הנדסת תכנה' : 'מדעי המחשב', degree: 'תואר ראשון' }]; });
+  const base = { ratings: {}, courses: {}, constraints: {} };
+  const r = solve([course], { ...base, profile: se1 });
+  assert.ok(r.results.length && r.results.every((x) => x.courses[0].picks[0].g.n === course.groups[0].n));
+  const none = solve([course], { ...base, profile: { dept: 'פיזיקה', year: 1 } });
+  assert.ok(none.results.length > 1);
+  assert.equal(none.notes[0].reason, 'degree');
+});

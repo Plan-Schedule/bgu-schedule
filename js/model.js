@@ -6,6 +6,8 @@
 // and under each picked primary, one sub-group per sub type (tutorial, lab…).
 // Sub-groups can only be taken together with the primary they sit under.
 
+import { openTo } from './degrees.js';
+
 export const DAYS = ['', 'א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳'];
 export const DAY_FULL = ['', 'ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'];
 
@@ -229,6 +231,7 @@ const daySlots = (24 * 60) / SLOT;
 function prepare(courseList, state) {
   const cells = state.constraints?.cells || {};
   const issues = [];
+  const notes = [];
   const perCourse = [];
   courseList.forEach((course, ci) => {
     const cs = state.courses?.[course.id] || {};
@@ -239,8 +242,14 @@ function prepare(courseList, state) {
       return;
     }
     const ratings = courseRatings(state, course);
+    // Lectures meant for other degrees can't be registered to. When none is meant for the
+    // student's degree (an unusual path, or missing data), the course is planned without the rule.
+    const fits = (o) => o.picks.every(({ g }) => openTo(g, state.profile) !== 'no');
+    const restrict = raw.some(fits);
+    if (!restrict && raw.some((o) => o.picks.some(({ g }) => g.pop?.length)) && state.profile?.dept) notes.push({ ci, reason: 'degree' });
     const opts = [];
     raw.forEach((o, oi) => {
+      if (restrict && !fits(o)) return;
       const bl = blocks(course, o.picks, prefs);
       const att = bl.filter((b) => b.attended);
       if (att.some((b) => hourCells(b.m).some((c) => cells[c] === 2))) return;
@@ -260,14 +269,14 @@ function prepare(courseList, state) {
     if (!opts.length) issues.push({ ci, reason: 'constraints' });
     else perCourse.push({ ci, opts });
   });
-  return { perCourse, issues };
+  return { perCourse, issues, notes };
 }
 
 /** The search itself: pure data in, pure data out (safe to postMessage). */
 export function searchSchedules(courseList, state, { limit = 40, maxLeaves = 300000 } = {}) {
   const w = { ...DEFAULT_WEIGHTS, ...(state.constraints?.weights || {}) };
-  const { perCourse, issues } = prepare(courseList, state);
-  if (issues.length) return { results: [], issues, leaves: 0, truncated: false };
+  const { perCourse, issues, notes } = prepare(courseList, state);
+  if (issues.length) return { results: [], issues, notes, leaves: 0, truncated: false };
 
   perCourse.sort((a, b) => a.opts.length - b.opts.length);
   const n = perCourse.length;
@@ -338,6 +347,7 @@ export function searchSchedules(courseList, state, { limit = 40, maxLeaves = 300
   return {
     results: found.map((r) => ({ score: r.score, sel: r.sel.map((oi, i) => [order[i], oi]) })),
     issues: found.length ? [] : [{ reason: 'clash' }],
+    notes,
     leaves: Math.min(leaves, maxLeaves),
     truncated,
     limit,
@@ -346,7 +356,9 @@ export function searchSchedules(courseList, state, { limit = 40, maxLeaves = 300
 
 /** Compact search output → results the UI can show. */
 export function expandResults(raw, courseList, state) {
-  const issues = raw.issues.map((i) => (i.ci != null ? { course: courseList[i.ci], reason: i.reason } : { reason: i.reason }));
+  const withCourse = (i) => (i.ci != null ? { course: courseList[i.ci], reason: i.reason } : { reason: i.reason });
+  const issues = raw.issues.map(withCourse);
+  const notes = (raw.notes || []).map(withCourse);
   const limit = raw.limit ?? 40;
   const optCache = new Map();
   const optionsOf = (ci) => {
@@ -384,7 +396,7 @@ export function expandResults(raw, courseList, state) {
     });
     if (results.length >= limit) break;
   }
-  return { results, issues, leaves: raw.leaves, truncated: raw.truncated };
+  return { results, issues, notes, leaves: raw.leaves, truncated: raw.truncated };
 }
 
 /** What a result gives up: recommended people who teach that component but are not in it. */
@@ -395,9 +407,12 @@ export function missedStars(course, picks, state) {
   for (const comp of components(course)) {
     const p = prefs[comp.key] || DEFAULT_PREFS;
     if (p.plan === 'skip' || !(p.weight ?? 2)) continue;
+    // Stars in lectures meant for other degrees were never on offer.
+    const open = course.groups.filter((g) => openTo(g, state.profile) !== 'no');
+    const groups = open.length ? open : course.groups;
     const pool = comp.role === 'primary'
-      ? course.groups.filter((g) => g.type === comp.type)
-      : course.groups.flatMap((g) => g.subs || []).filter((s) => s.type === comp.type);
+      ? groups.filter((g) => g.type === comp.type)
+      : groups.flatMap((g) => g.subs || []).filter((s) => s.type === comp.type);
     const chosen = picks.filter((x) => compKey(x.g, x.role) === comp.key).map((x) => x.g.lecturer);
     const stars = [...new Set(pool.map((g) => g.lecturer).filter((n) => n && ratings[n] === RATE.REC))];
     for (const s of stars) if (!chosen.includes(s)) out.push({ name: s, comp });

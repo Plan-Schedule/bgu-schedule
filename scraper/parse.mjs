@@ -106,3 +106,26 @@ export function parseCourse(html) {
   }
   return { name, credits: Number.isFinite(credits) ? credits : null, hours: Number.isFinite(hours) ? hours : null, groups };
 }
+
+/**
+ * A group's "פרטי אוכלוסייה" (the orange "הצג" button) → who may register to it:
+ * [{ faculty, dept, degree, year, track, major }], empty fields left out.
+ * An empty list means the site lists no restriction.
+ */
+export function parsePopulation(html) {
+  const out = [];
+  const keys = ['faculty', 'dept', 'degree', 'year', 'track', 'major', 'project'];
+  for (const row of html.split(/<tr[^>]*>/i).slice(1)) {
+    const cells = [...row.matchAll(/<td[^>]*>([\s\S]*?)<\/td>/gi)].map((c) => text(c[1]).replace(/\s+/g, ' ').trim());
+    if (cells.length < 4) continue;
+    const r = {};
+    keys.forEach((k, i) => { if (cells[i]) r[k] = k === 'year' && /^\d+$/.test(cells[i]) ? +cells[i] : cells[i]; });
+    if (Object.keys(r).length) out.push(r);
+  }
+  return out;
+}
+
+/** Group numbers that have a "פרטי אוכלוסייה" button on the course page. */
+export function populationGroups(html) {
+  return [...html.matchAll(/goOpenGroups\('[^']*','\d+','\d+','\d+','[^']*','\d+','\d+','\d+','\d+','(\d+)'/g)].map((m) => +m[1]);
+}

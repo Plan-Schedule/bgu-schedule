@@ -11,6 +11,7 @@ import {
 } from './share.js';
 import { CONFIG } from './config.js';
 import * as stats from './stats.js';
+import { openTo, popLines } from './degrees.js';
 
 const $ = (s, el = document) => el.querySelector(s);
 const view = $('#view');
@@ -120,6 +121,69 @@ function render() {
 }
 
 // ---------- courses tab ----------
+const YEAR_HE = ['', 'א׳', 'ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳'];
+
+/** True when the course's lectures are open to different degrees, so the answer changes what fits. */
+function degreeChoice(c) {
+  return !!c && new Set(c.groups.filter((g) => g.pop?.length).map((g) => JSON.stringify(g.pop))).size > 1;
+}
+
+function degreeText() {
+  const p = store.profileFor(S().semester) || S().profile;
+  return `${p.dept}${p.year ? ` · שנה ${YEAR_HE[p.year] || p.year}` : ''}`;
+}
+
+/** "מה התואר שלך?" – asked only once a chosen course has lectures for different degrees. */
+function degreeCard(list) {
+  const p = S().profile;
+  if (!ui.degreeEdit && (p.skip || !list.some(degreeChoice))) return '';
+  if (p.dept && !ui.degreeEdit) {
+    return `<div class="deg-line">🎓 הרצאות לפי התואר שלך: <b>${esc(degreeText())}</b> <button class="link" data-action="degree-edit">שינוי</button></div>`;
+  }
+  const depts = [...new Set([...(ui.depts || []), ...(p.dept ? [p.dept] : [])])].sort((a, b) => a.localeCompare(b, 'he'));
+  const year = store.profileFor(S().semester)?.year || 0;
+  return `
+    <section class="card pad degree-card" id="degree-card">
+      <h3>🎓 מה התואר שלך?</h3>
+      <p class="small muted">בחלק מהקורסים כל הרצאה פתוחה רק לתארים מסוימים (באתר האוניברסיטה זה מופיע תחת „הצג” › פרטי אוכלוסייה). לפי התשובה אציע רק הרצאות שאפשר להירשם אליהן.</p>
+      <div class="deg-row">
+        <select id="deg-dept" aria-label="המחלקה שלי">
+          <option value="">בחירת מחלקה…</option>
+          ${depts.map((d) => `<option ${d === p.dept ? 'selected' : ''}>${esc(d)}</option>`).join('')}
+        </select>
+        <div><div class="lbl">שנה בתואר בסמסטר הזה</div>
+          <div class="seg anim ${year ? '' : 'empty'}" role="group" style="--n:4;--i:${Math.max(0, Math.min(year, 4) - 1)}">
+            ${[1, 2, 3, 4].map((y) => `<button data-action="degree-year" data-v="${y}" aria-pressed="${year === y}">${YEAR_HE[y]}</button>`).join('')}
+          </div>
+        </div>
+      </div>
+      <div class="row" style="justify-content:flex-end;gap:8px;margin-top:10px">
+        <button class="btn sm ghost" data-action="degree-skip">${p.dept ? 'בלי סינון לפי תואר' : 'לא עכשיו'}</button>
+        ${p.dept ? '<button class="btn sm primary" data-action="degree-done">סיום</button>' : ''}
+      </div>
+    </section>`;
+}
+
+/** Lectures for other degrees (and their tutorials) fold into one line, so the card shows what can be chosen. */
+function groupList(c, grp, profile, anyOpen) {
+  const block = (g) => grp(g, false) + (g.subs || []).map((x) => grp(x, true)).join('');
+  const closed = anyOpen ? c.groups.filter((g) => openTo(g, profile) === 'no') : [];
+  const shown = c.groups.filter((g) => !closed.includes(g));
+  const more = ui.showClosed?.[c.id];
+  return `<div class="groups">${shown.map(block).join('')}${closed.length ? `
+    <button class="link closed-toggle" data-action="show-closed" data-id="${c.id}" aria-expanded="${!!more}">${more ? 'הסתרת' : 'עוד'} ${closed.length === 1 ? 'הרצאה אחת' : `${closed.length} הרצאות`} לתארים אחרים ${more ? '▴' : '▾'}</button>
+    ${more ? closed.map(block).join('') : ''}` : ''}</div>`;
+}
+
+function setDegree(fn) {
+  store.update(() => {
+    const p = S().profile;
+    fn(p);
+    p.skip = false;
+    p.asOf = +S().semester.split('-')[0];
+    ui.degreeEdit = !(p.dept && p.year); // both answered: fold into one line
+  });
+}
 function renderCourses() {
   const list = myCourses();
   const credits = list.reduce((s, c) => s + (c.credits || 0), 0);
@@ -139,6 +203,7 @@ function renderCourses() {
       </div>
       <div id="qres"></div>
     </div>
+    ${degreeCard(list)}
     ${list.length ? `
       <p class="legend">
         <span><b>⭐ מומלץ</b> מעדיף את המרצה או המתרגל</span><span><b>🚫 לא מתאים</b> לא לשבץ את הקבוצה</span><span><b>📌 חובה</b> רק הקבוצה הזו</span><span>🎥 מוקלט · לחיצה נוספת מבטלת</span>
@@ -205,19 +270,30 @@ function courseCard(id) {
   const comps = components(c);
   const ratings = ratingsOf(id);
   const pinBtn = (n, v, label, cls) => `<button class="act ${cls}" data-action="pin" data-id="${id}" data-n="${n}" data-v="${v}" aria-pressed="${cp.pins[n] === v}">${label}</button>`;
+  const profile = store.profileFor(S().semester);
+  const choice = degreeChoice(c);
+  const anyOpen = c.groups.some((g) => openTo(g, profile) !== 'no');
+  let parentOpen = 'yes';
   const grp = (g, sub) => {
     const star = g.lecturer && ratings[g.lecturer] === RATE.REC;
+    // A tutorial follows the lecture it sits under.
+    const fit = anyOpen ? (sub ? parentOpen : (parentOpen = openTo(g, profile))) : 'yes';
+    const tag = sub ? '' : fit === 'no' ? '<span class="deg-tag">לא לתואר שלך</span>'
+      : fit === 'maybe' ? '<span class="deg-tag maybe">לבדוק שמתאים לך</span>' : '';
+    const who = !sub && choice && g.pop?.length
+      ? `<details class="who-for"><summary>למי מיועדת?</summary><ul>${popLines(g).map((l) => `<li>${esc(l)}</li>`).join('')}</ul></details>` : '';
     return `
-    <div class="grp ${sub ? 'sub' : ''} ${cp.pins[g.n] || ''}">
+    <div class="grp ${sub ? 'sub' : ''} ${cp.pins[g.n] || ''} ${fit === 'no' ? 'closed' : ''}">
       <div class="gnum">${g.n}<small>${esc(typeLabel(g.type))}</small></div>
       <div class="ginfo">
-        <div class="gwho">${g.lecturer ? `${star ? '⭐ ' : ''}${esc(g.lecturer)}` : '<span class="muted">ללא מרצה מוגדר</span>'}</div>
+        <div class="gwho">${g.lecturer ? `${star ? '⭐ ' : ''}${esc(g.lecturer)}` : '<span class="muted">ללא מרצה מוגדר</span>'}${tag}</div>
         <div class="times">${g.meetings.length ? g.meetings.map((m) => `${fmtMeet(m)}${m.hybrid ? ' <span class="rec" title="מוקלט">🎥</span>' : ''}`).join(' · ') : 'ללא שעות'}</div>
         <div class="acts">
           ${g.lecturer ? `<button class="act star" data-action="rate" data-id="${id}" data-name="${esc(g.lecturer)}" data-v="${RATE.REC}" aria-pressed="${star}" title="בכל הקבוצות של ${esc(g.lecturer)} בקורס">⭐ מומלץ</button>` : ''}
           ${pinBtn(g.n, 'never', '🚫 לא מתאים', 'never')}
           ${pinBtn(g.n, 'must', '📌 חובה', 'must')}
         </div>
+        ${who}
       </div>
     </div>`;
   };
@@ -240,7 +316,8 @@ function courseCard(id) {
             </div>
           </div>`;
         }).join('')}
-        ${c.groups.length ? `<div class="groups">${c.groups.map((g) => grp(g, false) + (g.subs || []).map((s) => grp(s, true)).join('')).join('')}</div>`
+        ${profile && choice && !anyOpen ? `<div class="notice">אף הרצאה בקורס הזה לא מסומנת באתר האוניברסיטה לתואר שלך, אז המתכנן מתייחס לכולן. כדאי לבדוק באתר לאיזו מותר להירשם.</div>` : ''}
+        ${c.groups.length ? groupList(c, grp, profile, anyOpen)
           : `<div class="notice">לקורס הזה אין קבוצות בסמסטר ${esc(currentSemLabel())}.</div>`}
         <div class="row" style="justify-content:space-between">
           <a class="small muted" href="https://bgu4u.bgu.ac.il/pls/scwp/!app.gate?app=ann" target="_blank" rel="noopener">לקובץ הקורסים באתר האוניברסיטה ↗</a>
@@ -370,7 +447,7 @@ function finishResults(r) {
 /** null while a background search is running. */
 function computeResults() {
   const courses = myCourses();
-  const key = JSON.stringify([S().semester, sem().order, sem().courses, S().ratings, S().constraints, courses.length, !!ui.ignoreConstraints]);
+  const key = JSON.stringify([S().semester, sem().order, sem().courses, S().ratings, S().constraints, S().profile, courses.length, !!ui.ignoreConstraints]);
   if (key === ui.resultsKey) return ui.pending ? null : ui.results;
   ui.resultsKey = key;
   ui.shown = {};
@@ -411,7 +488,8 @@ function statChips(st) {
 }
 
 function pickLine(course, picks) {
-  return picks.map(({ g }) => `<span class="pick">${esc(typeLabel(g.type))} ${g.n}${g.lecturer ? ` · ${starOf(g.lecturer, course.id)}${esc(g.lecturer)}` : ''}</span>`).join('<span class="muted"> | </span>');
+  const profile = store.profileFor(S().semester);
+  return picks.map(({ g, role }) => `<span class="pick">${esc(typeLabel(g.type))} ${g.n}${g.lecturer ? ` · ${starOf(g.lecturer, course.id)}${esc(g.lecturer)}` : ''}${role === 'primary' && openTo(g, profile) === 'maybe' ? ' <span class="deg-tag maybe">לבדוק שמתאים לך</span>' : ''}</span>`).join('<span class="muted"> | </span>');
 }
 
 function renderResults() {
@@ -426,7 +504,8 @@ function renderResults() {
   const freeNote = ui.ignoreConstraints && hasConstraints
     ? `<div class="notice">המערכות האלה נבנו <b>בלי להתחשב באילוצים שלך</b>. <button class="btn sm" data-action="build">להתחשב באילוצים</button></div>`
     : '';
-  const issues = freeNote + r.issues.map((i) => {
+  const notes = (r.notes || []).map((n) => `<div class="notice">ב<b>${esc(n.course.name)}</b> אף הרצאה לא מסומנת לתואר שלך, אז נבנה בלי ההגבלה. כדאי לבדוק באתר האוניברסיטה.</div>`).join('');
+  const issues = freeNote + notes + r.issues.map((i) => {
     if (i.reason === 'pins') return `<div class="notice warn">ב<b>${esc(i.course.name)}</b> לא נשארה אף קבוצה שאפשר להירשם אליה אחרי הנעילות (📌/⛔). כדאי לשחרר חלק מהן.</div>`;
     if (i.reason === 'constraints') return `<div class="notice warn">ב<b>${esc(i.course.name)}</b> כל הקבוצות נופלות על משבצות "לא יכול". אפשר לסמן שלא הולכים לחלק מהשיעורים, או לשחרר אילוצים.</div>`;
     return `<div class="notice warn">אין צירוף של הקבוצות שלא מתנגש בשעות. כדאי לשחרר נעילות או להוריד קורס.</div>`;
@@ -688,6 +767,7 @@ function settingsSheet() {
     <div class="opt-list">
       <a class="opt" href="${CONFIG.feedbackUrl}" target="_blank" rel="noopener"><span class="ico">💬</span><span class="grow"><b>יש לי הערה</b><br><span class="muted small">באג, רעיון, או שעה שלא מתאימה לאתר האוניברסיטה</span></span></a>
       <a class="opt" href="about.html"><span class="ico">ℹ️</span><span class="grow"><b>אודות, פרטיות ותנאי שימוש</b></span></a>
+      <button class="opt" data-action="degree-edit"><span class="ico">🎓</span><span class="grow"><b>התואר שלי</b><br><span class="muted small">${S().profile.dept ? esc(degreeText()) : 'לא נבחר'}</span></span></button>
       <button class="opt" data-action="intro"><span class="ico">👋</span><span class="grow"><b>הסבר קצר על המתכנן</b></span></button>
       <button class="opt" data-action="reset"><span class="ico">🗑️</span><span class="grow"><b>מחיקת כל הנתונים שלי</b></span></button>
     </div>
@@ -885,6 +965,22 @@ function quietSave(el) {
 // ---------- actions ----------
 const actions = {
   tab: (el) => setTab(el.dataset.tab),
+  'degree-year': (el) => setDegree((p) => { p.year = +el.dataset.v; }),
+  'degree-done': () => { ui.degreeEdit = false; render(); },
+  'show-closed': (el) => {
+    ui.showClosed = { ...ui.showClosed, [el.dataset.id]: !ui.showClosed?.[el.dataset.id] };
+    render();
+  },
+  'degree-skip': () => {
+    ui.degreeEdit = false;
+    store.update(() => Object.assign(S().profile, { dept: '', year: 0, asOf: 0, skip: true }));
+  },
+  'degree-edit': () => {
+    closeSheet();
+    ui.degreeEdit = true;
+    setTab('courses');
+    $('#degree-card')?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  },
   noop: () => {},
   add(el) {
     const id = el.dataset.id;
@@ -1159,6 +1255,9 @@ document.addEventListener('click', (ev) => {
   }
 });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeSheet(); });
+view.addEventListener('change', (e) => {
+  if (e.target.id === 'deg-dept') setDegree((p) => { p.dept = e.target.value; });
+});
 view.addEventListener('input', (e) => {
   if (e.target.id === 'q') { ui.q = e.target.value; renderSearch(); }
   if (e.target.dataset.weight) {
@@ -1217,6 +1316,7 @@ async function loadSemester() {
   try {
     const idx = await data.index(S().semester);
     ui.index = idx.courses;
+    ui.depts = idx.depts || [];
   } catch {
     ui.error = 'לא הצלחתי לטעון את רשימת הקורסים. בדקו את החיבור לאינטרנט ונסו לרענן.';
   }
