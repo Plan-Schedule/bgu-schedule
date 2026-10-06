@@ -8,7 +8,16 @@
    "n": 1,
    "type": "שעור",
    "lecturer": "ד\"ר ט. ברמן",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "12:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": []
   }
  ]
