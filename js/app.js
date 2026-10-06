@@ -136,7 +136,10 @@ function degreeText() {
 /** "מה התואר שלך?" – asked only once a chosen course has lectures for different degrees. */
 function degreeCard(list) {
   const p = S().profile;
-  if (!ui.degreeEdit && (p.skip || !list.some(degreeChoice))) return '';
+  if (!ui.degreeEdit && !list.some(degreeChoice)) return '';
+  if (p.skip && !ui.degreeEdit) {
+    return `<div class="deg-line">🎓 מוצגות <b>כל ההרצאות</b>, בלי סינון לפי תואר <button class="link" data-action="degree-edit">לסנן לפי התואר שלי</button></div>`;
+  }
   if (p.dept && !ui.degreeEdit) {
     return `<div class="deg-line">🎓 הרצאות לפי התואר שלך: <b>${esc(degreeText())}</b> <button class="link" data-action="degree-edit">שינוי</button></div>`;
   }
@@ -145,7 +148,7 @@ function degreeCard(list) {
   return `
     <section class="card pad degree-card" id="degree-card">
       <h3>🎓 מה התואר שלך?</h3>
-      <p class="small muted">בחלק מהקורסים כל הרצאה פתוחה רק לתארים מסוימים (באתר האוניברסיטה זה מופיע תחת „הצג” › פרטי אוכלוסייה). לפי התשובה אציע רק הרצאות שאפשר להירשם אליהן.</p>
+      <p class="small muted">בחלק מהקורסים כל הרצאה פתוחה רק לתארים מסוימים (באתר האוניברסיטה זה מופיע תחת „הצג” › פרטי אוכלוסייה). לפי התשובה אציע רק הרצאות שאפשר להירשם אליהן. לא חובה: אפשר גם לראות את כל ההרצאות והמרצים.</p>
       <div class="deg-row">
         <select id="deg-dept" aria-label="המחלקה שלי">
           <option value="">בחירת מחלקה…</option>
@@ -158,7 +161,7 @@ function degreeCard(list) {
         </div>
       </div>
       <div class="row" style="justify-content:flex-end;gap:8px;margin-top:10px">
-        <button class="btn sm ghost" data-action="degree-skip">${p.dept ? 'בלי סינון לפי תואר' : 'לא עכשיו'}</button>
+        <button class="btn sm" data-action="degree-skip">👀 להציג את כל ההרצאות</button>
         ${p.dept ? '<button class="btn sm primary" data-action="degree-done">סיום</button>' : ''}
       </div>
     </section>`;
@@ -767,7 +770,7 @@ function settingsSheet() {
     <div class="opt-list">
       <a class="opt" href="${CONFIG.feedbackUrl}" target="_blank" rel="noopener"><span class="ico">💬</span><span class="grow"><b>יש לי הערה</b><br><span class="muted small">באג, רעיון, או שעה שלא מתאימה לאתר האוניברסיטה</span></span></a>
       <a class="opt" href="about.html"><span class="ico">ℹ️</span><span class="grow"><b>אודות, פרטיות ותנאי שימוש</b></span></a>
-      <button class="opt" data-action="degree-edit"><span class="ico">🎓</span><span class="grow"><b>התואר שלי</b><br><span class="muted small">${S().profile.dept ? esc(degreeText()) : 'לא נבחר'}</span></span></button>
+      <button class="opt" data-action="degree-edit"><span class="ico">🎓</span><span class="grow"><b>התואר שלי</b><br><span class="muted small">${S().profile.dept ? esc(degreeText()) : S().profile.skip ? 'מוצגות כל ההרצאות' : 'לא נבחר'}</span></span></button>
       <button class="opt" data-action="intro"><span class="ico">👋</span><span class="grow"><b>הסבר קצר על המתכנן</b></span></button>
       <button class="opt" data-action="reset"><span class="ico">🗑️</span><span class="grow"><b>מחיקת כל הנתונים שלי</b></span></button>
     </div>
