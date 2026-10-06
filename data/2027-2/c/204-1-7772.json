@@ -9,14 +9,35 @@
    "type": "סדנה",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון",
+     "year": 3
+    }
+   ]
   },
   {
    "n": 2,
    "type": "סדנה",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון",
+     "year": 3
+    },
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון",
+     "year": 3,
+     "track": "משולב לתואר כפול",
+     "major": "כימיה וננוטכנולוגיה, הנדסה כימית"
+    }
+   ]
   }
  ]
 }

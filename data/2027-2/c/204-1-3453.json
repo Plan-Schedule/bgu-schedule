@@ -9,56 +9,112 @@
    "type": "מעבדה",
    "lecturer": "פרופ' ל. גבר",
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון"
+    },
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון",
+     "track": "משולב לתואר כפול",
+     "major": "כימיה וננוטכנולוגיה, הנדסה כימית"
+    }
+   ]
   },
   {
    "n": 2,
    "type": "מעבדה",
    "lecturer": "פרופ' ל. גבר",
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 3,
    "type": "מעבדה",
    "lecturer": "פרופ' ל. גבר",
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 4,
    "type": "מעבדה",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 5,
    "type": "מעבדה",
    "lecturer": "פרופ' ל. גבר",
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 6,
    "type": "מעבדה",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון",
+     "year": 3
+    }
+   ]
   },
   {
    "n": 7,
    "type": "מעבדה",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון",
+     "year": 3
+    }
+   ]
   },
   {
    "n": 8,
    "type": "מעבדה",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון"
+    }
+   ]
   }
  ]
 }

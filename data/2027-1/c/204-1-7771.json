@@ -9,14 +9,48 @@
    "type": "סדנה",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון",
+     "year": 2,
+     "track": "חד מחלקתי"
+    },
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון",
+     "year": 3,
+     "track": "חד מחלקתי"
+    },
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 2,
    "type": "סדנה",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון",
+     "year": 3
+    },
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון",
+     "year": 2
+    },
+    {
+     "dept": "כימיה",
+     "degree": "תואר ראשון"
+    }
+   ]
   }
  ]
 }

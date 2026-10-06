@@ -9,28 +9,56 @@
    "type": "שעור",
    "lecturer": "ד\"ר ס. רגב",
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "ריפוי בעיסוק",
+     "degree": "תואר ראשון",
+     "year": 4
+    }
+   ]
   },
   {
    "n": 2,
    "type": "שעור",
    "lecturer": "גב' מ. רוזנברג",
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "ריפוי בעיסוק",
+     "degree": "תואר ראשון",
+     "year": 4
+    }
+   ]
   },
   {
    "n": 3,
    "type": "שעור",
    "lecturer": "גב' ה. נבון",
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "ריפוי בעיסוק",
+     "degree": "תואר ראשון",
+     "year": 4
+    }
+   ]
   },
   {
    "n": 4,
    "type": "שעור",
    "lecturer": "גב' ר. פישמן",
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "ריפוי בעיסוק",
+     "degree": "תואר ראשון",
+     "year": 4
+    }
+   ]
   }
  ]
 }

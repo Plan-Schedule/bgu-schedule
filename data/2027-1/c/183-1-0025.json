@@ -9,56 +9,104 @@
    "type": "התנסות",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "תקשורת",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 2,
    "type": "התנסות",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "תקשורת",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 3,
    "type": "התנסות",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "תקשורת",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 4,
    "type": "התנסות",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "תקשורת",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 5,
    "type": "התנסות",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "תקשורת",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 6,
    "type": "התנסות",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "תקשורת",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 7,
    "type": "התנסות",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "תקשורת",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 8,
    "type": "התנסות",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "תקשורת",
+     "degree": "תואר ראשון"
+    }
+   ]
   }
  ]
 }

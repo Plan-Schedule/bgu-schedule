@@ -9,70 +9,131 @@
    "type": "שעור ותרגיל",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "מדעי האחיות (סיעוד)",
+     "degree": "תואר ראשון",
+     "year": 4
+    }
+   ]
   },
   {
    "n": 2,
    "type": "שעור ותרגיל",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "מדעי האחיות (סיעוד)",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 3,
    "type": "שעור ותרגיל",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "מדעי האחיות (סיעוד)",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 4,
    "type": "שעור ותרגיל",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "מדעי האחיות (סיעוד)",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 5,
    "type": "שעור ותרגיל",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "מדעי האחיות (סיעוד)",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 6,
    "type": "שעור ותרגיל",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "מדעי האחיות (סיעוד)",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 7,
    "type": "שעור ותרגיל",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "מדעי האחיות (סיעוד)",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 8,
    "type": "שעור ותרגיל",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "מדעי האחיות (סיעוד)",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 9,
    "type": "שעור ותרגיל",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "מדעי האחיות (סיעוד)",
+     "degree": "תואר ראשון"
+    }
+   ]
   },
   {
    "n": 10,
    "type": "שעור ותרגיל",
    "lecturer": null,
    "meetings": [],
-   "subs": []
+   "subs": [],
+   "pop": [
+    {
+     "dept": "מדעי האחיות (סיעוד)",
+     "degree": "תואר ראשון"
+    }
+   ]
   }
  ]
 }
