@@ -133,10 +133,11 @@ function degreeText() {
   return `${p.dept}${p.year ? ` · שנה ${YEAR_HE[p.year] || p.year}` : ''}`;
 }
 
-/** "מה התואר שלך?" – asked only once a chosen course has lectures for different degrees. */
+/** "מה התואר שלך?": open until answered, then one line with "שינוי". */
 function degreeCard(list) {
   const p = S().profile;
-  if (!ui.degreeEdit && !list.some(degreeChoice)) return '';
+  // Always on the courses tab (once the semester's lecture lists are known), not only after adding a course.
+  if (!ui.degreeEdit && !ui.depts?.length && !list.some(degreeChoice)) return '';
   if (p.skip && !ui.degreeEdit) {
     return `<div class="deg-line">🎓 מוצגות <b>כל ההרצאות</b>, בלי סינון לפי תואר <button class="link" data-action="degree-edit">לסנן לפי התואר שלי</button></div>`;
   }
