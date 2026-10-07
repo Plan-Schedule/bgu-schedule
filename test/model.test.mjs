@@ -214,3 +214,14 @@ test('degree: lectures meant for other degrees are not offered', async () => {
   assert.ok(none.results.length > 1);
   assert.equal(none.notes[0].reason, 'degree');
 });
+
+test('long days: over 4 hours straight costs more with every hour; a break resets it', async () => {
+  const { dayLoad } = await import('../js/model.js');
+  const h = (a, b) => [a * 60, b * 60];
+  assert.equal(dayLoad([h(8, 10), h(10, 12)]).penalty, 0);
+  const nine = dayLoad([h(8, 10), h(10, 12), h(12, 14), h(14, 17)]);
+  const withBreak = dayLoad([h(8, 10), h(10, 12), h(13, 15), h(15, 17)]);
+  assert.equal(nine.longest, 9 * 60);
+  assert.ok(nine.penalty > 40 && withBreak.penalty < 10);
+  assert.equal(dayLoad([h(8, 10), [10 * 60 + 15, 12 * 60]]).longest, 4 * 60); // 15 minutes is not a break
+});

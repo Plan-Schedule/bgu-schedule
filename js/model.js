@@ -180,6 +180,40 @@ export function blocks(course, picks, prefs = {}, attend = {}) {
 const overlaps = (a, b) => a.day === b.day && mins(a.start) < mins(b.end) && mins(b.start) < mins(a.end);
 
 /** Stats of the week the student actually attends. */
+// Long days. Lessons with less than half an hour between them count as one stretch.
+// A stretch over 4 hours, or a day with over 7 hours of lessons, costs points that grow
+// with every extra hour, so a break or a lesson on another day wins over a 9-hour day.
+// Always on, also when schedules are built without constraints.
+const BREAK = 30;
+const STREAK_OK = 4 * 60, DAY_OK = 7 * 60;
+
+/** list: [start, end] in minutes, sorted by start → { longest, covered, penalty } (minutes; points) */
+export function dayLoad(list) {
+  let longest = 0, covered = 0, penalty = 0;
+  let from = list[0][0], end = list[0][1], segStart = from;
+  const close = () => {
+    longest = Math.max(longest, end - from);
+    const x = (end - from - STREAK_OK) / 60;
+    if (x > 0) penalty += 5 * x + 2 * x * x;
+  };
+  for (const [s, e] of list.slice(1)) {
+    if (s - end >= BREAK) {
+      close();
+      covered += end - segStart;
+      from = segStart = s;
+    } else if (s > end) {
+      covered += end - segStart;
+      segStart = s;
+    }
+    if (e > end) end = e;
+  }
+  close();
+  covered += end - segStart;
+  const y = (covered - DAY_OK) / 60;
+  if (y > 0) penalty += 4 * y;
+  return { longest, covered, penalty };
+}
+
 export function weekStats(blockList) {
   const att = blockList.filter((b) => b.attended).map((b) => b.m);
   const byDay = new Map();
@@ -187,9 +221,12 @@ export function weekStats(blockList) {
     if (!byDay.has(m.day)) byDay.set(m.day, []);
     byDay.get(m.day).push(m);
   }
-  let gaps = 0, first = Infinity, last = 0, clashes = 0;
+  let gaps = 0, first = Infinity, last = 0, clashes = 0, longest = 0, tiring = 0;
   for (const list of byDay.values()) {
     list.sort((a, b) => mins(a.start) - mins(b.start));
+    const load = dayLoad(list.map((m) => [mins(m.start), mins(m.end)]));
+    longest = Math.max(longest, load.longest);
+    tiring += load.penalty;
     let end = mins(list[0].start);
     for (const m of list) {
       const s = mins(m.start);
@@ -210,6 +247,8 @@ export function weekStats(blockList) {
     first: Number.isFinite(first) ? first : null,
     last: last || null,
     clashes,
+    longestHours: longest / 60,
+    tiring,
   };
 }
 
@@ -301,7 +340,7 @@ export function searchSchedules(courseList, state, { limit = 40, maxLeaves = 300
       soft += o.soft;
       for (const a of o.attended) byDay[a[0]].push(a);
     }
-    let gaps = 0, clashes = 0, freeDays = 0;
+    let gaps = 0, clashes = 0, freeDays = 0, tiring = 0;
     for (let d = 1; d <= 7; d++) {
       const list = byDay[d];
       if (!list.length) {
@@ -315,8 +354,9 @@ export function searchSchedules(courseList, state, { limit = 40, maxLeaves = 300
         if (s < end) clashes++;
         if (e > end) end = e;
       }
+      tiring += dayLoad(list.map((a) => [a[1], a[2]])).penalty;
     }
-    return base + freeDays * w.free * 8 - (gaps / 60) * w.gaps * 3 - soft * w.soft * 4 - clashes * 5;
+    return base + freeDays * w.free * 8 - (gaps / 60) * w.gaps * 3 - soft * w.soft * 4 - clashes * 5 - tiring;
   };
 
   (function dfs(i) {

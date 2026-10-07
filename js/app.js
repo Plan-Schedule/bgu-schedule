@@ -488,6 +488,7 @@ function statChips(st) {
   if (st.first != null) chips.push(`<span class="chip">${range(fmtTime(st.first), fmtTime(st.last))}</span>`);
   if (st.softHours) chips.push(`<span class="chip warn">${st.softHours} ש׳ ב"עדיף שלא"</span>`);
   if (st.clashes) chips.push(`<span class="chip warn">⚠ ${st.clashes} חפיפות בנוכחות</span>`);
+  if (st.longestHours > 5) chips.push(`<span class="chip warn">🔥 עד ${hours(st.longestHours)} ש׳ ברצף</span>`);
   return chips.join('');
 }
 
