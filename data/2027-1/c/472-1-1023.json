@@ -28,19 +28,19 @@
     {
      "n": 3,
      "type": "דיסקציה",
-     "lecturer": "גב' א. ליפשיץ",
+     "lecturer": null,
      "meetings": []
     },
     {
      "n": 4,
      "type": "דיסקציה",
-     "lecturer": "מר א. צורף",
+     "lecturer": "מר ת. גרתי",
      "meetings": []
     },
     {
      "n": 5,
      "type": "דיסקציה",
-     "lecturer": "גב' ז. גורני",
+     "lecturer": "מר א. כחלות",
      "meetings": []
     }
    ]

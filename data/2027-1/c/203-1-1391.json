@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ג. ברנד",
      "meetings": [
       {
        "day": 2,
@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ת. צ'רנייאבסקי",
      "meetings": [
       {
        "day": 2,
@@ -52,7 +52,7 @@
     {
      "n": 13,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ג. ברנד",
      "meetings": [
       {
        "day": 2,
@@ -67,7 +67,7 @@
     {
      "n": 14,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ג. כהן",
      "meetings": [
       {
        "day": 2,
