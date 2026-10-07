@@ -661,9 +661,10 @@ function ask({ title, text = '', value = null, yes = 'אישור', danger = fals
 
 function openSheet(html) {
   const s = $('#sheet');
-  $('.sheet-card', s).innerHTML = html;
+  // A ✕ that stays at the top while the window scrolls: long windows have their other close button far below.
+  $('.sheet-card', s).innerHTML = `<button class="sheet-x" data-action="close-sheet" aria-label="סגירה" title="סגירה">✕</button>${html}`;
   s.hidden = false;
-  $('.sheet-card button, .sheet-card input', s)?.focus();
+  $('.sheet-card button:not(.sheet-x), .sheet-card input', s)?.focus();
 }
 const closeSheet = () => {
   $('#sheet').hidden = true;
@@ -671,6 +672,12 @@ const closeSheet = () => {
   ui.askResolve = null;
   r?.(null);
 };
+
+/** Groups I can also register to first, then the rest; within each, the ones that clash with nothing first. */
+function sortAlts(alts, sameReg, clashes) {
+  const rank = (a) => (sameReg(a) ? 0 : 2) + (clashes(a) ? 1 : 0);
+  return alts.map((a, i) => [rank(a), i, a]).sort((x, y) => x[0] - y[0] || x[1] - y[1]).map((x) => x[2]);
+}
 
 function blockSheet(bi) {
   const plan = currentPlan();
@@ -692,6 +699,8 @@ function blockSheet(bi) {
     return c.length ? `<span class="line warn">⚠ על חשבון: ${c.map((x) => `${esc(shortName(x.course.name))} ${esc(typeLabel(x.g.type))} ${x.g.n} (${fmtMeet(x.m)})`).join(', ')}</span>` : '';
   };
   const who = (g) => (g.lecturer ? `${starOf(g.lecturer, course.id)}${esc(g.lecturer)}` : 'ללא מרצה מוגדר');
+  // Can register to it without changing anything else (the green line)?
+  const sameReg = (a) => (regInfo.role === 'sub' ? findGroup(course, a.n).parent === regInfo.parent : !(a.subs || []).length);
   const belongs = (a) => {
     if (regInfo.role === 'sub') {
       const mine = regInfo.parent, theirs = findGroup(course, a.n).parent;
@@ -728,7 +737,7 @@ function blockSheet(bi) {
       ${opt('rec', '🎥', 'אראה בהקלטה', hybrid ? '' : 'השיעור הזה לא מסומן כהיברידי', !hybrid)}
       ${opt('skip', '✕', 'לא אלך')}
       ${alts.length ? `<p class="muted small" style="margin:8px 0 0">או ללכת לקבוצה אחרת (על הנוכחות לא בודקים):</p>` : ''}
-      ${alts.map(altOpt).join('')}
+      ${sortAlts(alts, sameReg, (a) => clashWith(a).length > 0).map(altOpt).join('')}
     </div>
     ${swaps.length ? `<details><summary><b>החלפת קבוצה ברישום</b> <span class="muted small">(${swaps.length} אפשרויות בלי התנגשות)</span></summary>
       <div class="opt-list">${swaps.map((o) => `<button class="opt" data-action="swap" data-cid="${course.id}" data-nums="${o.picks.map((p) => p.g.n).join(',')}"><span class="ico">⇄</span><span class="grow">${o.picks.map(({ g }) => `<b>${esc(typeLabel(g.type))} ${g.n}</b> ${g.lecturer ? starOf(g.lecturer, course.id) + esc(g.lecturer) : ''} <span class="muted small">${g.meetings.map(fmtMeet).join(' · ')}</span>`).join('<br>')}</span></button>`).join('')}</div>
