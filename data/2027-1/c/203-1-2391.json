@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר י. כהן",
      "meetings": [
       {
        "day": 3,
@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ר. פרישקולניק",
      "meetings": [
       {
        "day": 3,
@@ -52,7 +52,7 @@
     {
      "n": 13,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ר. פרישקולניק",
      "meetings": [
       {
        "day": 3,
@@ -67,7 +67,7 @@
     {
      "n": 14,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר י. כהן",
      "meetings": [
       {
        "day": 3,
@@ -169,7 +169,7 @@
     {
      "n": 21,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ד. כרמל",
      "meetings": [
       {
        "day": 4,
@@ -184,7 +184,7 @@
     {
      "n": 22,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ד. כרמל",
      "meetings": [
       {
        "day": 4,
@@ -199,7 +199,7 @@
     {
      "n": 23,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ד. כרמל",
      "meetings": [
       {
        "day": 4,
@@ -214,7 +214,7 @@
     {
      "n": 24,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ד. כרמל",
      "meetings": [
       {
        "day": 4,

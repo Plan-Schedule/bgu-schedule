@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ת. צ'רנייאבסקי",
      "meetings": [
       {
        "day": 1,
@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר י. ביבאס",
      "meetings": [
       {
        "day": 3,
@@ -52,13 +52,13 @@
     {
      "n": 13,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ב. יוטה",
      "meetings": [
       {
        "day": 4,
        "start": "12:00",
        "end": "14:00",
-       "place": "קרייטמן-זלוטובסקי(חדש) [34] חדר 114",
+       "place": "בנין 90 (מקיף ז') [90] חדר 328",
        "mode": "בכיתה החל משבוע 1 כל שבוע",
        "hybrid": false
       }
