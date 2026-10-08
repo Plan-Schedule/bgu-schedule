@@ -95,6 +95,21 @@
      ]
     },
     {
+     "n": 17,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 2,
+       "start": "08:00",
+       "end": "11:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    },
+    {
      "n": 16,
      "type": "סיור",
      "lecturer": "מר ע. יוסוב",
