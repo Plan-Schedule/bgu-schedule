@@ -588,7 +588,16 @@
    "n": 6,
    "type": "מעבדה",
    "lecturer": "מר י. טולדנו",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "14:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
