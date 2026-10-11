@@ -1,0 +1,115 @@
+{
+ "id": "205-1-7924",
+ "name": "מבוא לרשתות נוירונים",
+ "credits": 2,
+ "hours": 2,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' ר. שגב",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "10:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": "גב' נ. אורינג רביב",
+     "meetings": [
+      {
+       "day": 2,
+       "start": "09:00",
+       "end": "10:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": "גב' נ. אורינג רביב",
+     "meetings": [
+      {
+       "day": 2,
+       "start": "12:00",
+       "end": "13:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": "גב' ל. דור",
+     "meetings": [
+      {
+       "day": 2,
+       "start": "13:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    },
+    {
+     "n": 14,
+     "type": "תרגיל",
+     "lecturer": "גב' ל. דור",
+     "meetings": [
+      {
+       "day": 2,
+       "start": "12:00",
+       "end": "13:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    },
+    {
+     "n": 15,
+     "type": "תרגיל",
+     "lecturer": "גב' ל. דור",
+     "meetings": [
+      {
+       "day": 2,
+       "start": "14:00",
+       "end": "15:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    },
+    {
+     "n": 16,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 1,
+       "start": "15:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

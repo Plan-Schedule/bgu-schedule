@@ -176,13 +176,31 @@
      "n": 23,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "17:00",
+       "end": "18:00",
+       "place": "קרייטמן-זלוטובסקי(חדש) [34] חדר 7",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 24,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "13:00",
+       "end": "14:00",
+       "place": "גולדברגר [28] חדר 104",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ],
    "pop": [
