@@ -110,13 +110,13 @@
   {
    "n": 9,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "ד\"ר פ. פקוביץ",
    "meetings": [],
    "subs": [
     {
      "n": 99,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ו. ניקולאייבסקי",
      "meetings": []
     }
    ],
