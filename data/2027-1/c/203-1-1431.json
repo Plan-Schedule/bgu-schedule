@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ע. פלדמן",
      "meetings": [
       {
        "day": 2,
@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ע. פלדמן",
      "meetings": [
       {
        "day": 4,
@@ -52,7 +52,7 @@
     {
      "n": 13,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ד. פולמן",
      "meetings": [
       {
        "day": 4,
@@ -67,7 +67,7 @@
     {
      "n": 14,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. צמח",
      "meetings": [
       {
        "day": 2,
@@ -82,7 +82,7 @@
     {
      "n": 15,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ג. ברנד",
      "meetings": [
       {
        "day": 2,
@@ -197,7 +197,7 @@
     {
      "n": 21,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. ורשביאק",
      "meetings": [
       {
        "day": 4,
@@ -212,7 +212,7 @@
     {
      "n": 22,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר י. כהן",
      "meetings": [
       {
        "day": 2,
@@ -242,7 +242,7 @@
     {
      "n": 24,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. שורץ",
      "meetings": [
       {
        "day": 4,
