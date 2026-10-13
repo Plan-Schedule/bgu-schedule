@@ -45,7 +45,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": "מר נ. דגא",
+     "lecturer": "מר נ. קלמה",
      "meetings": [
       {
        "day": 1,
@@ -235,7 +235,7 @@
     {
      "n": 32,
      "type": "תרגיל",
-     "lecturer": "מר נ. קלמה",
+     "lecturer": null,
      "meetings": [
       {
        "day": 3,

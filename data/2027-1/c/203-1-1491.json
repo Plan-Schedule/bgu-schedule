@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. פוזנר",
      "meetings": [
       {
        "day": 5,
@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. פוזנר",
      "meetings": [
       {
        "day": 5,
@@ -52,7 +52,7 @@
     {
      "n": 13,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ת. בר נר",
      "meetings": [
       {
        "day": 5,
@@ -145,7 +145,7 @@
     {
      "n": 21,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ב. בן-עזרא",
      "meetings": [
       {
        "day": 3,
@@ -160,7 +160,7 @@
     {
      "n": 22,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ב. בן-עזרא",
      "meetings": [
       {
        "day": 3,
@@ -175,7 +175,7 @@
     {
      "n": 23,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. עזריה",
      "meetings": [
       {
        "day": 1,
@@ -190,7 +190,7 @@
     {
      "n": 24,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. עזריה",
      "meetings": [
       {
        "day": 1,
@@ -266,7 +266,7 @@
     {
      "n": 31,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ר. בן-עמי",
      "meetings": [
       {
        "day": 5,
@@ -281,7 +281,7 @@
     {
      "n": 32,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ר. בן-עמי",
      "meetings": [
       {
        "day": 5,
@@ -296,7 +296,7 @@
     {
      "n": 33,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. בלינדר",
      "meetings": [
       {
        "day": 5,
@@ -311,7 +311,7 @@
     {
      "n": 34,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. בלינדר",
      "meetings": [
       {
        "day": 5,
@@ -326,7 +326,7 @@
     {
      "n": 35,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ת. בר נר",
      "meetings": [
       {
        "day": 5,

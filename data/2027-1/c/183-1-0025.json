@@ -7,7 +7,7 @@
   {
    "n": 1,
    "type": "התנסות",
-   "lecturer": null,
+   "lecturer": "ד\"ר נ. תירוש",
    "meetings": [],
    "subs": [],
    "pop": [
@@ -20,7 +20,7 @@
   {
    "n": 2,
    "type": "התנסות",
-   "lecturer": null,
+   "lecturer": "ד\"ר ר. אבירם",
    "meetings": [],
    "subs": [],
    "pop": [
@@ -33,7 +33,7 @@
   {
    "n": 3,
    "type": "התנסות",
-   "lecturer": null,
+   "lecturer": "פרופ' ג. נמרוד",
    "meetings": [],
    "subs": [],
    "pop": [
@@ -46,7 +46,7 @@
   {
    "n": 4,
    "type": "התנסות",
-   "lecturer": null,
+   "lecturer": "פרופ' נ. אליאס",
    "meetings": [],
    "subs": [],
    "pop": [
@@ -59,7 +59,7 @@
   {
    "n": 5,
    "type": "התנסות",
-   "lecturer": null,
+   "lecturer": "פרופ' א. מנור",
    "meetings": [],
    "subs": [],
    "pop": [
@@ -72,7 +72,7 @@
   {
    "n": 6,
    "type": "התנסות",
-   "lecturer": null,
+   "lecturer": "פרופ' נ. חבורוסטיאנוב",
    "meetings": [],
    "subs": [],
    "pop": [
@@ -85,7 +85,7 @@
   {
    "n": 7,
    "type": "התנסות",
-   "lecturer": null,
+   "lecturer": "ד\"ר י. דוד",
    "meetings": [],
    "subs": [],
    "pop": [
@@ -98,7 +98,7 @@
   {
    "n": 8,
    "type": "התנסות",
-   "lecturer": null,
+   "lecturer": "פרופ' . רייך",
    "meetings": [],
    "subs": [],
    "pop": [
