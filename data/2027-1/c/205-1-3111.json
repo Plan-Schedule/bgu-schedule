@@ -52,7 +52,7 @@
     {
      "n": 13,
      "type": "מעבדה",
-     "lecturer": "גב' נ. חנוכייב",
+     "lecturer": "מר ע. נבון",
      "meetings": [
       {
        "day": 3,
@@ -67,7 +67,7 @@
     {
      "n": 14,
      "type": "מעבדה",
-     "lecturer": "גב' ש. נהוראי",
+     "lecturer": "גב' נ. חנוכייב",
      "meetings": [
       {
        "day": 4,
@@ -82,7 +82,7 @@
     {
      "n": 15,
      "type": "מעבדה",
-     "lecturer": "מר ע. יוסוב",
+     "lecturer": "גב' נ. חנוכייב",
      "meetings": [
       {
        "day": 1,
@@ -97,7 +97,7 @@
     {
      "n": 17,
      "type": "מעבדה",
-     "lecturer": null,
+     "lecturer": "מר ע. יוסוב",
      "meetings": [
       {
        "day": 2,
