@@ -31,7 +31,16 @@
    "n": 2,
    "type": "מעבדה",
    "lecturer": "פרופ' ה. בן-יואב",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {

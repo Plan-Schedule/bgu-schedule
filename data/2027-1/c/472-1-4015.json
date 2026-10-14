@@ -8,7 +8,16 @@
    "n": 1,
    "type": "סמינר",
    "lecturer": "ד\"ר ו. שור",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "14:00",
+     "end": "16:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {

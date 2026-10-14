@@ -306,7 +306,16 @@
    "n": 8,
    "type": "שעור",
    "lecturer": "ד\"ר ט. כספי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 6,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
    "subs": [],
    "pop": [
     {

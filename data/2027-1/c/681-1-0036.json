@@ -181,13 +181,31 @@
    "n": 8,
    "type": "שעור",
    "lecturer": "ד\"ר ר. בלייוייס",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 6,
+     "start": "08:00",
+     "end": "11:00",
+     "place": "",
+     "mode": "מקוון",
+     "hybrid": true
+    }
+   ],
    "subs": [
     {
      "n": 88,
      "type": "תרגיל",
      "lecturer": "גב' מ. קריאף בוקובזה",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 5,
+       "start": "20:00",
+       "end": "22:00",
+       "place": "",
+       "mode": "מקוון",
+       "hybrid": true
+      }
+     ]
     }
    ],
    "pop": [
