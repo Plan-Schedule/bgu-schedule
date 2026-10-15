@@ -11,8 +11,8 @@
    "meetings": [
     {
      "day": 3,
-     "start": "10:00",
-     "end": "13:00",
+     "start": "11:00",
+     "end": "14:00",
      "place": "",
      "mode": "בכיתה החל משבוע 1 כל שבוע",
      "hybrid": false
@@ -92,8 +92,8 @@
    "meetings": [
     {
      "day": 3,
-     "start": "10:00",
-     "end": "13:00",
+     "start": "11:00",
+     "end": "14:00",
      "place": "",
      "mode": "בכיתה החל משבוע 1 כל שבוע",
      "hybrid": false
@@ -157,8 +157,8 @@
    "meetings": [
     {
      "day": 3,
-     "start": "10:00",
-     "end": "13:00",
+     "start": "11:00",
+     "end": "14:00",
      "place": "",
      "mode": "בכיתה החל משבוע 1 כל שבוע",
      "hybrid": false
