@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "תרגיל (אנגלית)",
-     "lecturer": null,
+     "lecturer": "מר מ. פריידמן",
      "meetings": [
       {
        "day": 3,
@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל (אנגלית)",
-     "lecturer": null,
+     "lecturer": "מר מ. פריידמן",
      "meetings": [
       {
        "day": 4,
@@ -52,7 +52,7 @@
     {
      "n": 13,
      "type": "תרגיל (אנגלית)",
-     "lecturer": null,
+     "lecturer": "מר מ. פריידמן",
      "meetings": [
       {
        "day": 5,
@@ -67,7 +67,7 @@
     {
      "n": 14,
      "type": "תרגיל (אנגלית)",
-     "lecturer": null,
+     "lecturer": "מר מ. פריידמן",
      "meetings": [
       {
        "day": 5,

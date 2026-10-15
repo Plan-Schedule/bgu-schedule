@@ -33,6 +33,24 @@
      "type": "מעבדה",
      "lecturer": null,
      "meetings": []
+    },
+    {
+     "n": 15,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 16,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 17,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
     }
    ]
   }

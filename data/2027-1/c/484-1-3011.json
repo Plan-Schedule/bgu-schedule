@@ -18,7 +18,20 @@
      "hybrid": false
     }
    ],
-   "subs": []
+   "subs": [
+    {
+     "n": 2,
+     "type": "שעור",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 3,
+     "type": "סיור",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
   }
  ]
 }

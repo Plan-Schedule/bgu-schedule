@@ -7,7 +7,7 @@
   {
    "n": 1,
    "type": "מעבדה",
-   "lecturer": null,
+   "lecturer": "מר פ. גרה",
    "meetings": [
     {
      "day": 3,
@@ -41,7 +41,7 @@
   {
    "n": 2,
    "type": "מעבדה",
-   "lecturer": null,
+   "lecturer": "מר פ. גרה",
    "meetings": [
     {
      "day": 3,
