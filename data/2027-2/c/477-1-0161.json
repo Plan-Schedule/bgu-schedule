@@ -1,0 +1,22 @@
+{
+ "id": "477-1-0161",
+ "name": "גנטיקה כללית ומולקולרית",
+ "credits": 3,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [
+    {
+     "n": 21,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}
