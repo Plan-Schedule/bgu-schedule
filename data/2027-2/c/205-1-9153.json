@@ -7,7 +7,7 @@
   {
    "n": 1,
    "type": "מעבדה",
-   "lecturer": null,
+   "lecturer": "מר א. כהן",
    "meetings": [],
    "subs": [],
    "pop": [
@@ -20,7 +20,7 @@
   {
    "n": 2,
    "type": "מעבדה",
-   "lecturer": null,
+   "lecturer": "מר א. כהן",
    "meetings": [],
    "subs": [],
    "pop": [
