@@ -7,13 +7,13 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": "מר ר. ברמן",
+   "lecturer": null,
    "meetings": [
     {
      "day": 5,
      "start": "14:00",
      "end": "17:00",
-     "place": "קרייטמן-זלוטובסקי(חדש) [34] חדר 16",
+     "place": "",
      "mode": "בכיתה החל משבוע 1 כל שבוע",
      "hybrid": false
     }
