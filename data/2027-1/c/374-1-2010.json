@@ -55,9 +55,9 @@
      "lecturer": "גב' מ. רזנושיק",
      "meetings": [
       {
-       "day": 2,
-       "start": "17:00",
-       "end": "19:00",
+       "day": 4,
+       "start": "11:00",
+       "end": "13:00",
        "place": "",
        "mode": "בכיתה החל משבוע 1 כל שבוע",
        "hybrid": false
