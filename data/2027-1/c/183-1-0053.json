@@ -18,37 +18,7 @@
      "hybrid": false
     }
    ],
-   "subs": [],
-   "pop": [
-    {
-     "dept": "תקשורת",
-     "degree": "תואר ראשון",
-     "year": 3
-    }
-   ]
-  },
-  {
-   "n": 2,
-   "type": "סמינר",
-   "lecturer": "ד\"ר י. דוד",
-   "meetings": [
-    {
-     "day": 3,
-     "start": "17:00",
-     "end": "20:00",
-     "place": "",
-     "mode": "בכיתה החל משבוע 1 כל שבוע",
-     "hybrid": false
-    }
-   ],
-   "subs": [],
-   "pop": [
-    {
-     "dept": "תקשורת",
-     "degree": "תואר ראשון",
-     "year": 3
-    }
-   ]
+   "subs": []
   }
  ]
 }

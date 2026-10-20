@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": "מר צ. מונסונגו",
+     "lecturer": "גב' ז. גל",
      "meetings": [
       {
        "day": 5,
@@ -67,7 +67,7 @@
     {
      "n": 14,
      "type": "תרגיל",
-     "lecturer": "גב' ז. גל",
+     "lecturer": null,
      "meetings": [
       {
        "day": 5,
