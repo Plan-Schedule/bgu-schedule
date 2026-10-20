@@ -14,37 +14,91 @@
      "n": 11,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "13:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 12,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 5,
+       "start": "09:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 13,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "13:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 14,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 3,
+       "start": "09:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 15,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 4,
+       "start": "13:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 16,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "09:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ]
   }
