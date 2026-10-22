@@ -59,7 +59,7 @@
   {
    "n": 3,
    "type": "מעבדה",
-   "lecturer": "מר א. ריבני",
+   "lecturer": null,
    "meetings": [
     {
      "day": 4,
@@ -85,7 +85,7 @@
   {
    "n": 4,
    "type": "מעבדה",
-   "lecturer": "מר א. ריבני",
+   "lecturer": null,
    "meetings": [
     {
      "day": 4,
