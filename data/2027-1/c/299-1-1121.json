@@ -20,8 +20,8 @@
        "start": "13:00",
        "end": "16:00",
        "place": "",
-       "mode": "מקוון",
-       "hybrid": true
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
       }
      ]
     },
@@ -35,8 +35,8 @@
        "start": "09:00",
        "end": "12:00",
        "place": "",
-       "mode": "מקוון",
-       "hybrid": true
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
       }
      ]
     },
@@ -50,8 +50,8 @@
        "start": "09:00",
        "end": "12:00",
        "place": "",
-       "mode": "מקוון",
-       "hybrid": true
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
       }
      ]
     },
@@ -65,8 +65,8 @@
        "start": "13:00",
        "end": "16:00",
        "place": "",
-       "mode": "מקוון",
-       "hybrid": true
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
       }
      ]
     },
@@ -80,8 +80,8 @@
        "start": "09:00",
        "end": "12:00",
        "place": "",
-       "mode": "מקוון",
-       "hybrid": true
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
       }
      ]
     },
@@ -95,8 +95,8 @@
        "start": "13:00",
        "end": "16:00",
        "place": "",
-       "mode": "מקוון",
-       "hybrid": true
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
       }
      ]
     }
