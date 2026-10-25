@@ -7,8 +7,17 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": null,
-   "meetings": [],
+   "lecturer": "ד\"ר נ. סנטו",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "15:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": []
   }
  ]
