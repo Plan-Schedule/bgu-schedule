@@ -48,21 +48,6 @@
        "hybrid": false
       }
      ]
-    },
-    {
-     "n": 13,
-     "type": "תרגיל",
-     "lecturer": null,
-     "meetings": [
-      {
-       "day": 4,
-       "start": "16:00",
-       "end": "18:00",
-       "place": "בנין 90 (מקיף ז') [90] חדר 233",
-       "mode": "בכיתה החל משבוע 1 כל שבוע",
-       "hybrid": false
-      }
-     ]
     }
    ]
   }

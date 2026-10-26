@@ -1,13 +1,13 @@
 {
  "id": "484-1-3011",
  "name": "הכנות רוקחיות",
- "credits": 2,
- "hours": 4,
+ "credits": 3,
+ "hours": 4.54,
  "groups": [
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": "פרופ' א. בית ינאי",
+   "lecturer": null,
    "meetings": [
     {
      "day": 2,
@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "מעבדה",
-     "lecturer": null,
+     "lecturer": "פרופ' א. בית ינאי",
      "meetings": []
     },
     {
