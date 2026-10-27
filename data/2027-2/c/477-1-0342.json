@@ -11,8 +11,8 @@
    "meetings": [
     {
      "day": 2,
-     "start": "10:00",
-     "end": "12:00",
+     "start": "08:00",
+     "end": "10:00",
      "place": "",
      "mode": "בכיתה החל משבוע 1 כל שבוע",
      "hybrid": false
