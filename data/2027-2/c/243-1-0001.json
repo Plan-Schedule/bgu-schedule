@@ -1,0 +1,34 @@
+{
+ "id": "243-1-0001",
+ "name": "מבוא למדעי הנתונים",
+ "credits": 3,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר ר. סרפיאן",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}
