@@ -7,7 +7,7 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "פרופ' א. שורצברג",
    "meetings": [
     {
      "day": 2,
@@ -28,7 +28,7 @@
     {
      "n": 12,
      "type": "סיור",
-     "lecturer": null,
+     "lecturer": "פרופ' א. שורצברג",
      "meetings": []
     }
    ]
