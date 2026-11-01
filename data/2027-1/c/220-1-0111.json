@@ -1,0 +1,15 @@
+{
+ "id": "220-1-0111",
+ "name": "פטור על סמך לימודים קודמים",
+ "credits": 0,
+ "hours": 0,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}
