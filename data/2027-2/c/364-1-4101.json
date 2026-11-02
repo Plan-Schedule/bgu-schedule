@@ -8,7 +8,16 @@
    "n": 1,
    "type": "סמינר (אנגלית)",
    "lecturer": "פרופ' א. בורובסקי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "09:00",
+     "end": "13:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -23,7 +32,16 @@
    "n": 2,
    "type": "סמינר (אנגלית)",
    "lecturer": "פרופ' א. בורובסקי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "14:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -38,7 +56,16 @@
    "n": 3,
    "type": "סמינר (אנגלית)",
    "lecturer": "פרופ' א. בורובסקי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "14:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -53,7 +80,16 @@
    "n": 4,
    "type": "סמינר (אנגלית)",
    "lecturer": "ד\"ר א. אבן",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "14:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -68,7 +104,16 @@
    "n": 5,
    "type": "סמינר (אנגלית)",
    "lecturer": "ד\"ר א. אבן",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "08:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -83,7 +128,16 @@
    "n": 6,
    "type": "סמינר (אנגלית)",
    "lecturer": "ד\"ר א. אבן",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "14:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -98,7 +152,16 @@
    "n": 7,
    "type": "סמינר (אנגלית)",
    "lecturer": "פרופ' ב. לרנר",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "10:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -113,7 +176,16 @@
    "n": 8,
    "type": "סמינר (אנגלית)",
    "lecturer": "פרופ' ב. לרנר",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "14:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -128,7 +200,16 @@
    "n": 9,
    "type": "סמינר (אנגלית)",
    "lecturer": "פרופ' ב. לרנר",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "08:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -143,7 +224,16 @@
    "n": 10,
    "type": "סמינר (אנגלית)",
    "lecturer": "פרופ' י. פרמט",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "10:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -158,7 +248,16 @@
    "n": 11,
    "type": "סמינר (אנגלית)",
    "lecturer": "פרופ' י. פרמט",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "14:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -173,7 +272,16 @@
    "n": 12,
    "type": "סמינר (אנגלית)",
    "lecturer": "פרופ' י. פרמט",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "14:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -188,7 +296,16 @@
    "n": 13,
    "type": "סמינר",
    "lecturer": "פרופ' ל. שמואלוף",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "10:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -203,7 +320,16 @@
    "n": 14,
    "type": "סמינר",
    "lecturer": "פרופ' ל. שמואלוף",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "14:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {

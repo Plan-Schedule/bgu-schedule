@@ -8,7 +8,16 @@
    "n": 1,
    "type": "סמינר (אנגלית)",
    "lecturer": "ד\"ר ט. גולן",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {

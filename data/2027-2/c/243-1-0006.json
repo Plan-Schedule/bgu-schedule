@@ -1,0 +1,22 @@
+{
+ "id": "243-1-0006",
+ "name": "מידול והסקה ביסיאניים",
+ "credits": 3,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר מ. בן שחר",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

@@ -8,7 +8,16 @@
    "n": 1,
    "type": "סמינר",
    "lecturer": "פרופ' ע. לב",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 3,
+     "start": "14:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": []
   }
  ]

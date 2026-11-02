@@ -1,0 +1,15 @@
+{
+ "id": "128-1-0054",
+ "name": "השתתפות במחקר",
+ "credits": 2,
+ "hours": 2,
+ "groups": [
+  {
+   "n": 1,
+   "type": "הדרכה אישית",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

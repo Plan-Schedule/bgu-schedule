@@ -8,7 +8,16 @@
    "n": 1,
    "type": "שעור",
    "lecturer": "ד\"ר א. סויסה",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "08:00",
+     "end": "11:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 11,

@@ -6,9 +6,18 @@
  "groups": [
   {
    "n": 1,
-   "type": "שעור",
+   "type": "שעור (אנגלית)",
    "lecturer": "מר ט. מוראלידהראן",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 4,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": []
   }
  ]
