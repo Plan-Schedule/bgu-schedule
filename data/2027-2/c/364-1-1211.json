@@ -1,0 +1,278 @@
+{
+ "id": "364-1-1211",
+ "name": "הנדסת ייצור ומכניקה",
+ "credits": 4.5,
+ "hours": 6,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' ר. רימר",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 26,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 27,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 11,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 14,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 15,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 16,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 17,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 18,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 19,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 20,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 21,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "סדנה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 23,
+     "type": "סדנה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 24,
+     "type": "סדנה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 25,
+     "type": "סדנה",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "הנדסת תעשיה וניהול",
+     "degree": "תואר ראשון",
+     "year": 2,
+     "track": "חד מחלקתי",
+     "major": "תבנית ב'"
+    },
+    {
+     "dept": "הנדסת תעשיה וניהול",
+     "degree": "תואר ראשון",
+     "year": 2,
+     "track": "חד מחלקתי"
+    },
+    {
+     "dept": "הנדסת תעשיה וניהול",
+     "degree": "תואר ראשון",
+     "year": 3,
+     "track": "חד מחלקתי"
+    },
+    {
+     "dept": "הנדסת תעשיה וניהול",
+     "degree": "לא לתואר"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "type": "שעור",
+   "lecturer": "פרופ' ר. רימר",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 46,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 47,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 31,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 32,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 33,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 34,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 35,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 36,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 37,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 38,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 39,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 40,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 41,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 42,
+     "type": "סדנה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 43,
+     "type": "סדנה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 44,
+     "type": "סדנה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 45,
+     "type": "סדנה",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "הנדסת תעשיה וניהול",
+     "degree": "תואר ראשון",
+     "year": 2,
+     "track": "חד מחלקתי",
+     "major": "תבנית ב'"
+    },
+    {
+     "dept": "הנדסת תעשיה וניהול",
+     "degree": "תואר ראשון",
+     "year": 2,
+     "track": "חד מחלקתי"
+    },
+    {
+     "dept": "הנדסת תעשיה וניהול",
+     "degree": "תואר ראשון",
+     "year": 3,
+     "track": "חד מחלקתי"
+    },
+    {
+     "dept": "הנדסת תעשיה וניהול",
+     "degree": "לא לתואר"
+    }
+   ]
+  }
+ ]
+}

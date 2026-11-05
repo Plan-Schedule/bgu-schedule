@@ -1,0 +1,37 @@
+{
+ "id": "361-1-3201",
+ "name": "תכן לוגי",
+ "credits": 3.5,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. סויסה",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "17:00",
+     "end": "20:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

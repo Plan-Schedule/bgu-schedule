@@ -1,0 +1,37 @@
+{
+ "id": "361-1-1021",
+ "name": "מבוא להנדסת חשמל",
+ "credits": 5,
+ "hours": 6,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר מ. גל",
+   "meetings": [
+    {
+     "day": 5,
+     "start": "09:00",
+     "end": "13:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}
