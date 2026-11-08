@@ -7,7 +7,7 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "מר ב. אציס מירץ'",
    "meetings": [],
    "subs": [
     {
@@ -20,6 +20,30 @@
      "n": 12,
      "type": "תרגיל",
      "lecturer": "מר א. אמתי",
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": "מר ב. אציס מירץ'",
+     "meetings": []
+    },
+    {
+     "n": 14,
+     "type": "תרגיל",
+     "lecturer": "מר ב. אציס מירץ'",
+     "meetings": []
+    },
+    {
+     "n": 15,
+     "type": "תרגיל",
+     "lecturer": "מר ב. אציס מירץ'",
+     "meetings": []
+    },
+    {
+     "n": 16,
+     "type": "תרגיל",
+     "lecturer": "מר ב. אציס מירץ'",
      "meetings": []
     }
    ]

@@ -7,7 +7,7 @@
   {
    "n": 1,
    "type": "תרגיל",
-   "lecturer": "מר מ. אזברגה",
+   "lecturer": "גב' מ. כורם",
    "meetings": [],
    "subs": [],
    "pop": [
@@ -20,7 +20,59 @@
   {
    "n": 11,
    "type": "תרגיל",
-   "lecturer": "מר א. אמתי",
+   "lecturer": "גב' מ. כורם",
+   "meetings": [],
+   "subs": [],
+   "pop": [
+    {
+     "dept": "רפואת חרום",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 12,
+   "type": "תרגיל",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [],
+   "pop": [
+    {
+     "dept": "רפואת חרום",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 13,
+   "type": "תרגיל",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [],
+   "pop": [
+    {
+     "dept": "רפואת חרום",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 14,
+   "type": "תרגיל",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [],
+   "pop": [
+    {
+     "dept": "רפואת חרום",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 15,
+   "type": "תרגיל",
+   "lecturer": null,
    "meetings": [],
    "subs": [],
    "pop": [

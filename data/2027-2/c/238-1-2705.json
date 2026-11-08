@@ -1,0 +1,100 @@
+{
+ "id": "238-1-2705",
+ "name": "אנליזה נומרית ואופטימיזציה להנדסת נתונים",
+ "credits": 3.5,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 14,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "הנדסת נתונים",
+     "degree": "תואר ראשון"
+    },
+    {
+     "dept": "הנדסת נתונים",
+     "degree": "תואר ראשון",
+     "year": 2
+    },
+    {
+     "dept": "הנדסת תכנה",
+     "degree": "תואר ראשון",
+     "year": 2
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 23,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 24,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "הנדסת תכנה",
+     "degree": "תואר ראשון",
+     "year": 3
+    },
+    {
+     "dept": "הנדסת תכנה",
+     "degree": "תואר ראשון",
+     "year": 4
+    }
+   ]
+  }
+ ]
+}

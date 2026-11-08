@@ -8,7 +8,16 @@
    "n": 1,
    "type": "שעור",
    "lecturer": "ד\"ר ר. ליכטנשטיין",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 4,
+     "start": "12:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 11,

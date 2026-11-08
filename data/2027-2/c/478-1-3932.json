@@ -7,13 +7,31 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": "מר א. אמתי",
+   "lecturer": "מר א. אילון שיף",
    "meetings": [],
    "subs": [
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. אילון שיף",
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": "מר א. אילון שיף",
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": "מר א. אילון שיף",
+     "meetings": []
+    },
+    {
+     "n": 14,
+     "type": "תרגיל",
+     "lecturer": "מר א. אילון שיף",
      "meetings": []
     }
    ]

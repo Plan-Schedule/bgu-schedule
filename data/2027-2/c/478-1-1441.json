@@ -7,13 +7,13 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "גב' מ. כורם",
    "meetings": [],
    "subs": [
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": "גב' ע. וסקו",
+     "lecturer": "גב' מ. כורם",
      "meetings": []
     }
    ]

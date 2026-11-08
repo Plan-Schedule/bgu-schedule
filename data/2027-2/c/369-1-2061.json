@@ -8,7 +8,16 @@
    "n": 1,
    "type": "שעור",
    "lecturer": "פרופ' ע. ח'לאילה",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 4,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 11,

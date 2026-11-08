@@ -1,0 +1,28 @@
+{
+ "id": "238-1-2601",
+ "name": "מבוא לניתוח נתונים",
+ "credits": 3.5,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר ד. קלימוב",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

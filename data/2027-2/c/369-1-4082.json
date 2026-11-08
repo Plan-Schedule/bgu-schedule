@@ -8,7 +8,16 @@
    "n": 1,
    "type": "שעור (אנגלית)",
    "lecturer": "ד\"ר ע. ברעד",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 3,
+     "start": "16:00",
+     "end": "18:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 11,
