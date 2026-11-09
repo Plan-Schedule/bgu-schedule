@@ -7,7 +7,7 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "ד\"ר ע. ריינר בן נעים",
    "meetings": [
     {
      "day": 1,
@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ל. אלופר",
      "meetings": [
       {
        "day": 4,
@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ע. קמר",
      "meetings": [
       {
        "day": 4,
@@ -52,7 +52,7 @@
     {
      "n": 13,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "גב' ע. רם",
      "meetings": [
       {
        "day": 4,

@@ -8,7 +8,32 @@
    "n": 1,
    "type": "שעור",
    "lecturer": null,
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "10:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 2,
+     "start": "10:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 4,
+     "start": "10:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 11,

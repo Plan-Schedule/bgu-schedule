@@ -30,7 +30,7 @@
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "גב' נ. מקובי",
      "meetings": [
       {
        "day": 3,
@@ -75,7 +75,7 @@
     {
      "n": 21,
      "type": "מעבדה",
-     "lecturer": null,
+     "lecturer": "פרופ' מ. דנילנקו",
      "meetings": []
     }
    ]

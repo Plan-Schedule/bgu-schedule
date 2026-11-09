@@ -1,0 +1,49 @@
+{
+ "id": "361-1-3221",
+ "name": "מבוא לתקשורת מודרנית",
+ "credits": 3.5,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' י. כהן",
+   "meetings": [
+    {
+     "day": 4,
+     "start": "10:00",
+     "end": "13:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 14,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

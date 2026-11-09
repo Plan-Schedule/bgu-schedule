@@ -1,0 +1,34 @@
+{
+ "id": "237-1-2402",
+ "name": "סביבות פיתוח באינטרנט",
+ "credits": 3,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "מעבדה",
+     "lecturer": "מר ד. זלוטניקוב",
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

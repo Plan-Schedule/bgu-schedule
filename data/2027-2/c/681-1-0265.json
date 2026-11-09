@@ -1,0 +1,15 @@
+{
+ "id": "681-1-0265",
+ "name": "Basic Entrepreneurship Course",
+ "credits": 2,
+ "hours": 2,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. לוי",
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

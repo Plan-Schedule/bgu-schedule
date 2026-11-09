@@ -1,0 +1,91 @@
+{
+ "id": "237-1-4601",
+ "name": "אבטחת מחשבים ורשתות תקשורת",
+ "credits": 3.5,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' א. שבתאי",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 14,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "הנדסת מערכות מידע",
+     "degree": "תואר ראשון",
+     "year": 3
+    },
+    {
+     "dept": "הנדסת מערכות מידע",
+     "degree": "תואר ראשון"
+    },
+    {
+     "dept": "הנדסת תכנה",
+     "degree": "תואר ראשון",
+     "year": 3
+    },
+    {
+     "dept": "הנדסת תכנה",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "פרופ' י. אלוביץ",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "הנדסת נתונים",
+     "degree": "תואר ראשון",
+     "year": 3
+    },
+    {
+     "dept": "הנדסת נתונים",
+     "degree": "תואר ראשון"
+    }
+   ]
+  }
+ ]
+}

@@ -22,7 +22,7 @@
     {
      "n": 21,
      "type": "מעבדה",
-     "lecturer": null,
+     "lecturer": "מר א. ברב",
      "meetings": []
     }
    ],
@@ -38,7 +38,16 @@
    "n": 2,
    "type": "שעור",
    "lecturer": null,
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "12:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 22,

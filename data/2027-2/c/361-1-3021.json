@@ -1,0 +1,90 @@
+{
+ "id": "361-1-3021",
+ "name": "מבוא למעגלים אלקטרוניים סיפרתיים",
+ "credits": 3.5,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. בלנקי",
+   "meetings": [
+    {
+     "day": 2,
+     "start": "16:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "הנדסת חשמל ומחשבים",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. בלנקי",
+   "meetings": [
+    {
+     "day": 4,
+     "start": "16:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 23,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "הנדסת חשמל ומחשבים",
+     "degree": "תואר ראשון"
+    }
+   ]
+  }
+ ]
+}

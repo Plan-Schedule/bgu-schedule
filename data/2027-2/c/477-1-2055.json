@@ -7,7 +7,7 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "ד\"ר א. כהן",
    "meetings": [
     {
      "day": 3,
@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "גב' ה. חיימוב",
      "meetings": [
       {
        "day": 3,
@@ -37,7 +37,7 @@
     {
      "n": 12,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר ע. קורן",
      "meetings": [
       {
        "day": 3,
@@ -48,6 +48,12 @@
        "hybrid": false
       }
      ]
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": "מר ר. עצמון",
+     "meetings": []
     }
    ]
   }
