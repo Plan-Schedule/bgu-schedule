@@ -8,7 +8,16 @@
    "n": 1,
    "type": "שעור",
    "lecturer": "ד\"ר ג. לבן",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 3,
+     "start": "14:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 11,
@@ -37,7 +46,16 @@
    "n": 2,
    "type": "שעור",
    "lecturer": "ד\"ר ג. לבן",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 3,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 21,

@@ -7,13 +7,13 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": "מר א. ברש",
+   "lecturer": "מר ד. לוי",
    "meetings": [],
    "subs": [
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": "מר א. ברש",
+     "lecturer": "ד\"ר א. קורץ",
      "meetings": []
     }
    ]

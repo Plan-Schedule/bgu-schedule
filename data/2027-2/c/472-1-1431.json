@@ -8,7 +8,16 @@
    "n": 1,
    "type": "שעור",
    "lecturer": "ד\"ר ל. כהן ישראלי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "12:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
    "subs": []
   }
  ]

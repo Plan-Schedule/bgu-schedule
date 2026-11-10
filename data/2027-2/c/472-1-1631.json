@@ -8,7 +8,32 @@
    "n": 1,
    "type": "שעור ותרגיל",
    "lecturer": "גב' ג. יפה",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "16:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 1,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 2,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -22,7 +47,32 @@
    "n": 2,
    "type": "שעור ותרגיל",
    "lecturer": "גב' ד. שיצר",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 2,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 2,
+     "start": "16:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -36,7 +86,24 @@
    "n": 3,
    "type": "שעור ותרגיל",
    "lecturer": "גב' ה. פרנקל",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    },
+    {
+     "day": 2,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -50,7 +117,24 @@
    "n": 4,
    "type": "שעור ותרגיל",
    "lecturer": "גב' ע. זקוטו",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 2,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -64,7 +148,24 @@
    "n": 5,
    "type": "שעור ותרגיל",
    "lecturer": "מר ת. לידא",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 2,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -78,7 +179,24 @@
    "n": 6,
    "type": "שעור ותרגיל",
    "lecturer": "גב' א. פריינטי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 2,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -92,7 +210,24 @@
    "n": 7,
    "type": "שעור ותרגיל",
    "lecturer": "מר א. פוארטי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 2,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -106,7 +241,24 @@
    "n": 8,
    "type": "שעור ותרגיל",
    "lecturer": "גב' ע. הוד",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 2,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
