@@ -1,0 +1,28 @@
+{
+ "id": "238-1-4769",
+ "name": "מבוא לעיבוד שפה טבעית",
+ "credits": 3.5,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. צור",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

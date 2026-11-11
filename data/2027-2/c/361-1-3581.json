@@ -1,0 +1,43 @@
+{
+ "id": "361-1-3581",
+ "name": "מבוא לבקרה",
+ "credits": 3.5,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' אמריטוס ד. ווליך",
+   "meetings": [
+    {
+     "day": 1,
+     "start": "10:00",
+     "end": "13:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

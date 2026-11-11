@@ -8,31 +8,76 @@
    "n": 1,
    "type": "שעור",
    "lecturer": null,
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "14:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 11,
      "type": "מעבדה",
      "lecturer": "גב' ז. לבני",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "15:00",
+       "end": "17:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 12,
      "type": "מעבדה",
      "lecturer": "גב' ז. לבני",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "15:00",
+       "end": "17:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 13,
      "type": "מעבדה",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "17:00",
+       "end": "19:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 14,
      "type": "מעבדה",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "17:00",
+       "end": "19:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 15,

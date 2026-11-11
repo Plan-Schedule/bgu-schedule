@@ -1,0 +1,43 @@
+{
+ "id": "361-1-4781",
+ "name": "עיבוד ספרתי של אותות",
+ "credits": 3.5,
+ "hours": 4,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' ק. טודרוס",
+   "meetings": [
+    {
+     "day": 3,
+     "start": "14:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

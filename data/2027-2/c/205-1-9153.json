@@ -8,7 +8,24 @@
    "n": 1,
    "type": "מעבדה",
    "lecturer": "גב' ס. סויד הנדריקסון",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 5,
+     "start": "10:00",
+     "end": "11:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 5,
+     "start": "11:00",
+     "end": "13:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -21,7 +38,24 @@
    "n": 2,
    "type": "מעבדה",
    "lecturer": "גב' ס. סויד הנדריקסון",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 5,
+     "start": "10:00",
+     "end": "11:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 5,
+     "start": "17:00",
+     "end": "19:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {

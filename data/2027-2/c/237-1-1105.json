@@ -1,0 +1,28 @@
+{
+ "id": "237-1-1105",
+ "name": "מבוא להנדסת תוכנה",
+ "credits": 4,
+ "hours": 5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר א. אליסף",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

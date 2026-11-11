@@ -1,0 +1,34 @@
+{
+ "id": "237-1-3401",
+ "name": "ניתוח ועיצוב מערכות תוכנה",
+ "credits": 5,
+ "hours": 6,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' ר. פוזיס",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}
