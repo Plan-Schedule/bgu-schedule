@@ -10,9 +10,9 @@
    "lecturer": "גב' ס. רגב",
    "meetings": [
     {
-     "day": 3,
-     "start": "17:00",
-     "end": "20:00",
+     "day": 1,
+     "start": "14:00",
+     "end": "17:00",
      "place": "",
      "mode": "בכיתה החל משבוע 1 כל שבוע",
      "hybrid": false

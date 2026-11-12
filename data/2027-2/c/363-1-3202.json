@@ -10,9 +10,9 @@
    "lecturer": "פרופ' ע. ניר",
    "meetings": [
     {
-     "day": 2,
-     "start": "14:00",
-     "end": "17:00",
+     "day": 1,
+     "start": "11:00",
+     "end": "14:00",
      "place": "",
      "mode": "בכיתה החל משבוע 1 כל שבוע",
      "hybrid": false
