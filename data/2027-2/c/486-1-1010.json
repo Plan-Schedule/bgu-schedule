@@ -8,13 +8,31 @@
    "n": 1,
    "type": "שעור",
    "lecturer": "ד\"ר נ. אסייג",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "12:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
    "subs": [
     {
      "n": 11,
      "type": "תרגיל",
      "lecturer": "ד\"ר ב. ווקספרס",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "12:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
     }
    ]
   }
