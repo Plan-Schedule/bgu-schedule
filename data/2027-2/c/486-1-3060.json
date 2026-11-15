@@ -8,7 +8,16 @@
    "n": 1,
    "type": "סמינר",
    "lecturer": "ד\"ר ט. אדמית",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -21,7 +30,16 @@
    "n": 11,
    "type": "סמינר",
    "lecturer": "ד\"ר ע. שטרן",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -34,7 +52,24 @@
    "n": 12,
    "type": "סמינר",
    "lecturer": "ד\"ר ח. לובאני",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    },
+    {
+     "day": 5,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -47,7 +82,16 @@
    "n": 13,
    "type": "סמינר",
    "lecturer": "ד\"ר כ. שרפי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "11:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
    "subs": [],
    "pop": [
     {
