@@ -23,13 +23,31 @@
      "n": 11,
      "type": "תרגיל",
      "lecturer": "מר א. קון",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "14:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 12,
      "type": "תרגיל",
      "lecturer": "מר א. קון",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "16:00",
+       "end": "18:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ],
    "pop": [
@@ -71,13 +89,31 @@
      "n": 21,
      "type": "תרגיל",
      "lecturer": "גב' ק. אור זך",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 4,
+       "start": "13:00",
+       "end": "15:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 22,
      "type": "תרגיל",
      "lecturer": "גב' ק. אור זך",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 4,
+       "start": "15:00",
+       "end": "17:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ],
    "pop": [

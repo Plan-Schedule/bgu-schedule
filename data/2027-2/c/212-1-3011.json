@@ -1,0 +1,73 @@
+{
+ "id": "212-1-3011",
+ "name": "מבוא להסתברות למדעי המחשב",
+ "credits": 4.5,
+ "hours": 5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון",
+     "year": 1
+    },
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון"
+    },
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון",
+     "year": 1
+    },
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 9,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": [
+    {
+     "n": 99,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעים וטכנולוגיה"
+    }
+   ]
+  }
+ ]
+}

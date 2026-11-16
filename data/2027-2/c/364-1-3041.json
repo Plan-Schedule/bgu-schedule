@@ -23,13 +23,31 @@
      "n": 11,
      "type": "תרגיל",
      "lecturer": "מר ע. מוכתר",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 4,
+       "start": "13:00",
+       "end": "15:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 12,
      "type": "תרגיל",
      "lecturer": "גב' ח. יוגב",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "12:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ],
    "pop": [
@@ -71,13 +89,31 @@
      "n": 21,
      "type": "תרגיל",
      "lecturer": "גב' ש. עטר",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 4,
+       "start": "17:00",
+       "end": "19:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 22,
      "type": "תרגיל",
      "lecturer": "מר ע. מוכתר",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 4,
+       "start": "17:00",
+       "end": "19:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ],
    "pop": [

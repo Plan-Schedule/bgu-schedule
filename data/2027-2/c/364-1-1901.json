@@ -23,13 +23,31 @@
      "n": 11,
      "type": "תרגיל",
      "lecturer": "מר א. קרצ'מר",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 3,
+       "start": "16:00",
+       "end": "17:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 12,
      "type": "תרגיל",
      "lecturer": "מר א. קרצ'מר",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 3,
+       "start": "17:00",
+       "end": "18:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ],
    "pop": [
@@ -81,13 +99,31 @@
      "n": 21,
      "type": "תרגיל",
      "lecturer": "מר מ. גלוחוב",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "12:00",
+       "end": "13:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 22,
      "type": "תרגיל",
      "lecturer": "מר מ. גלוחוב",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "13:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ],
    "pop": [
