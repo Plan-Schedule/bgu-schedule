@@ -8,19 +8,229 @@
    "n": 1,
    "type": "שעור",
    "lecturer": "גב' מ. כורם",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "08:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    },
+    {
+     "day": 2,
+     "start": "08:00",
+     "end": "10:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    },
+    {
+     "day": 2,
+     "start": "12:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    },
+    {
+     "day": 1,
+     "start": "10:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    },
+    {
+     "day": 1,
+     "start": "08:00",
+     "end": "10:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 11,
      "type": "תרגיל",
      "lecturer": "גב' ע. וסקו",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 5,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 5,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 5,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 1,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 12,
      "type": "תרגיל",
      "lecturer": "מר מ. אזברגה",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 5,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 5,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": [
+      {
+       "day": 5,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 5,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "08:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ]
   }

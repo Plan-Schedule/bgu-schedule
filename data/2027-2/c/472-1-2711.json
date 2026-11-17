@@ -8,7 +8,104 @@
    "n": 1,
    "type": "התנסות",
    "lecturer": "גב' ש. פס",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 1,
+     "start": "08:00",
+     "end": "09:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 1,
+     "start": "09:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 5,
+     "start": "08:00",
+     "end": "09:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 5,
+     "start": "09:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 1,
+     "start": "08:00",
+     "end": "09:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 1,
+     "start": "09:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 1,
+     "start": "08:00",
+     "end": "09:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 1,
+     "start": "09:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 4,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 1,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 3,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 3,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -27,7 +124,40 @@
    "n": 2,
    "type": "התנסות",
    "lecturer": "גב' ש. פס",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 4,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 1,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 3,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 3,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {
@@ -46,7 +176,40 @@
    "n": 3,
    "type": "התנסות",
    "lecturer": "גב' ש. פס",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 4,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 1,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 3,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 3,
+     "start": "08:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [],
    "pop": [
     {

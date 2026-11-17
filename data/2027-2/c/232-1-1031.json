@@ -1,0 +1,98 @@
+{
+ "id": "232-1-1031",
+ "name": "מבני נתונים",
+ "credits": 5,
+ "hours": 6,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "גב' מ. שמש",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "פרופ' פ. כרמי",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 23,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "type": "שעור",
+   "lecturer": "גב' מ. שמש",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 31,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 32,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון"
+    }
+   ]
+  }
+ ]
+}

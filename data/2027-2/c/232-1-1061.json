@@ -1,0 +1,112 @@
+{
+ "id": "232-1-1061",
+ "name": "מבנים בדידים וקומבינטוריקה",
+ "credits": 5,
+ "hours": 6,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' ס. אורן",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "ד\"ר י. שטיין",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "type": "שעור",
+   "lecturer": "פרופ' נ. רובין",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 31,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 32,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "type": "שעור",
+   "lecturer": "ד\"ר ע. לבני נבון",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 41,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 42,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון"
+    }
+   ]
+  }
+ ]
+}
