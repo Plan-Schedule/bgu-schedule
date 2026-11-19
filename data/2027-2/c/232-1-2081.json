@@ -1,0 +1,60 @@
+{
+ "id": "232-1-2081",
+ "name": "תכנות מערכות עתירות ביצועים",
+ "credits": 2,
+ "hours": 2.5,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "ד\"ר מ. קוגן-סדצקי",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון"
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "type": "שעור",
+   "lecturer": "ד\"ר מ. קוגן-סדצקי",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 21,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 22,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעי המחשב",
+     "degree": "תואר ראשון"
+    }
+   ]
+  }
+ ]
+}

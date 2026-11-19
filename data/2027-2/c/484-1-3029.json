@@ -1,0 +1,57 @@
+{
+ "id": "484-1-3029",
+ "name": "פרמקותרפיה של מחלות מערכת העצבים המרכזית והמטופל",
+ "credits": 4,
+ "hours": 4.25,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' ס. פליישר ברקוביץ",
+   "meetings": [
+    {
+     "day": 2,
+     "start": "13:00",
+     "end": "16:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
+     "day": 4,
+     "start": "09:00",
+     "end": "12:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
+   "subs": [
+    {
+     "n": 11,
+     "type": "התנסות",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "התנסות",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "התנסות",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 14,
+     "type": "התנסות",
+     "lecturer": "פרופ' ס. פליישר ברקוביץ",
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

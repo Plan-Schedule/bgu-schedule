@@ -1,0 +1,64 @@
+{
+ "id": "484-1-2024",
+ "name": "קביעת כמויות של תרופות",
+ "credits": 2,
+ "hours": 3.38,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": "פרופ' א. דוד",
+   "meetings": [],
+   "subs": [
+    {
+     "n": 11,
+     "type": "מעבדה",
+     "lecturer": "פרופ' א. דוד",
+     "meetings": []
+    },
+    {
+     "n": 12,
+     "type": "מעבדה",
+     "lecturer": "פרופ' א. דוד",
+     "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "מעבדה",
+     "lecturer": "פרופ' א. דוד",
+     "meetings": []
+    },
+    {
+     "n": 14,
+     "type": "מעבדה",
+     "lecturer": "פרופ' א. דוד",
+     "meetings": []
+    },
+    {
+     "n": 15,
+     "type": "מעבדה",
+     "lecturer": "פרופ' א. דוד",
+     "meetings": []
+    },
+    {
+     "n": 16,
+     "type": "מעבדה",
+     "lecturer": "פרופ' א. דוד",
+     "meetings": []
+    },
+    {
+     "n": 17,
+     "type": "מעבדה",
+     "lecturer": "פרופ' א. דוד",
+     "meetings": []
+    },
+    {
+     "n": 18,
+     "type": "מעבדה",
+     "lecturer": null,
+     "meetings": []
+    }
+   ]
+  }
+ ]
+}

@@ -25,9 +25,9 @@
      "lecturer": "גב' ט. רחמילוביץ",
      "meetings": [
       {
-       "day": 2,
-       "start": "12:00",
-       "end": "13:00",
+       "day": 3,
+       "start": "11:00",
+       "end": "12:00",
        "place": "",
        "mode": "בכיתה החל משבוע 1 כל שבוע",
        "hybrid": false

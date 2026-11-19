@@ -471,10 +471,16 @@
    "meetings": [],
    "subs": [
     {
-     "n": 91,
+     "n": 99,
      "type": "תרגיל",
-     "lecturer": "גב' ר. איזק",
+     "lecturer": null,
      "meetings": []
+    }
+   ],
+   "pop": [
+    {
+     "dept": "מדעים וטכנולוגיה",
+     "degree": "תואר ראשון"
     }
    ]
   }
