@@ -1,0 +1,15 @@
+{
+ "id": "142-1-6701",
+ "name": "משחקים שיתופיים",
+ "credits": 3,
+ "hours": 3,
+ "groups": [
+  {
+   "n": 1,
+   "type": "שעור",
+   "lecturer": null,
+   "meetings": [],
+   "subs": []
+  }
+ ]
+}

@@ -8,13 +8,31 @@
    "n": 1,
    "type": "שעור",
    "lecturer": "ד\"ר ר. שוסטר",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 3,
+     "start": "13:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 11,
      "type": "תרגיל",
      "lecturer": "מר א. אדאווי",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "10:00",
+       "end": "12:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ]
   }

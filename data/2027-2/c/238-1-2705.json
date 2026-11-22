@@ -33,12 +33,6 @@
      "type": "תרגיל",
      "lecturer": null,
      "meetings": []
-    },
-    {
-     "n": 15,
-     "type": "תרגיל",
-     "lecturer": null,
-     "meetings": []
     }
    ],
    "pop": [
@@ -84,6 +78,12 @@
     },
     {
      "n": 24,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
+    },
+    {
+     "n": 25,
      "type": "תרגיל",
      "lecturer": null,
      "meetings": []

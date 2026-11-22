@@ -7,12 +7,12 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "רו\"ח י. שמעיה",
    "meetings": [
     {
      "day": 3,
-     "start": "14:00",
-     "end": "17:00",
+     "start": "11:00",
+     "end": "14:00",
      "place": "",
      "mode": "היברידי החל משבוע 1 כל שבוע",
      "hybrid": true

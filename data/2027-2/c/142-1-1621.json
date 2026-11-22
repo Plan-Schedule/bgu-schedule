@@ -7,7 +7,7 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "רו\"ח ר. קורן",
    "meetings": [
     {
      "day": 3,
@@ -22,7 +22,7 @@
     {
      "n": 11,
      "type": "תרגיל",
-     "lecturer": null,
+     "lecturer": "מר א. אנידז'אר",
      "meetings": [
       {
        "day": 3,
