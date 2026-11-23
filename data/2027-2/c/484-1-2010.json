@@ -23,13 +23,31 @@
      "n": 11,
      "type": "תרגיל",
      "lecturer": "מר ר. שליו",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "14:00",
+       "end": "15:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 12,
      "type": "תרגיל",
      "lecturer": "גב' צ. אלבז ביטון",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "14:00",
+       "end": "15:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ]
   }

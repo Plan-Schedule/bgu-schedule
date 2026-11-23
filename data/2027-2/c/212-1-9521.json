@@ -7,7 +7,7 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "מר מ. המחלקה",
    "meetings": [],
    "subs": [
     {
@@ -124,7 +124,7 @@
   {
    "n": 2,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "מר מ. המחלקה",
    "meetings": [],
    "subs": [
     {
@@ -198,7 +198,7 @@
   {
    "n": 3,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "מר מ. המחלקה",
    "meetings": [],
    "subs": [
     {
@@ -263,7 +263,7 @@
   {
    "n": 4,
    "type": "שעור",
-   "lecturer": null,
+   "lecturer": "מר מ. המחלקה",
    "meetings": [],
    "subs": [
     {

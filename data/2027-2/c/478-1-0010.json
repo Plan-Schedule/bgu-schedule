@@ -8,43 +8,274 @@
    "n": 1,
    "type": "שעור",
    "lecturer": "מר ב. אציס מירץ'",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "08:00",
+     "end": "10:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    },
+    {
+     "day": 5,
+     "start": "12:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    },
+    {
+     "day": 1,
+     "start": "12:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    },
+    {
+     "day": 2,
+     "start": "12:00",
+     "end": "14:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
    "subs": [
     {
      "n": 11,
      "type": "תרגיל",
      "lecturer": "גב' ע. וסקו",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 4,
+       "start": "12:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 1,
+       "start": "12:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 2,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 12,
      "type": "תרגיל",
      "lecturer": "מר א. אמתי",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 4,
+       "start": "12:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 1,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 2,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 13,
      "type": "תרגיל",
      "lecturer": "מר ב. אציס מירץ'",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 4,
+       "start": "12:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 2,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 1,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 14,
      "type": "תרגיל",
      "lecturer": "מר ב. אציס מירץ'",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 4,
+       "start": "12:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 2,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 1,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 15,
      "type": "תרגיל",
      "lecturer": "מר ב. אציס מירץ'",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 2,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 1,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "12:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     },
     {
      "n": 16,
      "type": "תרגיל",
      "lecturer": "מר ב. אציס מירץ'",
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "12:00",
+       "end": "16:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 2,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      },
+      {
+       "day": 4,
+       "start": "10:00",
+       "end": "14:00",
+       "place": "",
+       "mode": "בכיתה החל משבוע 1 כל שבוע",
+       "hybrid": false
+      }
+     ]
     }
    ]
   }

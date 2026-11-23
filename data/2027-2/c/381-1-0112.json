@@ -8,7 +8,16 @@
    "n": 1,
    "type": "שעור",
    "lecturer": "ד\"ר י. בן שימול",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 5,
+     "start": "14:00",
+     "end": "17:00",
+     "place": "",
+     "mode": "היברידי החל משבוע 1 כל שבוע",
+     "hybrid": true
+    }
+   ],
    "subs": []
   }
  ]

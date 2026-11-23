@@ -23,13 +23,31 @@
      "n": 11,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "09:00",
+       "end": "11:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
     },
     {
      "n": 12,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "11:00",
+       "end": "13:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
     }
    ],
    "pop": [
@@ -81,13 +99,31 @@
      "n": 21,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "13:00",
+       "end": "15:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
     },
     {
      "n": 22,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "15:00",
+       "end": "17:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
     }
    ],
    "pop": [
@@ -139,13 +175,31 @@
      "n": 31,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "17:00",
+       "end": "19:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
     },
     {
      "n": 32,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "19:00",
+       "end": "21:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
     }
    ],
    "pop": [
