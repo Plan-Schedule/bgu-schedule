@@ -8,7 +8,16 @@
    "n": 1,
    "type": "סמינר",
    "lecturer": "ד\"ר ג. אברהמי",
-   "meetings": [],
+   "meetings": [
+    {
+     "day": 2,
+     "start": "18:00",
+     "end": "20:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": []
   }
  ]

@@ -7,8 +7,17 @@
   {
    "n": 1,
    "type": "שעור",
-   "lecturer": null,
-   "meetings": [],
+   "lecturer": "פרופ' ע. גורביץ",
+   "meetings": [
+    {
+     "day": 3,
+     "start": "10:00",
+     "end": "13:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    }
+   ],
    "subs": [
     {
      "n": 11,

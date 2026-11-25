@@ -21,6 +21,12 @@
      "type": "תרגיל",
      "lecturer": null,
      "meetings": []
+    },
+    {
+     "n": 13,
+     "type": "תרגיל",
+     "lecturer": null,
+     "meetings": []
     }
    ],
    "pop": [
@@ -59,7 +65,7 @@
   {
    "n": 3,
    "type": "שעור",
-   "lecturer": "פרופ' נ. רובין",
+   "lecturer": "ד\"ר ע. לבני נבון",
    "meetings": [],
    "subs": [
     {
@@ -70,32 +76,6 @@
     },
     {
      "n": 32,
-     "type": "תרגיל",
-     "lecturer": null,
-     "meetings": []
-    }
-   ],
-   "pop": [
-    {
-     "dept": "מדעי המחשב",
-     "degree": "תואר ראשון"
-    }
-   ]
-  },
-  {
-   "n": 4,
-   "type": "שעור",
-   "lecturer": "ד\"ר ע. לבני נבון",
-   "meetings": [],
-   "subs": [
-    {
-     "n": 41,
-     "type": "תרגיל",
-     "lecturer": null,
-     "meetings": []
-    },
-    {
-     "n": 42,
      "type": "תרגיל",
      "lecturer": null,
      "meetings": []
