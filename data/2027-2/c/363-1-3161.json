@@ -10,9 +10,17 @@
    "lecturer": "ד\"ר ר. טבעוני",
    "meetings": [
     {
+     "day": 2,
+     "start": "14:00",
+     "end": "15:00",
+     "place": "",
+     "mode": "בכיתה החל משבוע 1 כל שבוע",
+     "hybrid": false
+    },
+    {
      "day": 4,
-     "start": "17:00",
-     "end": "20:00",
+     "start": "11:00",
+     "end": "13:00",
      "place": "",
      "mode": "בכיתה החל משבוע 1 כל שבוע",
      "hybrid": false
@@ -26,8 +34,8 @@
      "meetings": [
       {
        "day": 4,
-       "start": "09:00",
-       "end": "10:00",
+       "start": "13:00",
+       "end": "14:00",
        "place": "",
        "mode": "בכיתה החל משבוע 1 כל שבוע",
        "hybrid": false
