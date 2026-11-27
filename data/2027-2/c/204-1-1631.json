@@ -98,7 +98,16 @@
      "n": 16,
      "type": "תרגיל",
      "lecturer": null,
-     "meetings": []
+     "meetings": [
+      {
+       "day": 1,
+       "start": "09:00",
+       "end": "11:00",
+       "place": "",
+       "mode": "היברידי החל משבוע 1 כל שבוע",
+       "hybrid": true
+      }
+     ]
     }
    ]
   }
